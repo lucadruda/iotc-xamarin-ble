@@ -90,6 +90,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\DeviceOrientationImplementation.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
@@ -148,13 +149,19 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Identity.Client">
+      <Version>3.0.5-preview</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
+      <Version>4.5.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\iotc_xamarin_ble\iotc_xamarin_ble.csproj">
-      <Project>{E8B1BADF-BE11-44DD-B709-EF8ACFCC5CA5}</Project>
-      <Name>iotc_xamarin_ble</Name>
+    <ProjectReference Include="..\iotc-xamarin-ble\iotc-xamarin-ble.csproj">
+      <Project>{6e17aaba-68c5-45c0-bdd8-c3b082168a14}</Project>
+      <Name>iotc-xamarin-ble</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

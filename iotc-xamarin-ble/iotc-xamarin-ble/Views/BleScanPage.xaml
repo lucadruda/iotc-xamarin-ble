@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="iotc_xamarin_ble.Views.BleScanPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="ScanBtn" Order="Primary" Text="{Binding ScanText}" Priority="0" Command="{Binding ScanBtn}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Margin="10">
+            <Label Text="Available devices"/>
+            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsScanning}">
+                <Label Text="Scanning..." HorizontalOptions="FillAndExpand"/>
+                <ActivityIndicator HorizontalOptions="End" IsRunning="True" IsEnabled="True" Scale="0.5"/>
+            </StackLayout>
+            <ListView x:Name="DevicesList"
+            ItemsSource="{Binding Devices}"
+            SelectedItem="{Binding LastTappedItem}"
+            CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding NativeDevice.Name}" Detail="{Binding NativeDevice.Address}" TextColor="Black" DetailColor="Gray"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

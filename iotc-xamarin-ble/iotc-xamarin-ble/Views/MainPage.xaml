@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:iotc_xamarin_ble"
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             x:Class="iotc_xamarin_ble.Views.MainPage">
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Button x:Name="btnLogin" Text="Sign in" Command="{Binding LoginCommand}"/>
+
+            <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="false"
+	FlowItemTappedCommand="{Binding OnApplicationTapped}" FlowItemsSource="{Binding Applications}" FlowLastTappedItem="{Binding LastTappedItem}" 
+                          Margin="10,10" VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="100" RowHeight="100">
+                <flv:FlowListView.FlowColumnTemplate>
+                    <DataTemplate>
+                        <Frame OutlineColor="Black" CornerRadius="4">
+                            <Label Text="{Binding Name}" Margin="5" VerticalOptions="FillAndExpand" />
+                        </Frame>
+                    </DataTemplate>
+                </flv:FlowListView.FlowColumnTemplate>
+
+            </flv:FlowListView>
+        </StackLayout>
+    </ContentPage.Content>
+    <!--</StackLayout>
+        </ScrollView>
+
+    </StackLayout> -->
+
+</ContentPage>

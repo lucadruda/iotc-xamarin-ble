@@ -1,5 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.iotc_xamarin_ble">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="26" />
-    <application android:label="iotc_xamarin_ble.Android"></application>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.iotc_xamarin_ble" android:installLocation="internalOnly">
+	<uses-sdk android:minSdkVersion="21" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	<application android:label="IoTCentral BLE Gateway" android:icon="@mipmap/icon">
+		<!--<activity android:name="microsoft.identity.client.BrowserTabActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="msal6df42503-a8e6-4333-bd5e-807c4380ba6e" android:host="auth" />
+      </intent-filter>
+    </activity> -->
+	</application>
 </manifest>

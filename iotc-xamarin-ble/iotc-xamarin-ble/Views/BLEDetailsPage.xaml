@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="currentPage"
+             x:Class="iotc_xamarin_ble.Views.BLEDetailsPage">
+    <ContentPage.Content>
+        <AbsoluteLayout VerticalOptions="Fill">
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+               IsRunning="{Binding IsBusy}"
+               Color="Gray"
+               AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds=".5,.5,-1,-1" />
+            <ListView 
+        ItemsSource="{Binding Services}"
+        IsGroupingEnabled="True" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" SeparatorColor="Gray">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout HorizontalOptions="FillAndExpand" Spacing="1" Margin="100,0,0,0">
+                                <Label Text="{Binding Name}" FontSize="Small" VerticalOptions="Center" />
+                                <Label Text="{Binding Id}" FontSize="Micro" VerticalOptions="Center" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <RelativeLayout HorizontalOptions="FillAndExpand">
+                                <Image x:Name="StateImage" Source="{Binding StateIcon}" 
+                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=5}" 
+                                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}" Scale="0.5"/>
+                                <Label x:Name="ServiceName" Text="{Binding Name}"
+                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=60}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}" FontSize="Medium" />
+                                <Label x:Name="ServiceUUID" Text="{Binding Id}" 
+                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=ServiceName, Property=Width, Factor=0,Constant=70}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=ServiceName, Property=Height, Factor=1, Constant=0}"  FontSize="Small"/>
+                                <RelativeLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference currentPage}, Path=BindingContext.HeaderClickCommand}" NumberOfTapsRequired="1" CommandParameter="{Binding .}"/>
+                                </RelativeLayout.GestureRecognizers>
+                            </RelativeLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+            </ListView>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>
