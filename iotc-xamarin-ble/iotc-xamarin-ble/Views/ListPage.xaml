@@ -1,17 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls1="clr-namespace:iotc_xamarin_ble.Graphics"
              x:Class="iotc_xamarin_ble.Views.ListPage">
     <ContentPage.Content>
-        <StackLayout>
-            <ListView Margin="10" x:Name="rootLayout" x:FieldModifier="public" ItemsSource="{Binding Items}" SelectedItem="{Binding LastTappedItem}" >
+        <AbsoluteLayout VerticalOptions="Fill">
+            <controls1:LoadingDialog/>
+            <ListView Margin="10" x:Name="rootLayout" x:FieldModifier="public" ItemsSource="{Binding Items}" SelectedItem="{Binding LastTappedItem}" AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="10,10,1,1" SeparatorColor="Gray" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Name}" TextColor="Black"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ActivityIndicator x:Name="loading" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center" Color="Red"/>
-        </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

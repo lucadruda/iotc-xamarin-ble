@@ -22,7 +22,6 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
 
             await Navigator.PopAsync();
 
-            dismissing?.AfterDismissed();
         }
 
         public async Task NavigateBackToRoot()
@@ -73,7 +72,6 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
             Page page = viewLocator.CreateAndBindPageFor(viewModel);
 
             NavigationPage newNavigationPage = new NavigationPage(page);
-            newNavigationPage.BarBackgroundColor = Color.Blue;
 
             IEnumerable<BaseViewModel> viewModelsToDismiss = FindViewModelsToDismiss(App.Current.MainPage);
 

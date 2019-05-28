@@ -13,6 +13,8 @@ namespace iotc_xamarin_ble.ViewModels
 
     {
         private bool isBusy = false;
+        private string loadingText = "Loading";
+
         public INavigationService Navigation { get; private set; }
 
         public virtual Type ModelType { get; set; }
@@ -26,18 +28,35 @@ namespace iotc_xamarin_ble.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string LoadingText
+        {
+            get { return loadingText; }
+            set
+            {
+                loadingText = value;
+                OnPropertyChanged();
+            }
+        }
         public BaseViewModel(INavigationService navigation)
         {
             Navigation = navigation;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public static event EventHandler<object> PageCompleted;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this,
             new PropertyChangedEventArgs(propertyName));
         }
+
+        protected virtual void Complete(object val = null)
+        {
+            PageCompleted?.Invoke(this, val);
+        }
+
 
 
         public virtual Task BeforeFirstShown()
@@ -54,5 +73,13 @@ namespace iotc_xamarin_ble.ViewModels
         {
             return Task.CompletedTask;
         }
+
+        public virtual void OnNavigationBack(object sender, object e)
+        {
+        }
+
+
+
+        public string Title { get; set; }
     }
 }

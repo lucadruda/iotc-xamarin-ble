@@ -47,7 +47,7 @@ namespace iotc_xamarin_ble.ViewModels
             IsBusy = false;
             OnPropertyChanged("IsBusy");
         }
-        public override Task BeforeFirstShown()
+        public override Task OnAppearing()
         {
             return LoadData();
         }

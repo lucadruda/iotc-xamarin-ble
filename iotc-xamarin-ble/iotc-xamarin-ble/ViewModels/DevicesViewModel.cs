@@ -3,30 +3,35 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using iotc_csharp_service.Types;
+using iotc_xamarin_ble.Mocks;
+using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.ViewModels.Navigation;
 
 namespace iotc_xamarin_ble.ViewModels
 {
     public class DevicesViewModel : ListViewModel<Device>
     {
-        public Application CurrentApplication { get; set; }
-        public DeviceTemplate CurrentModel { get; set; }
-        public DevicesViewModel(INavigationService navigation, Application currentApplication, DeviceTemplate currentModel) : base(navigation)
+        public DevicesViewModel(INavigationService navigation) : base(navigation)
         {
-            CurrentApplication = currentApplication;
-            CurrentModel = currentModel;
+            Title = IoTCentral.Current.Model.Name;
+
         }
         public override async Task<IEnumerable<Device>> FetchData()
         {
-            return await ((App)App.Current).IoTCentralClient.ListDevices(CurrentApplication.Id, CurrentModel.Id);
+            return await IoTCentral.Current.ServiceClient.ListDevices(IoTCentral.Current.Application.Id, IoTCentral.Current.Model.Id);
         }
 
         public override void OnItemTapped()
         {
-            Device model = LastTappedItem as Device;
-            if (model != null)
+            Device device = LastTappedItem as Device;
+            if (device != null)
             {
-               Navigation.NavigateTo(new BleScanViewModel(Navigation));
+                IoTCentral.Current.Device = device;
+                //Navigation.NavigateTo(new BleScanViewModel(Navigation));
+                //Navigation.NavigateTo(new BLEDetailsViewModel(Navigation,new CustomBLEDevice(BLEService.Current.Adapter)));
+                LastTappedItem = null;
+                OnPropertyChanged("LastTappedItem");
+                Navigation.NavigateTo(new DeviceViewModel(Navigation));
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DLToolkit.Forms.Controls;
+using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,15 @@ namespace iotc_xamarin_ble.ViewModels
 
         public MainViewModel(INavigationService navigationService) : base(navigationService)
         {
+            Title = "Azure IoT Central";
             LoginCommand = new Command(Fetch);
             OnApplicationTapped = new Command(() =>
               {
                   Application tappedApp = LastTappedItem as Application;
                   if (tappedApp != null)
                   {
-                      Navigation.NavigateTo(new ModelsViewModel(Navigation, tappedApp));
+                      IoTCentral.Current.Application = tappedApp;
+                      Navigation.NavigateTo(new ModelsViewModel(Navigation));
                   }
               });
 
@@ -41,7 +44,7 @@ namespace iotc_xamarin_ble.ViewModels
         private async void Fetch()
         {
             Applications.Clear();
-            Applications.AddRange(await ((App)App.Current).IoTCentralClient.ListApps());
+            Applications.AddRange(await IoTCentral.Current.ServiceClient.ListApps());
             OnPropertyChanged("Applications");
         }
 

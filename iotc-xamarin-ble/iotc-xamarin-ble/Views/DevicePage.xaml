@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls1="clr-namespace:iotc_xamarin_ble.Graphics"
+             xmlns:ValueConverters="clr-namespace:iotc_ble_xamarin.ValueConverters"
+             x:Class="iotc_xamarin_ble.Views.DevicePage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ValueConverters:BooleanNegationConverter x:Key="not" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <AbsoluteLayout VerticalOptions="Fill" BackgroundColor="#ededed">
+            <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.6,0.9,0.9" IsEnabled="{Binding IsBusy,Converter={StaticResource not}}">
+                <Label x:Name="deviceName" Text="{Binding IoTCDevice.Name, StringFormat='Device: {0}'}"/>
+                <Label x:Name="deviceConnectionStatus" Text="{Binding ConnectionStatus, StringFormat='Status: {0}'}"/>
+                <Label x:Name="traceBox" FormattedText="{Binding FormattedText}" HorizontalOptions="Fill" VerticalOptions="FillAndExpand" BackgroundColor="White" FontSize="Small" TextColor="Black"/>
+                <Button Text="Pair" Command="{Binding Pair}" HorizontalOptions="End" VerticalOptions="End"/>
+            </StackLayout>
+            <controls1:LoadingDialog/>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

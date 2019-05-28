@@ -30,12 +30,7 @@ namespace iotc_xamarin_ble.ViewModels
                     await Scan();
                 else await Stop();
             });
-            scanTimer = new Timer(1000);
-            scanTimer.Elapsed += (s, e) =>
-            {
-                IsScanning = BLEService.Current.IsScanning;
-            };
-            scanTimer.Enabled = true;
+
         }
 
         public bool IsScanning
@@ -75,7 +70,10 @@ namespace iotc_xamarin_ble.ViewModels
         }
         public void OnItemTapped()
         {
-            Navigation.NavigateTo(new BLEDetailsViewModel(Navigation, LastTappedItem));
+            BLEService.Current.Device = LastTappedItem;
+            LastTappedItem = null;
+            OnPropertyChanged("LastTappedItem");
+            Navigation.NavigateTo(new BLEDetailsViewModel(Navigation));
         }
 
         public async Task Scan()
@@ -89,8 +87,16 @@ namespace iotc_xamarin_ble.ViewModels
             await BLEService.Current.StopScan();
         }
 
-        public override async Task BeforeFirstShown()
+
+        public override async Task OnAppearing()
         {
+
+            scanTimer = new Timer(1000);
+            scanTimer.Elapsed += (s, e) =>
+            {
+                IsScanning = BLEService.Current.IsScanning;
+            };
+            scanTimer.Enabled = true;
             await Scan();
         }
 
@@ -102,10 +108,20 @@ namespace iotc_xamarin_ble.ViewModels
 
         public override Task AfterDismissed()
         {
+            PageCompleted -= OnNavigationBack;
             scanTimer.Dispose();
             return base.AfterDismissed();
         }
 
+        public override async void OnNavigationBack(object sender, object e)
+        {
+            await Navigation.NavigateBack();
+        }
 
+        public override Task BeforeFirstShown()
+        {
+            PageCompleted += OnNavigationBack;
+            return base.BeforeFirstShown();
+        }
     }
 }

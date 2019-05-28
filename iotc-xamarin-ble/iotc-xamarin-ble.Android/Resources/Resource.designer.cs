@@ -26,6 +26,7 @@ namespace iotc_xamarin_ble.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Microsoft.Azure.Amqp.Resource.String.ApplicationName = global::iotc_xamarin_ble.Droid.Resource.String.ApplicationName;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_in = global::iotc_xamarin_ble.Droid.Resource.Animation.abc_fade_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_out = global::iotc_xamarin_ble.Droid.Resource.Animation.abc_fade_out;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_grow_fade_in_from_bottom = global::iotc_xamarin_ble.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;
@@ -7476,6 +7477,9 @@ namespace iotc_xamarin_ble.Droid
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f0a004e
+			public const int ApplicationName = 2131361870;
 			
 			// aapt resource value: 0x7f0a0018
 			public const int abc_action_bar_home_description = 2131361816;

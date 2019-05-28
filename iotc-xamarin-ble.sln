@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iotc-xamarin-ble.Android", "iotc-xamarin-ble\iotc-xamarin-ble.Android\iotc-xamarin-ble.Android.csproj", "{2094A60A-3AF3-4AE7-BA9C-C4A7694E05ED}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iotc-xamarin-ble.iOS", "iot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iotc-xamarin-ble", "iotc-xamarin-ble\iotc-xamarin-ble\iotc-xamarin-ble.csproj", "{6E17AABA-68C5-45C0-BDD8-C3B082168A14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iotc-csharp-service", "iotc-csharp-service\iotc-csharp-service.csproj", "{950BD21B-4926-431C-AA55-DFDA715D29D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iotc-csharp-service", "iotc-csharp-service\iotc-csharp-service.csproj", "{950BD21B-4926-431C-AA55-DFDA715D29D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.csproj", "{4719E94E-914D-4F21-A5BF-2A65691BB8FD}"
 EndProject

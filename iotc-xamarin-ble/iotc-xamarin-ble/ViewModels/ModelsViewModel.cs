@@ -1,6 +1,7 @@
 ﻿using iotc_csharp_service.Types;
 using iotc_xamarin_ble;
 using iotc_xamarin_ble.Graphics;
+using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.ViewModels;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using System;
@@ -14,14 +15,13 @@ namespace iotc_xamarin_ble
 {
     public class ModelsViewModel : ListViewModel<DeviceTemplate>
     {
-        public Application CurrentApplication { get; set; }
-        public ModelsViewModel(INavigationService navigation, Application currentApplication) : base(navigation)
+        public ModelsViewModel(INavigationService navigation) : base(navigation)
         {
-            CurrentApplication = currentApplication;
+            Title = IoTCentral.Current.Application.Name;
         }
         public override async Task<IEnumerable<DeviceTemplate>> FetchData()
         {
-            return await ((App)App.Current).IoTCentralClient.ListTemplates(CurrentApplication.Id);
+            return await IoTCentral.Current.ServiceClient.ListTemplates(IoTCentral.Current.Application.Id);
         }
 
         public override void OnItemTapped()
@@ -29,7 +29,10 @@ namespace iotc_xamarin_ble
             DeviceTemplate model = LastTappedItem as DeviceTemplate;
             if (model != null)
             {
-                Navigation.NavigateTo(new DevicesViewModel(Navigation, CurrentApplication, model));
+                IoTCentral.Current.Model = model;
+                LastTappedItem = null;
+                OnPropertyChanged("LastTappedItem");
+                Navigation.NavigateTo(new DevicesViewModel(Navigation));
             }
         }
     }

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="iotc_xamarin_ble.Views.BleScanPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="ScanBtn" Order="Primary" Text="{Binding ScanText}" Priority="0" Command="{Binding ScanBtn}"/>
+        <ToolbarItem Name="ScanBtn" Order="Primary" Text="{Binding ScanBtn}" Priority="0" Command="{Binding ScanStop}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Margin="10">

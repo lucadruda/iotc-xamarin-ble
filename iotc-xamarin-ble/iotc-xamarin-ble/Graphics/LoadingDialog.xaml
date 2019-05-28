@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="iotc_xamarin_ble.Graphics.LoadingDialog" IsVisible="{Binding IsBusy}"
+             AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.5,.7,.2" Orientation="Horizontal"
+             Padding="20" BackgroundColor="#666666">
+    <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" VerticalOptions="Center" Margin="0,0,10,0"/>
+    <Label Text="{Binding LoadingText}" VerticalOptions="Center" TextColor="White"/>
+</StackLayout>

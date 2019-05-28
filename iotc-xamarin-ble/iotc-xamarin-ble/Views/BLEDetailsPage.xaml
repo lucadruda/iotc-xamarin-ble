@@ -2,47 +2,60 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Name="currentPage"
+             xmlns:controls1="clr-namespace:iotc_xamarin_ble.Graphics"
+             xmlns:ValueConverters="clr-namespace:iotc_ble_xamarin.ValueConverters"
              x:Class="iotc_xamarin_ble.Views.BLEDetailsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ValueConverters:BooleanNegationConverter x:Key="not" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout VerticalOptions="Fill">
-            <ActivityIndicator IsVisible="{Binding IsBusy}"
-               IsRunning="{Binding IsBusy}"
-               Color="Gray"
-               AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds=".5,.5,-1,-1" />
-            <ListView 
+            <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.6,0.9,0.9" IsEnabled="{Binding IsBusy,Converter={StaticResource not}}">
+                <Label Text="Address" />
+                <Label Text="{Binding Device.NativeDevice.Address}" FontSize="Medium"/>
+                <ListView 
         ItemsSource="{Binding Services}"
-        IsGroupingEnabled="True" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" SeparatorColor="Gray">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout HorizontalOptions="FillAndExpand" Spacing="1" Margin="100,0,0,0">
-                                <Label Text="{Binding Name}" FontSize="Small" VerticalOptions="Center" />
-                                <Label Text="{Binding Id}" FontSize="Micro" VerticalOptions="Center" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <RelativeLayout HorizontalOptions="FillAndExpand">
-                                <Image x:Name="StateImage" Source="{Binding StateIcon}" 
+        IsGroupingEnabled="True" VerticalOptions="FillAndExpand" SeparatorColor="Gray" HasUnevenRows="True">
+                    <!-- Characteristic -->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="1" Margin="50,0,0,30">
+                                    <Label Text="{Binding Name}" FontSize="Small" VerticalOptions="Center" />
+                                    <Label Text="{Binding Id}" FontSize="Micro" VerticalOptions="Center" />
+                                    <Picker ItemsSource="{Binding CurrentMeasures}" SelectedIndex="{Binding SelectedIndex}" SelectedItem="{Binding SelectedMeasure}"  ItemDisplayBinding="{Binding DisplayName}" Title="Select a telemetry field" VerticalOptions="CenterAndExpand" HorizontalOptions = "Fill" FontSize="Small"/>
+                                    <Button Text="Clear" Command="{Binding ClearSelection}" HorizontalOptions="Start" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <!-- Service -->
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <RelativeLayout HorizontalOptions="FillAndExpand">
+                                    <Image x:Name="StateImage" Source="{Binding StateIcon}" 
                                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=5}" 
-                                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}" Scale="0.5"/>
-                                <Label x:Name="ServiceName" Text="{Binding Name}"
+                                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}" Scale="0.2"/>
+                                    <Label x:Name="ServiceName" Text="{Binding Name}"
                                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=60}"
                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}" FontSize="Medium" />
-                                <Label x:Name="ServiceUUID" Text="{Binding Id}" 
-                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=ServiceName, Property=Width, Factor=0,Constant=70}"
+                                    <Label x:Name="ServiceUUID" Text="{Binding Id}" 
+                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=ServiceName, Property=Width, Factor=0,Constant=60}"
                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=ServiceName, Property=Height, Factor=1, Constant=0}"  FontSize="Small"/>
-                                <RelativeLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference currentPage}, Path=BindingContext.HeaderClickCommand}" NumberOfTapsRequired="1" CommandParameter="{Binding .}"/>
-                                </RelativeLayout.GestureRecognizers>
-                            </RelativeLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.GroupHeaderTemplate>
-            </ListView>
+                                    <RelativeLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference currentPage}, Path=BindingContext.HeaderClickCommand}" NumberOfTapsRequired="1" CommandParameter="{Binding .}"/>
+                                    </RelativeLayout.GestureRecognizers>
+                                </RelativeLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                </ListView>
+                <Button x:Name="saveBtn" Command="{Binding Save}" Text="{Binding SaveText}" HorizontalOptions="End" VerticalOptions="End"/>
+            </StackLayout>
+            <controls1:LoadingDialog/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
