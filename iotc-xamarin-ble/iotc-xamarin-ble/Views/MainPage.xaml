@@ -15,7 +15,7 @@
                 <flv:FlowListView.FlowColumnTemplate>
                     <DataTemplate>
                         <Frame OutlineColor="Black" CornerRadius="4">
-                            <Label Text="{Binding Name}" Margin="5" VerticalOptions="FillAndExpand" />
+                            <Label Text="{Binding Name}" Margin="10" VerticalOptions="FillAndExpand" />
                         </Frame>
                     </DataTemplate>
                 </flv:FlowListView.FlowColumnTemplate>

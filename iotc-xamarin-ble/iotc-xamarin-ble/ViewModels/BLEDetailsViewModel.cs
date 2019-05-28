@@ -79,7 +79,7 @@ namespace iotc_xamarin_ble.ViewModels
                     }
                 }
             }
-            await MappingStorage.Current.Save();
+            MappingStorage.Current.Save();
             saved = true;
             await Navigation.NavigateBack(); // TODO: change to tabs
         }

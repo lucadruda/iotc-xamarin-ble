@@ -20,11 +20,14 @@ namespace iotc_xamarin_ble.Mocks
 
         protected override async Task<IEnumerable<IService>> GetServicesNativeAsync()
         {
-            var services = new List<IService>();
-            services.Add(new CustomBLEService(this));
-            services.Add(new CustomBLEService(this));
-            services.Add(new CustomBLEService(this));
-            return services;
+            return await Task.Run(() =>
+             {
+                 var services = new List<IService>();
+                 services.Add(new CustomBLEService(this));
+                 services.Add(new CustomBLEService(this));
+                 services.Add(new CustomBLEService(this));
+                 return services;
+             });
 
         }
 
@@ -54,11 +57,14 @@ namespace iotc_xamarin_ble.Mocks
 
         protected override async Task<IList<ICharacteristic>> GetCharacteristicsNativeAsync()
         {
-            var chars = new List<ICharacteristic>();
-            chars.Add(new CustomBLECharacteristic(this));
-            chars.Add(new CustomBLECharacteristic(this));
-            chars.Add(new CustomBLECharacteristic(this));
-            return chars;
+            return await Task.Run(() =>
+            {
+                var chars = new List<ICharacteristic>();
+                chars.Add(new CustomBLECharacteristic(this));
+                chars.Add(new CustomBLECharacteristic(this));
+                chars.Add(new CustomBLECharacteristic(this));
+                return chars;
+            });
         }
     }
 

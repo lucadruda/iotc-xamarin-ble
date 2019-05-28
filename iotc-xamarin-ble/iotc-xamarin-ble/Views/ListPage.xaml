@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls1="clr-namespace:iotc_xamarin_ble.Graphics"
-             x:Class="iotc_xamarin_ble.Views.ListPage">
+             x:Class="iotc_xamarin_ble.Views.ListPage" Title="{Binding Title}">
     <ContentPage.Content>
         <AbsoluteLayout VerticalOptions="Fill">
             <controls1:LoadingDialog/>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,6 +14,7 @@ using iotc_xamarin_ble.ViewModels.Navigation;
 using Plugin.BLE.Abstractions.EventArgs;
 using Xamarin.Forms;
 using Device = iotc_csharp_service.Types.Device;
+using XamarinDevice = Xamarin.Forms.Device;
 
 namespace iotc_xamarin_ble.ViewModels
 {
@@ -47,12 +49,13 @@ namespace iotc_xamarin_ble.ViewModels
         {
             try
             {
+                OnPropertyChanged("Title");
                 IsBusy = true;
                 OnPropertyChanged("IsBusy");
                 await IoTCentral.Current.ConnectDevice();
                 ConnectionStatus = "Connected";
                 OnPropertyChanged("ConnectionStatus");
-                FormattedText.Spans.Add(new Span { Text = $"Connected to {IoTCentral.Current.Application.Name}", ForegroundColor = Color.Red });
+                FormattedText.Spans.Add(new Span { Text = $"Connected to {IoTCentral.Current.Application.Name}\n", ForegroundColor = Color.Red });
                 OnPropertyChanged("FormattedText");
                 IsBusy = false;
                 OnPropertyChanged("IsBusy");
@@ -76,17 +79,23 @@ namespace iotc_xamarin_ble.ViewModels
                 OnPropertyChanged("Paired");
                 string pairingMsg = $"Paired to {BLEService.Current.Device.Name}.\n" +
                     $"Exporting features:\n" +
-                    $"";
+                    MappingStorage.Current.GetAll().Values.Aggregate((a, b) =>
+                    {
+                        return $"{a},{b}";
+                    });
                 FormattedText.Spans.Add(new Span { Text = pairingMsg, ForegroundColor = Color.Green });
             }
         }
 
-        private async void OnNotification(object sender, CharacteristicUpdatedEventArgs e)
+        public async void OnNotification(object sender, CharacteristicUpdatedEventArgs e)
         {
             var pair = new GattPair(e.Characteristic);
             var measureField = MappingStorage.Current[pair.GattKey];
             var value = e.Characteristic.GetValue();
-            FormattedText.Spans.Add(new Span { Text = $"Sending {measureField}", ForegroundColor = Color.Green });
+            XamarinDevice.BeginInvokeOnMainThread(() =>
+            {
+                FormattedText.Spans.Add(new Span { Text = $"Sending {measureField}\n", ForegroundColor = Color.Green });
+            });
             await IoTCentral.Current.DeviceClient.SendTelemetry($"{{\"{measureField}\":{value}}}", null);
         }
 

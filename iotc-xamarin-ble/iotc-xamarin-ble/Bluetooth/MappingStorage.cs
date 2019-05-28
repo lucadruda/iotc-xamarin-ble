@@ -1,5 +1,8 @@
 ﻿using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.Services.Storage;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Plugin.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,9 +33,9 @@ namespace iotc_xamarin_ble.Bluetooth
 
         private MappingStorage()
         {
-            if (App.Current.Properties.ContainsKey(IoTCentral.Current.Device.DeviceId))
+            if (CrossSettings.Current.Contains(IoTCentral.Current.Device.DeviceId))
             {
-                deviceStorage = new Dictionary<string, string>(App.Current.Properties[IoTCentral.Current.Device.DeviceId] as Dictionary<string, string>);
+                deviceStorage = JsonConvert.DeserializeObject<Dictionary<string, string>>(CrossSettings.Current.GetValueOrDefault(IoTCentral.Current.Device.DeviceId, "{}"));
             }
             else
             {
@@ -49,17 +52,9 @@ namespace iotc_xamarin_ble.Bluetooth
             else deviceStorage[key] = value;
         }
 
-        public async Task Save()
+        public void Save()
         {
-            if (App.Current.Properties.ContainsKey(IoTCentral.Current.Device.DeviceId))
-            {
-                App.Current.Properties[IoTCentral.Current.Device.DeviceId] = deviceStorage;
-            }
-            else
-            {
-                App.Current.Properties.Add(IoTCentral.Current.Device.DeviceId, deviceStorage);
-            }
-            await App.Current.SavePropertiesAsync();
+            CrossSettings.Current.AddOrUpdateValue(IoTCentral.Current.Device.DeviceId, JsonConvert.SerializeObject(deviceStorage));
         }
 
         public string this[string key]
