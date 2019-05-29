@@ -115,7 +115,7 @@ namespace iotc_xamarin_ble.ViewModels
 
         public override async void OnNavigationBack(object sender, object e)
         {
-            await Navigation.NavigateBack();
+            //await Navigation.NavigateBack();
         }
 
         public override Task BeforeFirstShown()

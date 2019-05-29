@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using XamarinDevice = Xamarin.Forms.Device;
 
 namespace iotc_xamarin_ble.Services
 {
@@ -88,6 +89,10 @@ namespace iotc_xamarin_ble.Services
 
         private async Task<PermissionStatus> CheckPermissions()
         {
+            if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
+            {
+                return PermissionStatus.Granted;
+            }
             var permissionStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
             if (permissionStatus == PermissionStatus.Granted)
             {
