@@ -49,6 +49,8 @@ namespace iotc_xamarin_ble.Services
         {
             get
             {
+                if (model == null && (bool)App.Current.Properties["mocked"])
+                    return new DeviceTemplate("c318d580-39fc-4aca-b995-843719821049", "fridge", "1.0.0");
                 // if (modelId == null)
                 // throw error;
                 return model;
@@ -60,6 +62,8 @@ namespace iotc_xamarin_ble.Services
         {
             get
             {
+                if (device == null && (bool)App.Current.Properties["mocked"])
+                    return new Device("testdevice", "testdevice", Model, "testdevice", false);
                 // if (device == null)
                 // throw error;
                 return device;

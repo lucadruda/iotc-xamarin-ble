@@ -18,7 +18,7 @@ namespace iotc_xamarin_ble.Services
         private BLEService()
         {
             ble = CrossBluetoothLE.Current;
-            Adapter = CrossBluetoothLE.Current.Adapter;
+            Adapter = ((bool)App.Current.Properties["mocked"]) ? new Mocks.MockBLEAdapter() : CrossBluetoothLE.Current.Adapter;
         }
 
         public static BLEService Current
@@ -52,10 +52,10 @@ namespace iotc_xamarin_ble.Services
             {
                 //inform the user and return;
             }
-            EventHandler<DeviceEventArgs> run = delegate (object s, DeviceEventArgs e)
+            void run(object s, DeviceEventArgs e)
             {
                 onDeviceDiscovered(e.Device);
-            };
+            }
             //remember to cleanup event listeners
             Adapter.DeviceDiscovered += run;
             await Adapter.StartScanningForDevicesAsync();
