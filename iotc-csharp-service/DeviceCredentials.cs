@@ -3,44 +3,25 @@
 
     public class DeviceCredentials
     {
-
-        private string idScope;
-        private string primaryKey;
-        private string secondaryKey;
-
         public DeviceCredentials()
         {
         }
 
-        public DeviceCredentials(string IdScope, string primaryKey, string secondaryKey)
+        public DeviceCredentials(string idScope, string primaryKey, string secondaryKey)
         {
-            this.idScope = IdScope;
-            this.primaryKey = primaryKey;
-            this.secondaryKey = secondaryKey;
+            IdScope = idScope;
+            PrimaryKey = primaryKey;
+            SecondaryKey = secondaryKey;
         }
 
-        public string IdScope { get => idScope; set => idScope = value; }
-        public string PrimaryKey { get => primaryKey; set => primaryKey = value; }
-        public string SecondaryKey { get => secondaryKey; set => secondaryKey = value; }
+        public DeviceCredentials(string deviceId, string idScope, string primaryKey, string secondaryKey) : this(idScope, primaryKey, secondaryKey)
+        {
+            DeviceId = deviceId;
+        }
 
-
-        //public DeviceCredentials IdScope(string IdScope)
-        //{
-        //    this.idScope = IdScope;
-        //    return this;
-        //}
-
-        //public DeviceCredentials PrimaryKey(string primaryKey)
-        //{
-        //    this.primaryKey = primaryKey;
-        //    return this;
-        //}
-
-        //public DeviceCredentials SecondaryKey(string secondaryKey)
-        //{
-        //    this.secondaryKey = secondaryKey;
-        //    return this;
-        //}
-
+        public string IdScope { get; set; }
+        public string PrimaryKey { get; set; }
+        public string SecondaryKey { get; set; }
+        public string DeviceId { get; set; }
     }
 }
