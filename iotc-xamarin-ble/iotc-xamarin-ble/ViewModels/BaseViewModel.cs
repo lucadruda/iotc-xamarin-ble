@@ -44,20 +44,12 @@ namespace iotc_xamarin_ble.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public static event EventHandler<object> PageCompleted;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this,
             new PropertyChangedEventArgs(propertyName));
         }
-
-        protected virtual void Complete(object val = null)
-        {
-            PageCompleted?.Invoke(this, val);
-        }
-
-
 
         public virtual Task BeforeFirstShown()
         {
@@ -74,8 +66,9 @@ namespace iotc_xamarin_ble.ViewModels
             return Task.CompletedTask;
         }
 
-        public virtual void OnNavigationBack(object sender, object e)
+        public virtual Task OnNavigatingBack()
         {
+            return Task.CompletedTask;
         }
 
 

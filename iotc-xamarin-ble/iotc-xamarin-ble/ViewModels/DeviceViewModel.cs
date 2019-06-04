@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using iotc_ble_xamarin;
 using iotc_ble_xamarin.Bluetooth;
 using iotc_csharp_device_client;
+using iotc_csharp_device_client.enums;
 using iotc_csharp_service.Types;
 using iotc_xamarin_ble.Bluetooth;
 using iotc_xamarin_ble.Extensions;
+using iotc_xamarin_ble.Messages;
 using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.ViewModels.Navigation;
+using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.EventArgs;
 using Xamarin.Forms;
 using Device = iotc_csharp_service.Types.Device;
@@ -27,8 +31,7 @@ namespace iotc_xamarin_ble.ViewModels
             Pair = new Command(OnPairing);
             Paired = false;
             Title = IoTCentral.Current.Device.Name;
-            BLEService.Current.OnValueAvailable = OnNotification;
-
+            IoTCentral.Current.DeviceReady += OnDeviceReady;
         }
 
         public Device IoTCDevice
@@ -50,15 +53,8 @@ namespace iotc_xamarin_ble.ViewModels
             try
             {
                 OnPropertyChanged("Title");
-                IsBusy = true;
-                OnPropertyChanged("IsBusy");
-                await IoTCentral.Current.ConnectDevice();
-                ConnectionStatus = "Connected";
-                OnPropertyChanged("ConnectionStatus");
-                FormattedText.Spans.Add(new Span { Text = $"Connected to {IoTCentral.Current.Application.Name}\n", ForegroundColor = Color.Red });
-                OnPropertyChanged("FormattedText");
-                IsBusy = false;
-                OnPropertyChanged("IsBusy");
+                IoTCentral.Current.DeviceConnectionChanged += OnDeviceConnectionChanged;
+                await base.OnAppearing();
             }
             catch (IoTCentralException e)
             {
@@ -71,44 +67,56 @@ namespace iotc_xamarin_ble.ViewModels
             Navigation.NavigateTo(new BleScanViewModel(Navigation));
         }
 
-        public override void OnNavigationBack(object sender, object e)
+        private void OnDeviceReady(object sender, IDevice device)
         {
-            if (BLEService.Current.Device != null)
-            {
-                Paired = true;
-                OnPropertyChanged("Paired");
-                string pairingMsg = $"Paired to {BLEService.Current.Device.Name}.\n" +
-                    $"Exporting features:\n" +
-                    MappingStorage.Current.GetAll().Values.Aggregate((a, b) =>
-                    {
-                        return $"{a},{b}";
-                    });
-                FormattedText.Spans.Add(new Span { Text = pairingMsg, ForegroundColor = Color.Green });
-            }
+            Paired = true;
+            OnPropertyChanged("Paired");
+            string pairingMsg = $"Paired to {device.Name}.\n" +
+                $"Exporting features:\n" +
+                MappingStorage.Current.GetAll().Values.Aggregate((a, b) =>
+                {
+                    return $"{a},{b}";
+                });
+            //XamarinDevice.BeginInvokeOnMainThread(() =>
+            //{
+            //    FormattedText.Spans.Add(new Span { Text = pairingMsg, ForegroundColor = Color.Green });
+            //});
+
         }
 
-        public async void OnNotification(object sender, CharacteristicUpdatedEventArgs e)
-        {
-            var pair = new GattPair(e.Characteristic);
-            var measureField = MappingStorage.Current[pair.GattKey];
-            var value = e.Characteristic.GetValue();
-            XamarinDevice.BeginInvokeOnMainThread(() =>
-            {
-                FormattedText.Spans.Add(new Span { Text = $"Sending {measureField}\n", ForegroundColor = Color.Green });
-            });
-            await IoTCentral.Current.DeviceClient.SendTelemetry($"{{\"{measureField}\":{value}}}", null);
-        }
 
         public override Task BeforeFirstShown()
         {
-            PageCompleted += OnNavigationBack;
             return base.BeforeFirstShown();
         }
 
         public override Task AfterDismissed()
         {
-            PageCompleted -= OnNavigationBack;
             return base.AfterDismissed();
+        }
+
+        private void OnDeviceConnectionChanged(object source, IoTCConnectionState state)
+        {
+            Span span;
+            switch (state)
+            {
+                case IoTCConnectionState.CONNECTION_OK:
+                    ConnectionStatus = "Connected";
+                    span = new Span { Text = $"Connected to {IoTCentral.Current.Application.Name}\n", ForegroundColor = Color.Red };
+                    break;
+                default:
+                    ConnectionStatus = "Not Connected";
+                    span = new Span { Text = $"Failed to connect to {IoTCentral.Current.Application.Name}\n", ForegroundColor = Color.Red };
+                    break;
+            }
+            XamarinDevice.BeginInvokeOnMainThread(() =>
+            {
+                FormattedText.Spans.Add(span);
+            });
+            IsBusy = false;
+            OnPropertyChanged("ConnectionStatus");
+            OnPropertyChanged("FormattedText");
+
         }
     }
 }

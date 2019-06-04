@@ -19,6 +19,7 @@ namespace iotc_xamarin_ble.Mocks
 
         public MockBLECharacteristic(IService service)
         {
+            Id = new Guid();
             Uuid = Id.ToString();
             Service = service;
             charTimer = new System.Timers.Timer(2000);
@@ -27,7 +28,13 @@ namespace iotc_xamarin_ble.Mocks
                 ValueUpdated(this, new CharacteristicUpdatedEventArgs(this));
             };
         }
-        public Guid Id { get; set; } = Guid.NewGuid();
+
+        public MockBLECharacteristic(IService service, Guid guid) : this(service)
+        {
+            Id = guid;
+            Uuid = Id.ToString();
+        }
+        public Guid Id { get; set; }
 
         public string Uuid { get; set; }
 

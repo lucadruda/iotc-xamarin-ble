@@ -18,7 +18,7 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
 {
     public class BluetoothCharacteristicViewModel : INotifyPropertyChanged
     {
-        public delegate void TelemetryAssigned(object sender, Guid charId, string newField, string oldField);
+        public delegate void TelemetryAssigned(object sender, string charId, string newField, string oldField);
         public static event TelemetryAssigned TelemetryFieldAssigned;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -43,7 +43,7 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
             new PropertyChangedEventArgs("SelectedMeasure"));
             }
         }
-        public BluetoothCharacteristicViewModel(ICharacteristic characteristic)
+        public BluetoothCharacteristicViewModel(BluetoothCharacteristicModel characteristic)
         {
             AvailableMeasures = new ContosoTemplate().GetMeasures(IoTCentral.Current.Model.Id);
             Characteristic = characteristic;
@@ -52,12 +52,12 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
             ClearSelection = new Command(Clear);
         }
 
-        public ICharacteristic Characteristic { get; private set; }
+        public BluetoothCharacteristicModel Characteristic { get; private set; }
 
         private void InitMeasures()
         {
             CurrentMeasures = new ObservableCollection<Measure>(AvailableMeasures);
-            var current = MappingStorage.Current[new GattPair(Characteristic).GattKey];
+            var current = MappingStorage.Current[new GattPair(Characteristic.ServiceId, Characteristic.Id).GattKey];
             PropertyChanged?.Invoke(this,
             new PropertyChangedEventArgs("CurrentMeasures"));
             if (current != null)
@@ -77,7 +77,7 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
         }
 
 
-        private void OnTelemetryAssigned(object sender, Guid charId, string newField, string oldField)
+        private void OnTelemetryAssigned(object sender, string charId, string newField, string oldField)
         {
             if (charId == Characteristic.Id)
                 return;

@@ -15,6 +15,11 @@ namespace iotc_ble_xamarin.Bluetooth
             this.CharacteristicId = characteristicId;
         }
 
+        public GattPair(string serviceId, string characteristicId) : this(new Guid(serviceId), new Guid(characteristicId))
+        {
+        }
+
+
         public GattPair(string pairstring)
         {
             string[] pair = pairstring.Split('/');

@@ -22,6 +22,9 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
 
             await Navigator.PopAsync();
 
+            var current = Navigator.NavigationStack.Last().BindingContext as BaseViewModel;
+            await current.OnNavigatingBack();
+
         }
 
         public async Task NavigateBackToRoot()

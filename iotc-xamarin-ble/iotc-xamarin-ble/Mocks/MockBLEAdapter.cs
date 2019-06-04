@@ -14,10 +14,12 @@ namespace iotc_xamarin_ble.Mocks
     public class MockBLEAdapter : IAdapter
     {
         private System.Timers.Timer scanTimer;
+
+        private Guid[] deviceIds = { Guid.Parse("e76506f0-06da-4705-83af-451d62b6f061"), Guid.Parse("fb274836-c071-4f82-aefc-cf3cf5ee2e91"), Guid.Parse("95870de3-d4ea-4210-b5ef-93bf3df555fc"), Guid.Parse("ec74c0bd-b036-49aa-8048-db78b589348d") };
         public MockBLEAdapter()
         {
             // DiscoveredDevices = new List<IDevice> { new CustomBLEDevice(this) };
-            DiscoveredDevices = new List<IDevice> { new MockBLEDevice(), new MockBLEDevice(), new MockBLEDevice(), new MockBLEDevice() };
+            DiscoveredDevices = new List<IDevice> { new MockBLEDevice(deviceIds[0]), new MockBLEDevice(deviceIds[1]), new MockBLEDevice(deviceIds[2]), new MockBLEDevice(deviceIds[3]) };
             ConnectedDevices = DiscoveredDevices;
             scanTimer = new System.Timers.Timer(500);
         }

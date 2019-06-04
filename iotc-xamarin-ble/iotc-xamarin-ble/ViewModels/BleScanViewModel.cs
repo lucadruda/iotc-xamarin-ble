@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using iotc_ble_xamarin;
+using iotc_xamarin_ble.Messages;
 using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using Plugin.BLE.Abstractions.Contracts;
@@ -15,14 +17,17 @@ namespace iotc_xamarin_ble.ViewModels
     public class BleScanViewModel : BaseViewModel
     {
         private IDevice _lastTappedItem;
-        private Timer scanTimer;
+        public bool close = false;
 
         public ICommand ScanStop { get; set; }
+
+        public BLEService BleService { get; set; }
 
         private bool isScanning;
         public BleScanViewModel(INavigationService navigation) : base(navigation)
         {
             Devices = new ObservableCollection<IDevice>();
+            BleService = new BLEService();
             ScanBtn = "Stop";
             ScanStop = new Command(async () =>
             {
@@ -30,7 +35,6 @@ namespace iotc_xamarin_ble.ViewModels
                     await Scan();
                 else await Stop();
             });
-
         }
 
         public bool IsScanning
@@ -70,37 +74,35 @@ namespace iotc_xamarin_ble.ViewModels
         }
         public void OnItemTapped()
         {
-            BLEService.Current.Device = LastTappedItem;
-            LastTappedItem = null;
-            OnPropertyChanged("LastTappedItem");
-            Navigation.NavigateTo(new BLEDetailsViewModel(Navigation));
+            Navigation.NavigateTo(new BLEDetailsViewModel(Navigation, this));
         }
 
         public async Task Scan()
         {
             Devices.Clear();
-            await BLEService.Current.StartScan(OnDeviceScanned);
+            await BleService.StartScan(OnDeviceDiscovered);
+            IsScanning = true;
         }
 
         public async Task Stop()
         {
-            await BLEService.Current.StopScan();
+            await BleService.StopScan();
+            IsScanning = false;
         }
 
 
         public override async Task OnAppearing()
         {
-
-            scanTimer = new Timer(1000);
-            scanTimer.Elapsed += (s, e) =>
-            {
-                IsScanning = BLEService.Current.IsScanning;
-            };
-            scanTimer.Enabled = true;
             await Scan();
+            await base.OnAppearing();
         }
 
-        private void OnDeviceScanned(IDevice device)
+        public void Close()
+        {
+            close = true;
+        }
+
+        private void OnDeviceDiscovered(IDevice device)
         {
             if (device.Name != null)
                 Devices.Add(device);
@@ -108,19 +110,22 @@ namespace iotc_xamarin_ble.ViewModels
 
         public override Task AfterDismissed()
         {
-            PageCompleted -= OnNavigationBack;
-            scanTimer.Dispose();
             return base.AfterDismissed();
         }
 
-        public override async void OnNavigationBack(object sender, object e)
+        public override async Task OnNavigatingBack()
         {
-            //await Navigation.NavigateBack();
+            if (close)
+                await Navigation.NavigateBack();
+            else
+            {
+                LastTappedItem = null;
+                OnPropertyChanged("LastTappedItem");
+            }
         }
 
         public override Task BeforeFirstShown()
         {
-            PageCompleted += OnNavigationBack;
             return base.BeforeFirstShown();
         }
     }

@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <AbsoluteLayout VerticalOptions="Fill">
             <controls1:LoadingDialog/>
-            <ListView x:Name="rootLayout" x:FieldModifier="public" ItemsSource="{Binding Items}" SelectedItem="{Binding LastTappedItem, Mode=TwoWay}" AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,1,1" SeparatorColor="Gray" >
+            <ListView x:Name="rootLayout" x:FieldModifier="public" ItemsSource="{Binding Items}" SelectedItem="{Binding LastTappedItem, Mode=TwoWay}" AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,0.9,0.9" SeparatorColor="Gray" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Name}" TextColor="Black"/>

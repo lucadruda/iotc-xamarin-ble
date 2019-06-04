@@ -11,10 +11,16 @@ using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Plugin.Permissions;
 using Xamarin.Forms.Platform.Android;
+using Xamarin.Forms;
+using iotc_xamarin_ble.Messages;
+using iotc_xamarin_ble.Droid.Services;
+using iotc_ble_xamarin;
+using iotc_xamarin_ble.Services.BackgroundWorker;
+using Newtonsoft.Json;
 
 namespace iotc_xamarin_ble.Droid
 {
-    [Activity(Label = "IoTC BLE Gateway", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "IoTC BLE Gateway", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTop)]
     public class MainActivity : FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -22,12 +28,34 @@ namespace iotc_xamarin_ble.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             base.OnCreate(savedInstanceState);
+            MessagingCenter.Subscribe<RequestMessage<ServiceParameter>>(this, Constants.SERVICE_START, message =>
+            {
+                var intent = new Intent(this, typeof(IoTCentralService));
+                intent.PutExtra(Constants.BLE_DEVICE, message.Data.BLEDeviceId);
+                intent.PutExtra(Constants.BLE_MAPPING, JsonConvert.SerializeObject(message.Data.TelemetryMap));
+                intent.PutExtra(Constants.DEVICE_ID, message.Data.DeviceCredentials.DeviceId);
+                intent.PutExtra(Constants.SCOPE_ID, message.Data.DeviceCredentials.IdScope);
+                intent.PutExtra(Constants.SYM_KEY, message.Data.DeviceCredentials.PrimaryKey);
+                StartService(intent);
+            });
+
+            MessagingCenter.Subscribe<RequestMessage>(this, Constants.SERVICE_STOP, message =>
+            {
+                var intent = new Intent(this, typeof(IoTCentralService));
+                StopService(intent);
+            });
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
             //App.ParentWindow = new PlatformParameters(this);
             //App.ParentWindow = this;
-        }
 
+            // subscribing to service messages
+
+        }
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+        }
         //protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         //{
         //    base.OnActivityResult(requestCode, resultCode, data);

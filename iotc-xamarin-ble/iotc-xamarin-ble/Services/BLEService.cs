@@ -12,34 +12,22 @@ using XamarinDevice = Xamarin.Forms.Device;
 
 namespace iotc_xamarin_ble.Services
 {
-    class BLEService
+    public class BLEService
     {
         private IBluetoothLE ble;
         private static BLEService _service;
-        private BLEService()
+        public BLEService()
         {
             ble = CrossBluetoothLE.Current;
             Adapter = ((bool)App.Current.Properties["mocked"]) ? new Mocks.MockBLEAdapter() : CrossBluetoothLE.Current.Adapter;
         }
 
-        public static BLEService Current
-        {
-            get
-            {
-                if (_service == null)
-                {
-                    _service = new BLEService();
-                }
-                return _service;
-            }
-        }
         public BLEService(int timeout) : this()
         {
             Adapter.ScanTimeout = timeout;
         }
 
         public BluetoothState State { get { return ble.State; } }
-        public IDevice Device { get; set; }
 
         public bool IsScanning { get { return Adapter.IsScanning; } }
 
@@ -69,13 +57,25 @@ namespace iotc_xamarin_ble.Services
                 await Adapter.StopScanningForDevicesAsync();
         }
 
-        public async Task ConnectDevice(IDevice device)
+        public async Task Connect(IDevice device)
         {
             try
             {
                 await Adapter.ConnectToDeviceAsync(device);
             }
             catch (DeviceConnectionException e) { }
+        }
+
+        public async Task<IDevice> Connect(string deviceId)
+        {
+            try
+            {
+                return await Adapter.ConnectToKnownDeviceAsync(new Guid(deviceId));
+            }
+            catch (DeviceConnectionException e)
+            {
+                return null;
+            }
         }
 
         public async Task DisconnectDevice(IDevice device)
@@ -115,6 +115,7 @@ namespace iotc_xamarin_ble.Services
             characteristic.ValueUpdated -= OnValueAvailable;
             await characteristic.StopUpdatesAsync();
         }
+
 
 
     }

@@ -1,13 +1,19 @@
-﻿using Microsoft.Identity.Client;
+﻿using iotc_ble_xamarin;
+using iotc_xamarin_ble.Authentication.v1;
+using iotc_xamarin_ble.Services.Http;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using AuthenticationResult = Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationResult;
+using System.Web;
+using Xamarin.Forms;
 
-namespace iotc_ble_xamarin.Authentication.v1
+namespace iotc_xamarin_ble.Authentication.v1
 {
     public class Authenticator
     {
@@ -26,56 +32,52 @@ namespace iotc_ble_xamarin.Authentication.v1
         public static string CLIENT_ID = Constants.CLIENT_ID;
         /* Resource URI of the endpoint which will be accessed */
         /* The Redirect URI of the app_activity (Optional) */
-        //public static string REDIRECT_URI = "http://localhost";
-        public static Uri REDIRECT_URI = new Uri("https://login.microsoftonline.com/common/oauth2/nativeclient");
+        public static string REDIRECT_URI = "http://localhost";
+        public static string RESOURCE_URI = "https://apps.azureiotcentral.com";
+        //public static Uri REDIRECT_URI = new Uri("https://login.microsoftonline.com/common/oauth2/nativeclient");
 
 
 
-        private static IPublicClientApplication publicClientApplication = null;
-
-        private static Microsoft.IdentityModel.Clients.ActiveDirectory.TokenCache mainCache;
 
         private static object ParentWindow { get; set; }
 
+        private WebView browser;
+        private RestClient client;
 
-        public static AuthenticationContext create()
+        //public static Authenticator()
+        //{
+        //    client = new RestClient();
+        //    browser = new WebView();
+        //    browser.Source = $"{AUTHORITY}/oauth2/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={HttpUtility.UrlEncode(REDIRECT_URI)}&response_mode=query&resource={HttpUtility.UrlEncode(RESOURCE_URI)}&state=12345";
+        //}
+
+        public async Task<string> AcquireTokenAsync(string resourceUri)
         {
-            AuthenticationContext authContext = create(AUTHORITY);
-            mainCache = authContext.TokenCache;
-            return authContext;
+            var token = JsonConvert.DeserializeObject<AzureToken>(SecureStorage.Current[resourceUri]);
+            if (token.Expired())
+            {
+                token = await AcquireTokenWithRefresh(resourceUri, token.RefreshToken);
+            }
+            return token.AccessToken;
+
         }
 
-        public static AuthenticationContext create(string authority)
+        public async Task<AzureToken> AcquireTokenWithRefresh(string resourceUri, string refreshToken)
         {
-            if (mainCache != null)
+            var resp = await client.Post($"{AUTHORITY}/oauth2/token", null, $"client_id={CLIENT_ID}&refresh_token={refreshToken}&grant_type=refresh_token&resource={HttpUtility.UrlEncode(resourceUri)}");
+            if (resp.Success)
             {
-                return new AuthenticationContext(authority, true, mainCache);
+                return JsonConvert.DeserializeObject<AzureToken>(resp.ResponseBody);
             }
-            return new AuthenticationContext(authority);
+            return await AcquireTokenInteractive(resourceUri);
+
         }
 
-        public static async Task<AuthenticationResult> GetToken(AuthenticationContext context, string resource, IPlatformParameters parent)
+        public async Task<AzureToken> AcquireTokenInteractive(string resourceUri)
         {
-
-            AuthenticationResult result = null;
-            try
-            {
-                result = await context.AcquireTokenSilentAsync(resource, CLIENT_ID);
-            }
-            catch (AdalSilentTokenAcquisitionException ex)
-            {
-                try
-                {
-                    // interaction required
-                    result = await context.AcquireTokenAsync(resource, CLIENT_ID, REDIRECT_URI, parent);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            return result;
+            return null;
         }
+
 
     }
 }

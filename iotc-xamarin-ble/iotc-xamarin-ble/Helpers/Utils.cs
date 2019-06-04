@@ -18,9 +18,9 @@ namespace iotc_xamarin_ble.Helpers
         public static string GetRandomMac(string separator)
         {
             const string chars = "ABCDEF0123456789";
-            var res = new string(Enumerable.Repeat(chars, 6)
+            var res = new string(Enumerable.Repeat(chars, 12)
               .Select(s => s[random.Next(s.Length)]).ToArray());
-            return res.Insert(1, separator).Insert(3, separator).Insert(5, separator).Insert(7, separator).Insert(9, separator);
+            return res.Insert(2, separator).Insert(5, separator).Insert(8, separator).Insert(11, separator).Insert(14, separator);
         }
     }
 }
