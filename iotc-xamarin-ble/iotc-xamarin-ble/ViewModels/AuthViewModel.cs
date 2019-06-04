@@ -22,6 +22,7 @@ namespace iotc_xamarin_ble.ViewModels
         public AuthViewModel(INavigationService navigation) : base(navigation)
         {
             Navigated = new Command<WebNavigatedEventArgs>(OnNavigated);
+            Navigating = new Command<WebNavigatingEventArgs>(OnNavigating);
             client = new RestClient();
             Authenticating = false;
             interactiveLoginTask = new TaskCompletionSource<AzureToken>();
@@ -30,23 +31,50 @@ namespace iotc_xamarin_ble.ViewModels
         public string Url { get; set; }
         public bool Authenticating { get; set; }
         public ICommand Navigated { get; set; }
+        public ICommand Navigating { get; set; }
 
         public event EventHandler<string> TokenAcquired;
 
         private async void OnNavigated(WebNavigatedEventArgs e)
         {
+            if (!Authenticating)
+            {// not authenticating. event came from somewhere else
+                return;
+            }
             var matches = new Regex(@"[\S]+code=([\S]+)&[\S]+").Match(e.Url).Groups;
             if (matches.Count > 1)
             {
-                Authenticating = false;
-                OnPropertyChanged("Authenticating");
-                var resp = await TryGetTokenWithAuthCode(Constants.IOTC_TOKEN_AUDIENCE_v1, matches[1].Value);
-                if (resp.Success)
-                {
-                    var token = new AzureToken(resp.ResponseBody);
-                    SecureStorage.Current.Add(token.Resource, JsonConvert.SerializeObject(token));
-                    interactiveLoginTask.SetResult(token);
-                }
+                await ParseAuthorizationCode(matches[1].Value);
+            }
+        }
+
+        /*
+         Hack: for iOS looks like the response never goes to the OnNavigated.
+         Intercept code here
+             */
+        private async void OnNavigating(WebNavigatingEventArgs e) 
+        {
+            if (!Authenticating)
+            {// not authenticating. event came from somewhere else
+                return;
+            }
+            var matches = new Regex(@"[\S]+code=([\S]+)&[\S]+").Match(e.Url).Groups;
+            if (matches.Count > 1)
+            {
+                await ParseAuthorizationCode(matches[1].Value);
+            }
+        }
+
+        private async Task ParseAuthorizationCode(string authCode)
+        {
+            Authenticating = false;
+            OnPropertyChanged("Authenticating");
+            var resp = await TryGetTokenWithAuthCode(Constants.IOTC_TOKEN_AUDIENCE_v1, authCode);
+            if (resp.Success)
+            {
+                var token = new AzureToken(resp.ResponseBody);
+                SecureStorage.Current.Add(token.Resource, JsonConvert.SerializeObject(token));
+                interactiveLoginTask.SetResult(token);
             }
         }
 
