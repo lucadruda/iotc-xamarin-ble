@@ -13,8 +13,6 @@ using iotc_ble_xamarin;
 using iotc_ble_xamarin.Bluetooth;
 using iotc_csharp_device_client;
 using iotc_csharp_device_client.enums;
-using iotc_csharp_service;
-using iotc_xamarin_ble.Bluetooth;
 using iotc_xamarin_ble.Extensions;
 using iotc_xamarin_ble.Messages;
 using iotc_xamarin_ble.Services;

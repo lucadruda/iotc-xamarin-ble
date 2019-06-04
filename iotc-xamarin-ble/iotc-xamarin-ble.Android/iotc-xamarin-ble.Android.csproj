@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="IoTCentral.Devices.Client">
+      <Version>1.1.0-alpha</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Identity.Client">
       <Version>3.0.5-preview</Version>
     </PackageReference>
@@ -103,10 +106,6 @@
     <Folder Include="Resources\drawable-xxxhdpi\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\iotc-csharp-device-client\src\iotc-csharp-device-client.csproj">
-      <Project>{da3f1ee5-14b6-4ef1-8cc3-409c4bdbc1c7}</Project>
-      <Name>iotc-csharp-device-client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\iotc-csharp-service\iotc-csharp-service.csproj">
       <Project>{950bd21b-4926-431c-aa55-dfda715d29d3}</Project>
       <Name>iotc-csharp-service</Name>

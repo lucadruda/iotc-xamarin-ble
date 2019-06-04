@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
+    <PackageReference Include="IoTCentral.Devices.Client" Version="1.1.0-alpha" />
     <PackageReference Include="Microsoft.Identity.Client" Version="3.0.5-preview" />
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="4.5.1" />
     <PackageReference Include="Plugin.BLE" Version="2.0.0-pre1" />
@@ -31,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\iotc-csharp-device-client\src\iotc-csharp-device-client.csproj" />
     <ProjectReference Include="..\..\iotc-csharp-service\iotc-csharp-service.csproj" />
   </ItemGroup>
 
