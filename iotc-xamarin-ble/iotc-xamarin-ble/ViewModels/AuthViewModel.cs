@@ -52,7 +52,7 @@ namespace iotc_xamarin_ble.ViewModels
          Hack: for iOS looks like the response never goes to the OnNavigated.
          Intercept code here
              */
-        private async void OnNavigating(WebNavigatingEventArgs e) 
+        private async void OnNavigating(WebNavigatingEventArgs e)
         {
             if (!Authenticating)
             {// not authenticating. event came from somewhere else
@@ -82,8 +82,7 @@ namespace iotc_xamarin_ble.ViewModels
         {
             var token = await AcquireTokenAsync(Constants.IOTC_TOKEN_AUDIENCE_v1);
             SecureStorage.Current.Save();
-            TokenAcquired?.Invoke(this, token);
-            Navigation.NavigateBack();
+            Navigation.PresentAsNavigatableMainPage(new MainViewModel(Navigation, token));
         }
 
         private async Task<string> AcquireTokenAsync(string resourceUri)

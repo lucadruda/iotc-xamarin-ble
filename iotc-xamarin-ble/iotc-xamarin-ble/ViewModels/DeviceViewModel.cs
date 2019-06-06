@@ -27,9 +27,8 @@ namespace iotc_xamarin_ble.ViewModels
 
         public DeviceViewModel(INavigationService navigation) : base(navigation)
         {
+            IsBusy = true;
             FormattedText = new FormattedString();
-            Pair = new Command(OnPairing);
-            Paired = false;
             Title = IoTCentral.Current.Device.Name;
             IoTCentral.Current.DeviceReady += OnDeviceReady;
         }
@@ -62,25 +61,24 @@ namespace iotc_xamarin_ble.ViewModels
             }
         }
 
-        private void OnPairing()
-        {
-            Navigation.NavigateTo(new BleScanViewModel(Navigation));
-        }
 
         private void OnDeviceReady(object sender, IDevice device)
         {
-            Paired = true;
-            OnPropertyChanged("Paired");
+            IsBusy = false;
             string pairingMsg = $"Paired to {device.Name}.\n" +
                 $"Exporting features:\n" +
                 MappingStorage.Current.GetAll().Values.Aggregate((a, b) =>
                 {
-                    return $"{a},{b}";
+                    return b ?? $"{a},{b}";
                 });
-            //XamarinDevice.BeginInvokeOnMainThread(() =>
-            //{
-            //    FormattedText.Spans.Add(new Span { Text = pairingMsg, ForegroundColor = Color.Green });
-            //});
+            XamarinDevice.BeginInvokeOnMainThread(() =>
+            {
+                FormattedText.Spans.Add(new Span
+                {
+                    Text = pairingMsg,
+                    ForegroundColor = Color.Green
+                });
+            });
 
         }
 

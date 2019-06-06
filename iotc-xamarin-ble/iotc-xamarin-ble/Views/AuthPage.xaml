@@ -4,8 +4,8 @@
              xmlns:graphics="clr-namespace:iotc_xamarin_ble.Graphics"
              x:Class="iotc_xamarin_ble.Views.AuthPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="Red" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Orientation="Vertical">
-            <graphics:MvvmWebView  HeightRequest="1000" WidthRequest="1000" Source="{Binding Url}" NavigatedCommand="{Binding Navigated}" IsVisible="{Binding Authenticating}" />
+        <StackLayout VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Orientation="Vertical">
+            <graphics:MvvmWebView  HeightRequest="1000" WidthRequest="1000" Source="{Binding Url}" NavigatedCommand="{Binding Navigated}" NavigatingCommand="{Binding Navigating}" IsVisible="{Binding Authenticating}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

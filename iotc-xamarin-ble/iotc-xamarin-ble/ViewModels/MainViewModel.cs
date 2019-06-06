@@ -15,9 +15,11 @@ namespace iotc_xamarin_ble.ViewModels
     {
 
 
-        public MainViewModel(INavigationService navigationService) : base(navigationService)
+        public MainViewModel(INavigationService navigationService, string accessToken) : base(navigationService)
         {
             Title = "Azure IoT Central";
+            AccessToken = accessToken;
+            IsBusy = true;
             //LoginCommand = new Command(Fetch);
             OnApplicationTapped = new Command(() =>
               {
@@ -32,6 +34,7 @@ namespace iotc_xamarin_ble.ViewModels
 
         }
 
+        public string AccessToken { get; set; }
         public FlowObservableCollection<Application> Applications { get; set; } = new FlowObservableCollection<Application>();
 
         public ICommand LoginCommand { get; private set; }
@@ -44,22 +47,16 @@ namespace iotc_xamarin_ble.ViewModels
         {
             if (IoTCentral.Current.ServiceClient == null)
             {
-                var authViewModel = new AuthViewModel(Navigation);
-                authViewModel.TokenAcquired += OnTokenAvailable;
-                await Navigation.NavigateTo(authViewModel);
+                IoTCentral.Current.InitServiceClient(AccessToken);
             }
-            else { await Fetch(); }
+            await Fetch();
         }
 
         private async Task Fetch()
         {
             Applications.AddRange(await IoTCentral.Current.ServiceClient.ListApps());
+            IsBusy = false;
             OnPropertyChanged("Applications");
-        }
-        private void OnTokenAvailable(object source, string accessToken)
-        {
-            IoTCentral.Current.InitServiceClient(accessToken);
-            Fetch();
         }
     }
 }

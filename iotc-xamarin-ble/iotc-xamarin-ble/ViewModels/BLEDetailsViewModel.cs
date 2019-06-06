@@ -72,8 +72,7 @@ namespace iotc_xamarin_ble.ViewModels
             }
             MappingStorage.Current.Save();
             await IoTCentral.Current.StartService(Device.Id.ToString(), MappingStorage.Current.GetAll());
-            scanner.Close();
-            await Navigation.NavigateBack(); // TODO: change to tabs
+            await Navigation.NavigateTo(new DeviceViewModel(Navigation));
         }
 
     }

@@ -15,7 +15,6 @@ namespace iotc_xamarin_ble.Services
     public class BLEService
     {
         private IBluetoothLE ble;
-        private static BLEService _service;
         public BLEService()
         {
             ble = CrossBluetoothLE.Current;
@@ -70,7 +69,8 @@ namespace iotc_xamarin_ble.Services
         {
             try
             {
-                return await Adapter.ConnectToKnownDeviceAsync(new Guid(deviceId));
+                var dev = await Adapter.ConnectToKnownDeviceAsync(new Guid(deviceId));
+                return dev;
             }
             catch (DeviceConnectionException e)
             {

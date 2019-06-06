@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -17,6 +18,7 @@ using iotc_xamarin_ble.Extensions;
 using iotc_xamarin_ble.Messages;
 using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.Services.BackgroundWorker;
+using Newtonsoft.Json;
 using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.EventArgs;
 using Xamarin.Forms;
@@ -31,6 +33,7 @@ namespace iotc_xamarin_ble.Droid.Services
         public IDevice BLEDevice { get; set; }
         public BLEService BLEService { get; set; }
 
+
         public Dictionary<string, string> TelemetryMap { get; set; }
 
         public override IBinder OnBind(Intent intent)
@@ -42,8 +45,10 @@ namespace iotc_xamarin_ble.Droid.Services
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
 
-            BLEService = new BLEService();
-            BLEService.OnValueAvailable = OnDataAvailable;
+            BLEService = new BLEService
+            {
+                OnValueAvailable = OnDataAvailable
+            };
 
             Notification.Builder builder;
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
@@ -62,13 +67,9 @@ namespace iotc_xamarin_ble.Droid.Services
                 .SetOngoing(true)
                 .Build();
 
+            Connect(intent).Start();
             StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
 
-            var scopeId = intent.GetStringExtra(Constants.SCOPE_ID);
-            var symkey = intent.GetStringExtra(Constants.SYM_KEY);
-            var deviceId = intent.GetStringExtra(Constants.DEVICE_ID);
-            Connect(deviceId, scopeId, symkey, intent.GetStringExtra(Constants.BLE_DEVICE));
-            SetupNotifications(intent.GetSerializableExtra(Constants.BLE_MAPPING) as Dictionary<string, string>);
             return StartCommandResult.Sticky;
         }
 
@@ -96,27 +97,20 @@ namespace iotc_xamarin_ble.Droid.Services
             //    FormattedText.Spans.Add(new Span { Text = $"Sending {measureField}={value}\n", ForegroundColor = Color.Green });
             //});
             //TODO only if device connected
-            await IoTCentral.Current.DeviceClient.SendTelemetry($"{{\"{measureField}\":{value}}}", null);
+            await DeviceClient.SendTelemetry($"{{\"{measureField}\":{value}}}", null);
         }
         #endregion
 
 
         #region Bluetooth
 
-        private void OnMappingExecuted(ResultMessage<Dictionary<string, string>> message)
-        {
 
-        }
-
-        public void Connect(string deviceId, string scopeId, string symkey, string bluetoothDeviceId)
+        public async Task ConnectIoTC(string deviceId, string scopeId, string symKey)
         {
-            Task.Run(async () =>
-            {
-                BLEDevice = await BLEService.Connect(bluetoothDeviceId);
-                DeviceClient = new IoTCClient(deviceId, scopeId, IoTCConnect.SYMM_KEY, symkey);
-                await DeviceClient.Connect();
-                MessagingCenter.Send(new ResultMessage<IoTCConnectionState>(IoTCConnectionState.CONNECTION_OK), Constants.IOTC_DEVICE_CLIENT_CONNECTED);
-            });
+            DeviceClient = new IoTCClient(deviceId, scopeId, IoTCConnect.SYMM_KEY, symKey);
+            await DeviceClient.Connect();
+            MessagingCenter.Send(new ResultMessage<IoTCConnectionState>(IoTCConnectionState.CONNECTION_OK), Constants.IOTC_DEVICE_CLIENT_CONNECTED);
+
         }
 
         public void Disconnect()
@@ -127,19 +121,20 @@ namespace iotc_xamarin_ble.Droid.Services
             });
         }
 
-        public void SetupNotifications(Dictionary<string, string> message)
+        public async Task SetupNotifications(string bleDeviceId, Dictionary<string, string> telemetryMap)
         {
-            Task.Run(async () =>
+            BLEDevice = await BLEService.Connect(bleDeviceId);
+            TelemetryMap = telemetryMap;
+            foreach (var gatt in telemetryMap)
             {
-                TelemetryMap = message;
-                foreach (var gatt in TelemetryMap)
+                var telemetryField = gatt.Value;
+                var pair = new GattPair(gatt.Key);
+                var service = await BLEDevice.GetServiceAsync(pair.ServiceId);
+                if (service != null) // service could be null if mapping has old values related to other devices
                 {
-                    var telemetryField = gatt.Value;
-                    var pair = new GattPair(gatt.Key);
-                    var service = await BLEDevice.GetServiceAsync(pair.ServiceId);
-                    if (service != null) // service could be null if mapping has old values related to other devices
+                    var characteristic = await service.GetCharacteristicAsync(pair.CharacteristicId);
+                    if (characteristic != null) // like above but for characteristic
                     {
-                        var characteristic = await service.GetCharacteristicAsync(pair.CharacteristicId);
                         if (telemetryField != null)
                         {
                             await BLEService.EnableNotification(characteristic);
@@ -150,11 +145,23 @@ namespace iotc_xamarin_ble.Droid.Services
                         }
                     }
                 }
-                MessagingCenter.Send(new ResultMessage<IDevice>(BLEDevice), Constants.BLE_DEVICE_READY);
-
-            });
+            }
+            MessagingCenter.Send(new ResultMessage<IDevice>(BLEDevice), Constants.BLE_DEVICE_READY);
         }
 
+        private Thread Connect(Intent intent)
+        {
+            return new Thread(async () =>
+           {
+               var scopeId = intent.GetStringExtra(Constants.SCOPE_ID);
+               var symKey = intent.GetStringExtra(Constants.SYM_KEY);
+               var deviceId = intent.GetStringExtra(Constants.DEVICE_ID);
+               var bleDeviceId = intent.GetStringExtra(Constants.BLE_DEVICE);
+               var telemetryMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(intent.GetStringExtra(Constants.BLE_MAPPING));
+               await ConnectIoTC(deviceId, scopeId, symKey);
+               await SetupNotifications(bleDeviceId, telemetryMap);
+           });
+        }
 
         #endregion
     }

@@ -7,7 +7,6 @@
 
     <ContentPage.Content>
         <AbsoluteLayout>
-            <controls1:LoadingDialog/>
             <flv:FlowListView IsVisible="{Binding Authenticated}" SeparatorVisibility="None" HasUnevenRows="false"
 	FlowItemTappedCommand="{Binding OnApplicationTapped}" FlowItemsSource="{Binding Applications}" FlowLastTappedItem="{Binding LastTappedItem}" 
                           VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="120" RowHeight="120"  AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9">
@@ -20,7 +19,9 @@
                 </flv:FlowListView.FlowColumnTemplate>
 
             </flv:FlowListView>
+            <controls1:LoadingDialog/>
         </AbsoluteLayout>
+
     </ContentPage.Content>
     <!--</StackLayout>
         </ScrollView>

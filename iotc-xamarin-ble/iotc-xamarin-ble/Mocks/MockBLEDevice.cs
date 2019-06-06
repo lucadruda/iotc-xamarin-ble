@@ -19,11 +19,18 @@ namespace iotc_xamarin_ble.Mocks
         {
             NativeDevice = new MockBLENativeDevice(Name, Utils.GetRandomMac(":"));
             Id = new Guid();
+            Init();
         }
 
         public MockBLEDevice(Guid guid) : this()
         {
             Id = guid;
+            Init();
+        }
+
+        private void Init()
+        {
+            Services = new List<IService> { new MockBLEService(this, serviceIds[0]), new MockBLEService(this, serviceIds[1]), new MockBLEService(this, serviceIds[2]), new MockBLEService(this, serviceIds[3]) };
         }
         public Guid Id { get; set; }
 
@@ -51,7 +58,6 @@ namespace iotc_xamarin_ble.Mocks
 
         public Task<IList<IService>> GetServicesAsync(CancellationToken cancellationToken = default)
         {
-            Services = new List<IService> { new MockBLEService(this,serviceIds[0]), new MockBLEService(this), new MockBLEService(this) };
             return Task.FromResult(Services);
         }
 

@@ -113,15 +113,11 @@ namespace iotc_xamarin_ble.ViewModels
             return base.AfterDismissed();
         }
 
-        public override async Task OnNavigatingBack()
+        public override Task OnNavigatingBack()
         {
-            if (close)
-                await Navigation.NavigateBack();
-            else
-            {
-                LastTappedItem = null;
-                OnPropertyChanged("LastTappedItem");
-            }
+            LastTappedItem = null;
+            OnPropertyChanged("LastTappedItem");
+            return base.OnNavigatingBack();
         }
 
         public override Task BeforeFirstShown()

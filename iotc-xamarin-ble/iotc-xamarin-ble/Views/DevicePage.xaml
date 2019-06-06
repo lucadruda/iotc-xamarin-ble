@@ -14,10 +14,9 @@
             <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.6,0.9,0.9" IsEnabled="{Binding IsBusy,Converter={StaticResource not}}">
                 <Label x:Name="deviceName" Text="{Binding IoTCDevice.Name, StringFormat='Device: {0}'}"/>
                 <Label x:Name="deviceConnectionStatus" Text="{Binding ConnectionStatus, StringFormat='Status: {0}'}"/>
-                <ScrollView Orientation="Vertical" HorizontalOptions="Fill" VerticalOptions="FillAndExpand" IsVisible="{Binding Paired}">
+                <ScrollView Orientation="Vertical" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
                     <Label x:Name="traceBox" FormattedText="{Binding FormattedText}" BackgroundColor="White" FontSize="Small" TextColor="Black"/>
                 </ScrollView>
-                <Button Text="Pair" IsVisible="{Binding Paired,Converter={StaticResource not}}" Command="{Binding Pair}" HorizontalOptions="End" VerticalOptions="End"/>
             </StackLayout>
             <controls1:LoadingDialog/>
         </AbsoluteLayout>
