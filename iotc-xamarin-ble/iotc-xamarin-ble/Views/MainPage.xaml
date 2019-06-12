@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                          xmlns:controls1="clr-namespace:iotc_xamarin_ble.Graphics"
+                          xmlns:controls="clr-namespace:iotc_xamarin_ble.Graphics"
              xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:pulltorefresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
              x:Class="iotc_xamarin_ble.Views.MainPage" Title="{Binding Title}">
 
     <ContentPage.Content>
         <AbsoluteLayout>
+            <!--<pulltorefresh:PullToRefreshLayout AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" 
+                                               IsPullToRefreshEnabled="{Binding Authenticated}" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding ReloadApplications}">-->
             <flv:FlowListView IsVisible="{Binding Authenticated}" SeparatorVisibility="None" HasUnevenRows="false"
 	FlowItemTappedCommand="{Binding OnApplicationTapped}" FlowItemsSource="{Binding Applications}" FlowLastTappedItem="{Binding LastTappedItem}" 
-                          VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="120" RowHeight="120"  AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9">
+                          VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="120" RowHeight="120"  AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" >
                 <flv:FlowListView.FlowColumnTemplate>
                     <DataTemplate>
                         <Frame OutlineColor="Black" CornerRadius="4" Margin="20">
@@ -19,7 +22,9 @@
                 </flv:FlowListView.FlowColumnTemplate>
 
             </flv:FlowListView>
-            <controls1:LoadingDialog/>
+            <!--</pulltorefresh:PullToRefreshLayout>-->
+            <controls:FloatingButton/>
+            <controls:LoadingDialog/>
         </AbsoluteLayout>
 
     </ContentPage.Content>

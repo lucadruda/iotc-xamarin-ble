@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace iotc_xamarin_ble.Graphics
+namespace iotc_xamarin_ble.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoadingDialog : AbsoluteLayout
+    public partial class CreateAppPage : ContentPage
     {
-        public LoadingDialog()
+        public CreateAppPage()
         {
             InitializeComponent();
         }

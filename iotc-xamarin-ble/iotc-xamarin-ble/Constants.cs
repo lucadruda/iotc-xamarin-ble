@@ -22,6 +22,8 @@ namespace iotc_ble_xamarin
 
         public const string IOTC_TOKEN_AUDIENCE_v1 = "https://apps.azureiotcentral.com/";
         public const string RM_TOKEN_AUDIENCE_v1 = "https://management.azure.com";
+
+        public static string[] RM_REGIONS = { "EastUS", "WestUS", "WestEurope", "NorthEurope" };
         public static string[] IOTC_TOKEN_AUDIENCE_v2 = { "https://apps.azureiotcentral.com/user_impersonation" };
         public static string[] RM_TOKEN_AUDIENCE_v2 = { "https://management.azure.com/user_impersonation" };
         public static string[] GRAPH_SCOPE = { "User.Read" };
@@ -46,7 +48,7 @@ namespace iotc_ble_xamarin
         public const string IOTC_DEVICE_CLIENT_CONNECTED = "IOTC_DEVICE_CLIENT_CONNECTED";
         public const string IOTC_DEVICE_CREDENTIALS = "IOTC_DEVICE_CREDENTIALS";
 
-        
+
 
         public const string BLE_MAPPING = "BLE_MAPPING";
         public const string BLE_DEVICE = "BLE_DEVICE";

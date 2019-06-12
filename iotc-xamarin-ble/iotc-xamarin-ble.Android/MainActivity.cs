@@ -17,6 +17,7 @@ using iotc_xamarin_ble.Droid.Services;
 using iotc_ble_xamarin;
 using iotc_xamarin_ble.Services.BackgroundWorker;
 using Newtonsoft.Json;
+using Refractored.XamForms.PullToRefresh.Droid;
 
 namespace iotc_xamarin_ble.Droid
 {
@@ -27,6 +28,8 @@ namespace iotc_xamarin_ble.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+            PullToRefreshLayoutRenderer.Init();
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             base.OnCreate(savedInstanceState);
             MessagingCenter.Subscribe<RequestMessage<ServiceParameter>>(this, Constants.SERVICE_START, message =>
             {

@@ -51,7 +51,6 @@ namespace iotc_xamarin_ble.ViewModels
         {
             try
             {
-                OnPropertyChanged("Title");
                 IoTCentral.Current.DeviceConnectionChanged += OnDeviceConnectionChanged;
                 await base.OnAppearing();
             }

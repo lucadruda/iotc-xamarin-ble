@@ -23,6 +23,7 @@ namespace iotc_xamarin_ble.Services
         private DeviceTemplate model;
         private Device device;
         private DataClient serviceClient;
+        private ARMClient armClient;
 
 
 
@@ -106,6 +107,20 @@ namespace iotc_xamarin_ble.Services
             serviceClient = new DataClient(accessToken);
         }
 
+        public ARMClient ArmClient
+        {
+            get
+            {
+                // if (serviceClient == null)
+                // throw error;
+                return armClient;
+            }
+        }
+
+        public void InitArmClient(string accessToken)
+        {
+            armClient = new ARMClient(accessToken);
+        }
 
         public IIoTCClient DeviceClient
         {

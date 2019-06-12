@@ -8,17 +8,22 @@ namespace iotc_csharp_service.Templates
     {
 
 
-        public override string id()
+        public override string Id
         {
-            return "iotc-demo@1.0.0";
+            get
+            {
+                return "iotc-demo@1.0.0";
+            }
         }
 
 
-        public override Dictionary<string, string> models()
+        public override Dictionary<string, string> Models
         {
-            return new Dictionary<string, string>  {
-            {"c318d580-39fc-4aca-b995-843719821049", "Refrigerated Vending Machine" }
-        };
+            get
+            {
+                return new Dictionary<string, string>  {
+            {"c318d580-39fc-4aca-b995-843719821049", "Refrigerated Vending Machine" }};
+            }
         }
 
 

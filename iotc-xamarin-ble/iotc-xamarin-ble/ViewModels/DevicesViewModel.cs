@@ -14,7 +14,7 @@ namespace iotc_xamarin_ble.ViewModels
         public DevicesViewModel(INavigationService navigation) : base(navigation)
         {
             Title = IoTCentral.Current.Model.Name;
-
+            AddingAvailable = true;
         }
         public override async Task<IEnumerable<Device>> FetchData()
         {
@@ -33,5 +33,27 @@ namespace iotc_xamarin_ble.ViewModels
 
             }
         }
+
+        public override void AddItem()
+        {//open popup here
+
+            var input = new InputDialogViewModel { IsVisible = true, InputLabel = "Choose device name ..." };
+            input.OnOk += async (object source, EventArgs e) =>
+            {
+                var device = await IoTCentral.Current.ServiceClient.CreateDevice(IoTCentral.Current.Application.Id, input.InputText, IoTCentral.Current.Model.Id);
+                (source as InputDialogViewModel).IsVisible = false;
+                base.AddItem();
+                IoTCentral.Current.Device = device;
+                await Navigation.NavigateTo(new BleScanViewModel(Navigation));
+            };
+            input.OnCancel += async (object source, EventArgs e) =>
+            {
+                (source as InputDialogViewModel).IsVisible = false;
+            };
+            InputModel = input;
+
+        }
+
+
     }
 }

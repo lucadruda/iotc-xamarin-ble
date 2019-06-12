@@ -27,6 +27,17 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
 
         }
 
+        public async Task NavigateBackModal()
+        {
+            var dismissing = Navigator.NavigationStack.Last().BindingContext as BaseViewModel;
+
+            await Navigator.PopModalAsync();
+
+            var current = Navigator.NavigationStack.Last().BindingContext as BaseViewModel;
+            await current.OnNavigatingBack();
+
+        }
+
         public async Task NavigateBackToRoot()
         {
             var toDismiss = Navigator.NavigationStack.Skip(1).Select(vw => vw.BindingContext).OfType<BaseViewModel>().ToArray();
@@ -46,6 +57,17 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
             await viewModel.BeforeFirstShown();
 
             await Navigator.PushAsync(page);
+
+            await viewModel.OnAppearing();
+        }
+
+        public async Task NavigateToModal(BaseViewModel viewModel)
+        {
+            Page page = viewLocator.CreateAndBindPageFor(viewModel);
+
+            await viewModel.BeforeFirstShown();
+
+            await Navigator.PushModalAsync(page);
 
             await viewModel.OnAppearing();
         }

@@ -8,9 +8,9 @@ namespace iotc_csharp_service.Templates
     public abstract class IoTCTemplate
     {
 
-        public abstract string id();
+        public abstract string Id { get; }
 
-        public abstract Dictionary<string, string> models();
+        public abstract Dictionary<string, string> Models { get; }
 
         public abstract List<Measure> GetMeasures(string modelName);
 

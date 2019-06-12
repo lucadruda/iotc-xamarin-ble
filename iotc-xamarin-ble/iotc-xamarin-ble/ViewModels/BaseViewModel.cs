@@ -13,11 +13,23 @@ namespace iotc_xamarin_ble.ViewModels
 
     {
         private bool isBusy = false;
+        private string title;
         private string loadingText = "Loading";
+        private InputDialogViewModel inputModel;
 
         public INavigationService Navigation { get; private set; }
 
         public virtual Type ModelType { get; set; }
+
+        public InputDialogViewModel InputModel
+        {
+            get => inputModel;
+            set
+            {
+                inputModel = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsBusy
         {
@@ -41,6 +53,8 @@ namespace iotc_xamarin_ble.ViewModels
         public BaseViewModel(INavigationService navigation)
         {
             Navigation = navigation;
+            InputModel = new InputDialogViewModel { IsVisible = false, InputLabel = "pippo" };
+            OnPropertyChanged("InputModel");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -73,6 +87,14 @@ namespace iotc_xamarin_ble.ViewModels
 
 
 
-        public string Title { get; set; }
+        public string Title
+        {
+            get { return title; }
+            set
+            {
+                title = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

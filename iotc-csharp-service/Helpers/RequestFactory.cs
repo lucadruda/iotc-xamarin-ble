@@ -101,7 +101,7 @@ namespace iotc_csharp_service.Helpers
             HttpStatusCode code = msg.StatusCode;
             if (code != HttpStatusCode.OK && code != HttpStatusCode.Created)
             {
-                string content = msg.Content.ReadAsStringAsync().Result;
+                string content = await msg.Content.ReadAsStringAsync();
                 throw new DataException(msg.ReasonPhrase + ":" + content, (int)code);
 
             }

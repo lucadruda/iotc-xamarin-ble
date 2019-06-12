@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<StackLayout xmlns="http://xamarin.com/schemas/2014/forms" 
+<AbsoluteLayout xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="iotc_xamarin_ble.Graphics.LoadingDialog" IsVisible="{Binding IsBusy}"
+             x:Class="iotc_xamarin_ble.Graphics.LoadingDialog" IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="1,1,1,1" BackgroundColor="#AA808080">
+    <StackLayout 
              AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.5,.7,.2" Orientation="Horizontal"
-             Padding="20" BackgroundColor="#666666">
-    <ActivityIndicator IsRunning="{Binding IsBusy}" Color="White" VerticalOptions="Center" Margin="0,0,10,0"/>
-    <Label Text="{Binding LoadingText}" VerticalOptions="Center" TextColor="White"/>
-</StackLayout>
+             Padding="20" BackgroundColor="White" Opacity="1">
+        <ActivityIndicator IsRunning="{Binding IsBusy}" Color="Accent" VerticalOptions="Center" Margin="0,0,10,0"/>
+        <Label Text="{Binding LoadingText}" VerticalOptions="Center" TextColor="Black"/>
+    </StackLayout>
+</AbsoluteLayout>

@@ -27,6 +27,17 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
         /// </summary>
         Task NavigateBack();
 
+
+        /// <summary>
+        /// Navigate to the given modal page on top of the current navigation stack
+        /// </summary>
+        Task NavigateToModal(BaseViewModel viewModel);
+
+        /// <summary>
+        /// Navigate to the previous modal item in the navigation stack
+        /// </summary>
+        Task NavigateBackModal();
+
         /// <summary>
         /// Navigate back to the element at the root of the navigation stack
         /// </summary>
