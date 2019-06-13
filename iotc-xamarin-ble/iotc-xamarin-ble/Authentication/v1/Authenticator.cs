@@ -1,8 +1,5 @@
 ﻿using iotc_ble_xamarin;
-using iotc_xamarin_ble.Authentication.v1;
 using iotc_xamarin_ble.Services.Http;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

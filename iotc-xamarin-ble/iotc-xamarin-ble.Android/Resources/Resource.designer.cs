@@ -27,6 +27,9 @@ namespace iotc_xamarin_ble.Droid
 		public static void UpdateIdValues()
 		{
 			global::Microsoft.Azure.Amqp.Resource.String.ApplicationName = global::iotc_xamarin_ble.Droid.Resource.String.ApplicationName;
+			global::Microsoft.IdentityModel.Clients.ActiveDirectory.Resource.Id.agentWebView = global::iotc_xamarin_ble.Droid.Resource.Id.agentWebView;
+			global::Microsoft.IdentityModel.Clients.ActiveDirectory.Resource.Layout.WebAuthenticationBroker = global::iotc_xamarin_ble.Droid.Resource.Layout.WebAuthenticationBroker;
+			global::Microsoft.IdentityModel.Clients.ActiveDirectory.Resource.String.ApplicationName = global::iotc_xamarin_ble.Droid.Resource.String.ApplicationName;
 			global::Xamarin.Essentials.Resource.Attribute.alpha = global::iotc_xamarin_ble.Droid.Resource.Attribute.alpha;
 			global::Xamarin.Essentials.Resource.Attribute.coordinatorLayoutStyle = global::iotc_xamarin_ble.Droid.Resource.Attribute.coordinatorLayoutStyle;
 			global::Xamarin.Essentials.Resource.Attribute.font = global::iotc_xamarin_ble.Droid.Resource.Attribute.font;
@@ -6578,6 +6581,9 @@ namespace iotc_xamarin_ble.Droid
 			// aapt resource value: 0x7f0a002e
 			public const int add = 2131361838;
 			
+			// aapt resource value: 0x7f0a00fd
+			public const int agentWebView = 2131362045;
+			
 			// aapt resource value: 0x7f0a007f
 			public const int alertTitle = 2131361919;
 			
@@ -6809,8 +6815,8 @@ namespace iotc_xamarin_ble.Droid
 			// aapt resource value: 0x7f0a00f5
 			public const int main_toolbar = 2131362037;
 			
-			// aapt resource value: 0x7f0a00fe
-			public const int masked = 2131362046;
+			// aapt resource value: 0x7f0a00ff
+			public const int masked = 2131362047;
 			
 			// aapt resource value: 0x7f0a00e7
 			public const int media_actions = 2131362023;
@@ -7250,8 +7256,8 @@ namespace iotc_xamarin_ble.Droid
 			// aapt resource value: 0x7f0a001b
 			public const int view_offset_helper = 2131361819;
 			
-			// aapt resource value: 0x7f0a00fd
-			public const int visible = 2131362045;
+			// aapt resource value: 0x7f0a00fe
+			public const int visible = 2131362046;
 			
 			// aapt resource value: 0x7f0a00d4
 			public const int volume_item_container = 2131362004;
@@ -7630,6 +7636,9 @@ namespace iotc_xamarin_ble.Droid
 			
 			// aapt resource value: 0x7f040054
 			public const int Toolbar = 2130968660;
+			
+			// aapt resource value: 0x7f040055
+			public const int WebAuthenticationBroker = 2130968661;
 			
 			static Layout()
 			{
