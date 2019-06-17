@@ -1,4 +1,5 @@
-﻿using Plugin.BLE.Abstractions.Contracts;
+﻿using iotc_xamarin_ble.Bluetooth;
+using Plugin.BLE.Abstractions.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,14 +15,21 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
         //store all characteristics here so we can play with the outer collection
         public ObservableCollection<BluetoothCharacteristicViewModel> Characteristics { get; private set; }
 
-        public BluetoothServiceViewModel(IService service, bool expanded = false)
+        public BluetoothServiceViewModel(BluetoothServiceModel service, bool expanded = false)
         {
             Service = service;
             this.expanded = expanded;
             Characteristics = new ObservableCollection<BluetoothCharacteristicViewModel>();
+            foreach (var item in Service.Characteristics)
+            {
+                var c = new BluetoothCharacteristicViewModel(item);
+                Characteristics.Add(c);
+                if (expanded)
+                    Add(c);
+            }
         }
 
-        public IService Service { get; private set; }
+        public BluetoothServiceModel Service { get; private set; }
 
         public string Id
         {
@@ -55,17 +63,7 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
             }
         }
 
-        public async Task Init()
-        {
-            var chars = await Service.GetCharacteristicsAsync();
-            foreach (var item in chars)
-            {
-                var c = new BluetoothCharacteristicViewModel(item);
-                Characteristics.Add(c);
-                if (expanded)
-                    Add(c);
-            }
-        }
+
 
         private void Populate()
         {

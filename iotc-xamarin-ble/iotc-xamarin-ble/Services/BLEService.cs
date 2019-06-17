@@ -8,37 +8,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using XamarinDevice = Xamarin.Forms.Device;
 
 namespace iotc_xamarin_ble.Services
 {
-    class BLEService
+    public class BLEService
     {
         private IBluetoothLE ble;
-        private static BLEService _service;
-        private BLEService()
+        public BLEService()
         {
             ble = CrossBluetoothLE.Current;
-            Adapter = CrossBluetoothLE.Current.Adapter;
+            Adapter = ((bool)App.Current.Properties["mocked"]) ? new Mocks.MockBLEAdapter() : CrossBluetoothLE.Current.Adapter;
         }
 
-        public static BLEService Current
-        {
-            get
-            {
-                if (_service == null)
-                {
-                    _service = new BLEService();
-                }
-                return _service;
-            }
-        }
         public BLEService(int timeout) : this()
         {
             Adapter.ScanTimeout = timeout;
         }
 
         public BluetoothState State { get { return ble.State; } }
-        public IDevice Device { get; set; }
 
         public bool IsScanning { get { return Adapter.IsScanning; } }
 
@@ -52,10 +40,10 @@ namespace iotc_xamarin_ble.Services
             {
                 //inform the user and return;
             }
-            EventHandler<DeviceEventArgs> run = delegate (object s, DeviceEventArgs e)
+            void run(object s, DeviceEventArgs e)
             {
                 onDeviceDiscovered(e.Device);
-            };
+            }
             //remember to cleanup event listeners
             Adapter.DeviceDiscovered += run;
             await Adapter.StartScanningForDevicesAsync();
@@ -68,13 +56,26 @@ namespace iotc_xamarin_ble.Services
                 await Adapter.StopScanningForDevicesAsync();
         }
 
-        public async Task ConnectDevice(IDevice device)
+        public async Task Connect(IDevice device)
         {
             try
             {
                 await Adapter.ConnectToDeviceAsync(device);
             }
             catch (DeviceConnectionException e) { }
+        }
+
+        public async Task<IDevice> Connect(string deviceId)
+        {
+            try
+            {
+                var dev = await Adapter.ConnectToKnownDeviceAsync(new Guid(deviceId));
+                return dev;
+            }
+            catch (DeviceConnectionException e)
+            {
+                return null;
+            }
         }
 
         public async Task DisconnectDevice(IDevice device)
@@ -88,6 +89,10 @@ namespace iotc_xamarin_ble.Services
 
         private async Task<PermissionStatus> CheckPermissions()
         {
+            if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
+            {
+                return PermissionStatus.Granted;
+            }
             var permissionStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
             if (permissionStatus == PermissionStatus.Granted)
             {
@@ -110,6 +115,7 @@ namespace iotc_xamarin_ble.Services
             characteristic.ValueUpdated -= OnValueAvailable;
             await characteristic.StopUpdatesAsync();
         }
+
 
 
     }

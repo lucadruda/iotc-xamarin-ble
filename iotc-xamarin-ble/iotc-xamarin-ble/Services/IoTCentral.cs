@@ -1,10 +1,18 @@
-﻿using iotc_csharp_device_client;
+﻿using iotc_ble_xamarin;
+using iotc_csharp_device_client;
 using iotc_csharp_device_client.enums;
+using Device = iotc_csharp_service.Types.Device;
 using iotc_csharp_service.Types;
+using iotc_xamarin_ble.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
+using iotc_csharp_service;
+using Plugin.BLE.Abstractions.Contracts;
+using iotc_xamarin_ble.Bluetooth;
+using iotc_xamarin_ble.Services.BackgroundWorker;
 
 namespace iotc_xamarin_ble.Services
 {
@@ -15,12 +23,24 @@ namespace iotc_xamarin_ble.Services
         private DeviceTemplate model;
         private Device device;
         private DataClient serviceClient;
-        private IIoTCClient deviceClient;
+
+
 
         private IoTCentral()
         {
+            MessagingCenter.Subscribe<ResultMessage<IDevice>>(this, Constants.BLE_DEVICE_READY, (dev) => { DeviceReady?.Invoke(this, dev.Data); });
+            MessagingCenter.Subscribe<ResultMessage<IoTCConnectionState>>(this, Constants.IOTC_DEVICE_CLIENT_CONNECTED, result =>
+            {
+                DeviceConnectionChanged?.Invoke(this, result.Data);
+            });
+            MessagingCenter.Subscribe<ResultMessage<IList<BluetoothServiceModel>>>(this, Constants.BLE_SERVICES_FETCHED, (services) => { ServicesFetched?.Invoke(this, services.Data); });
+
 
         }
+
+        public event EventHandler<IDevice> DeviceReady;
+        public event EventHandler<IList<BluetoothServiceModel>> ServicesFetched;
+        public event EventHandler<IoTCConnectionState> DeviceConnectionChanged;
 
         public static IoTCentral Current
         {
@@ -49,6 +69,8 @@ namespace iotc_xamarin_ble.Services
         {
             get
             {
+                if (model == null && (bool)App.Current.Properties["mocked"])
+                    return new DeviceTemplate("c318d580-39fc-4aca-b995-843719821049", "fridge", "1.0.0");
                 // if (modelId == null)
                 // throw error;
                 return model;
@@ -60,6 +82,8 @@ namespace iotc_xamarin_ble.Services
         {
             get
             {
+                if (device == null && (bool)App.Current.Properties["mocked"])
+                    return new Device("testdevice", "testdevice", Model, "testdevice", false);
                 // if (device == null)
                 // throw error;
                 return device;
@@ -75,7 +99,11 @@ namespace iotc_xamarin_ble.Services
                 // throw error;
                 return serviceClient;
             }
-            set { serviceClient = value; }
+        }
+
+        public void InitServiceClient(string accessToken)
+        {
+            serviceClient = new DataClient(accessToken);
         }
 
 
@@ -84,16 +112,13 @@ namespace iotc_xamarin_ble.Services
             get; set;
         }
 
-        public async Task ConnectDevice()
+
+        public async Task StartService(string bleDeviceId, Dictionary<string, string> mapping)
         {
-            if (DeviceClient == null)
-            {
-                var creds = await ServiceClient.GetCredentials(Application.Id);
-                DeviceClient = new IoTCClient(Device.DeviceId, creds.IdScope, IoTCConnect.SYMM_KEY, creds.PrimaryKey);
-            }
-            await DeviceClient.Connect();
-
-
+            var creds = await ServiceClient.GetCredentials(Application.Id);
+            creds.DeviceId = Device.DeviceId;
+            MessagingCenter.Send(new RequestMessage<ServiceParameter>(new ServiceParameter(creds, bleDeviceId, mapping)), Constants.SERVICE_START);
         }
+
     }
 }

@@ -22,8 +22,6 @@ namespace iotc_xamarin_ble.ViewModels
         public abstract Task<IEnumerable<T>> FetchData();
         public ICommand ItemTappedCommand { get; private set; }
 
-        public bool IsBusy { get; set; }
-
         public override Type ModelType { get => typeof(ListViewModel<T>); }
         public T LastTappedItem
         {

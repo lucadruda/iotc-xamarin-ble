@@ -22,6 +22,9 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
 
             await Navigator.PopAsync();
 
+            var current = Navigator.NavigationStack.Last().BindingContext as BaseViewModel;
+            await current.OnNavigatingBack();
+
         }
 
         public async Task NavigateBackToRoot()
@@ -60,6 +63,8 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
             viewModel.BeforeFirstShown();
 
             App.Current.MainPage = currentPage;
+            viewModel.OnAppearing();
+
 
             foreach (BaseViewModel toDismiss in viewModelsToDismiss)
             {
@@ -85,6 +90,7 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
             // Listen for back button presses on the new navigation bar
             newNavigationPage.PopRequested += NavPagePopRequested;
             App.Current.MainPage = newNavigationPage;
+            viewModel.OnAppearing();
 
             foreach (BaseViewModel toDismiss in viewModelsToDismiss)
             {

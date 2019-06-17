@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls1="clr-namespace:iotc_xamarin_ble.Graphics"
@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <AbsoluteLayout VerticalOptions="Fill">
             <controls1:LoadingDialog/>
-            <ListView Margin="10" x:Name="rootLayout" x:FieldModifier="public" ItemsSource="{Binding Items}" SelectedItem="{Binding LastTappedItem}" AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="10,10,1,1" SeparatorColor="Gray" >
+            <ListView x:Name="rootLayout" x:FieldModifier="public" ItemsSource="{Binding Items}" SelectedItem="{Binding LastTappedItem, Mode=TwoWay}" AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,0.9,0.9" SeparatorColor="Gray" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Name}" TextColor="Black"/>

@@ -27,11 +27,10 @@ namespace iotc_xamarin_ble.ViewModels
             if (device != null)
             {
                 IoTCentral.Current.Device = device;
-                //Navigation.NavigateTo(new BleScanViewModel(Navigation));
-                //Navigation.NavigateTo(new BLEDetailsViewModel(Navigation,new CustomBLEDevice(BLEService.Current.Adapter)));
+                Navigation.NavigateTo(new BleScanViewModel(Navigation));
                 LastTappedItem = null;
                 OnPropertyChanged("LastTappedItem");
-                Navigation.NavigateTo(new DeviceViewModel(Navigation));
+
             }
         }
     }

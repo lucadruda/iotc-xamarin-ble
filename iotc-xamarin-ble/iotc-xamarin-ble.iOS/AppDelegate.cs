@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using iotc_ble_xamarin;
+using iotc_xamarin_ble.Messages;
 using Microsoft.Identity.Client;
 using UIKit;
+using Xamarin.Forms;
 
 namespace iotc_xamarin_ble.iOS
 {
@@ -24,6 +27,13 @@ namespace iotc_xamarin_ble.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            MessagingCenter.Subscribe<RequestMessage>(this, Constants.SERVICE_START, async message => {
+               // start service
+            });
+
+            MessagingCenter.Subscribe<RequestMessage>(this, Constants.SERVICE_STOP, async message => {
+                // stop service
+            });
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
