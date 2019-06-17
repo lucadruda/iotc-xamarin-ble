@@ -2,6 +2,7 @@
 using iotc_csharp_service.Templates;
 using iotc_csharp_service.Types;
 using iotc_xamarin_ble.Services;
+using iotc_xamarin_ble.Services.Dialog;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using System;
 using System.Collections.Generic;
@@ -49,10 +50,23 @@ namespace iotc_xamarin_ble.ViewModels
             CreateApplication = new Command(async () =>
               {
                   // manage exception
-                  IsBusy = true;
-                  await IoTCentral.Current.ArmClient.CreateApplication(new Application(ApplicationName, ApplicationName, ApplicationDomain, SelectedRegion, Template), SelectedSubscription.SubscriptionId, SelectedResourceGroup.Name);
-                  IsBusy = false;
-                  await Navigation.NavigateBack();
+                  try
+                  {
+                      IsBusy = true;
+                      var app = await IoTCentral.Current.ArmClient.CreateApplication(new Application(ApplicationName, ApplicationName, ApplicationDomain, SelectedRegion, Template), SelectedSubscription.SubscriptionId, SelectedResourceGroup.Name);
+                      await DialogService.Current.ShowMessage($"Application '{app.Name}' successfully created", "Application Creation", "Dismiss", async () =>
+                      {
+                          IoTCentral.Current.Application = app;
+                          IsBusy = false;
+                          await Navigation.NavigateBack();
+
+                      });
+
+                  }
+                  catch (Exception ex)
+                  {
+                      await DialogService.Current.ShowError(ex, "Application Creation", "Dismiss", null);
+                  }
               });
 
         }

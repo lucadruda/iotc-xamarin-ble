@@ -38,6 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Graphics\AlertDialog.xaml.cs">
+      <DependentUpon>AlertDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AuthPage.xaml.cs">
       <DependentUpon>AuthPage.xaml</DependentUpon>
     </Compile>

@@ -136,6 +136,11 @@ public class DataClient
         return await CreateDevice(applicationId, deviceName, modelId, version);
     }
 
+    public async Task<Device> CreateDevice(string applicationId, string deviceName, DeviceTemplate model)
+    {
+        return await CreateDevice(applicationId, deviceName, model.Id, model.Version);
+    }
+
     public async Task<DeviceCredentials> GetCredentials(string applicationId)
     {
         string dpsJson = await req.Get(Constants.IOTC_DATA_URL + "/applications/" + applicationId + "/dps");
