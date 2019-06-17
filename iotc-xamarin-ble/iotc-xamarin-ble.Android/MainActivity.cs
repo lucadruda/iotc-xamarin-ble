@@ -7,8 +7,6 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Content;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Plugin.Permissions;
 using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms;

@@ -5,7 +5,6 @@ using System.Linq;
 using Foundation;
 using iotc_ble_xamarin;
 using iotc_xamarin_ble.Messages;
-using Microsoft.Identity.Client;
 using Refractored.XamForms.PullToRefresh.iOS;
 using UIKit;
 using Xamarin.Forms;
@@ -42,10 +41,5 @@ namespace iotc_xamarin_ble.iOS
             return base.FinishedLaunching(app, options);
         }
 
-        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
-        {
-            AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(url);
-            return true;
-        }
     }
 }
