@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="Helpers\DeviceOrientationImplementation.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Services\IoTCentralService.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -218,6 +219,10 @@
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\iotc-csharp-service\iotc-csharp-service.csproj">
+      <Project>{950BD21B-4926-431C-AA55-DFDA715D29D3}</Project>
+      <Name>iotc-csharp-service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\iotc-xamarin-ble\iotc-xamarin-ble.csproj">
       <Project>{6e17aaba-68c5-45c0-bdd8-c3b082168a14}</Project>
       <Name>iotc-xamarin-ble</Name>

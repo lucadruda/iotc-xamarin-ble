@@ -4,7 +4,10 @@ using System.Linq;
 
 using Foundation;
 using iotc_ble_xamarin;
+using iotc_xamarin_ble.iOS.Services;
 using iotc_xamarin_ble.Messages;
+using iotc_xamarin_ble.Services.BackgroundWorker;
+using Newtonsoft.Json;
 using Refractored.XamForms.PullToRefresh.iOS;
 using UIKit;
 using Xamarin.Forms;
@@ -24,17 +27,22 @@ namespace iotc_xamarin_ble.iOS
         //
         // You have 17 seconds to return from this method, or iOS will terminate your application.
         //
+
+        private IoTCentralService service;
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
             PullToRefreshLayoutRenderer.Init();
             Rg.Plugins.Popup.Popup.Init();
-            MessagingCenter.Subscribe<RequestMessage>(this, Constants.SERVICE_START, async message => {
-               // start service
+            MessagingCenter.Subscribe<RequestMessage<ServiceParameter>>(this, Constants.SERVICE_START, message =>
+            {
+                service = new IoTCentralService(message.Data.DeviceCredentials.IdScope, message.Data.DeviceCredentials.PrimaryKey, message.Data.DeviceCredentials.DeviceId, message.Data.BLEDeviceId, message.Data.TelemetryMap);
+                service.Start();
             });
 
-            MessagingCenter.Subscribe<RequestMessage>(this, Constants.SERVICE_STOP, async message => {
-                // stop service
+            MessagingCenter.Subscribe<RequestMessage>(this, Constants.SERVICE_STOP, message =>
+            {
+                service.Stop();
             });
             LoadApplication(new App());
 

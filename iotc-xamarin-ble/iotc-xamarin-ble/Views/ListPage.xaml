@@ -15,9 +15,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <controls:LoadingDialog
+            <controls:LoadingDialog/>
             <controls:FloatingButton/>
-                <controls:InputDialog/>
+            <controls:InputDialog/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
