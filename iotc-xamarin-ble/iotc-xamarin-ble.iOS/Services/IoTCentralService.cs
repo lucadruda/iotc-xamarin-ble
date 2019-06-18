@@ -51,13 +51,13 @@ namespace iotc_xamarin_ble.iOS.Services
                     // TODO: implements
                 }
             }
-
-            UIApplication.SharedApplication.EndBackgroundTask(_taskId);
+            
         }
 
         public void Stop()
         {
             _cts.Cancel();
+            UIApplication.SharedApplication.EndBackgroundTask(_taskId);
         }
 
         void OnExpiration()
