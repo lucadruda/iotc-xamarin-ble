@@ -23,7 +23,7 @@
 
             </flv:FlowListView>
             <!--</pulltorefresh:PullToRefreshLayout>-->
-            <controls:FloatingButton/>
+            <!--<controls:FloatingButton/> TODO: Temporary disabled because of the known provisioning issue that app is not available if not entering from web ui  -->
             <controls:LoadingDialog/>
         </AbsoluteLayout>
 

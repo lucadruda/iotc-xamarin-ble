@@ -6,7 +6,6 @@
              x:Class="iotc_xamarin_ble.Views.ListPage" Title="{Binding Title}">
     <ContentPage.Content>
         <AbsoluteLayout VerticalOptions="Fill">
-            <controls:LoadingDialog/>
             <ListView x:Name="rootLayout" x:FieldModifier="public" ItemsSource="{Binding Items}" 
                       SelectedItem="{Binding LastTappedItem, Mode=TwoWay}" 
                       AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,0.9,0.9" SeparatorColor="Gray" >
@@ -16,8 +15,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <controls:LoadingDialog
             <controls:FloatingButton/>
-            <controls:InputDialog/>
+                <controls:InputDialog/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
