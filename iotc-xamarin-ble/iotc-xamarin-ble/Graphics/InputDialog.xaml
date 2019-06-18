@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<AbsoluteLayout xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:ValueConverters="clr-namespace:iotc_xamarin_ble.ValueConverters"
+                x:Class="iotc_xamarin_ble.Graphics.InputDialog" IsVisible="{Binding InputModel.IsVisible}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="1,1,1,1" BackgroundColor="#AA808080">
+    <AbsoluteLayout.Resources>
+        <ResourceDictionary>
+            <ValueConverters:NullValueConverter x:Key="isnotnull" />
+        </ResourceDictionary>
+    </AbsoluteLayout.Resources>
+    <StackLayout Orientation="Vertical"
+             Padding="20" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.5,.7,.2" BackgroundColor="White">
+        <Label Text="{Binding InputModel.InputLabel}" HorizontalOptions="Fill"/>
+        <Editor Text="{Binding InputModel.InputText}" HorizontalOptions="Fill"/>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="End">
+            <Label x:Name="OK" Text="OK"  HorizontalOptions="CenterAndExpand" IsEnabled="{Binding InputMode.InputText, Converter={StaticResource isnotnull}}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding InputModel.DialogOk}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="Cancel" Text="Cancel"  HorizontalOptions="CenterAndExpand">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding InputModel.DialogCancel}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </StackLayout>
+</AbsoluteLayout>

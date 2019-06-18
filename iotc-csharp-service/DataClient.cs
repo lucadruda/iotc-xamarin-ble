@@ -92,7 +92,7 @@ public class DataClient
         Device[] devices = await ListDevices(applicationId);
         foreach (Device device in devices)
         {
-            if (models.ContainsKey(device.DeviceTemplate.Id))
+            if (models.ContainsKey(latest ? device.DeviceTemplate.Id : $"{device.DeviceTemplate.Id}/{device.DeviceTemplate.Version}"))
             {
                 if (latest)
                 {
@@ -102,11 +102,12 @@ public class DataClient
                         models[device.DeviceTemplate.Id] = device.DeviceTemplate;
                         continue;
                     }
+
                 }
             }
             else
             {
-                models.Add(device.DeviceTemplate.Id, device.DeviceTemplate);
+                models.Add(latest ? device.DeviceTemplate.Id : $"{device.DeviceTemplate.Id}/{device.DeviceTemplate.Version}", device.DeviceTemplate);
             }
         }
         return models.Values.ToArray();
@@ -133,6 +134,11 @@ public class DataClient
         string version = "1.0.0";
         version = temps.Where(t => t.Id == modelId).Select(t => t.Version).FirstOrDefault() ?? version;
         return await CreateDevice(applicationId, deviceName, modelId, version);
+    }
+
+    public async Task<Device> CreateDevice(string applicationId, string deviceName, DeviceTemplate model)
+    {
+        return await CreateDevice(applicationId, deviceName, model.Id, model.Version);
     }
 
     public async Task<DeviceCredentials> GetCredentials(string applicationId)

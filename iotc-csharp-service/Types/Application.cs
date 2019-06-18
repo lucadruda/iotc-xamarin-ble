@@ -24,24 +24,6 @@ public class Application
     public IoTCTemplate IotcTemplate { get => iotcTemplate; set => iotcTemplate = value; }
     public User[] Users { get => users; set => users = value; }
 
-    //public Application(GenericResource appObj)
-    //{
-    //    LinkedDictionary<string, string> properties = (LinkedDictionary<string, string>)appObj.properties();
-    //    this.id = properties.get("applicationId");
-    //    this.name = appObj.name();
-    //    this.displayName = properties.get("displayName");
-    //    this.subdomain = properties.get("subdomain");
-    //    this.type = appObj.type();
-    //    this.location = appObj.regionName();
-    //    this.template = properties.get("template");
-    //    try
-    //    {
-    //        this.iotcTemplate = IoTCTemplate.getTemplate(template);
-    //    }
-    //    catch (InstantiationException | IllegalAccessException e) {
-    //        e.printStackTrace();
-    //    }
-    //    }
 
     public Application()
     {

@@ -1,8 +1,5 @@
 ﻿using iotc_ble_xamarin;
-using iotc_xamarin_ble.Authentication.v1;
 using iotc_xamarin_ble.Services.Http;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -44,12 +41,6 @@ namespace iotc_xamarin_ble.Authentication.v1
         private WebView browser;
         private RestClient client;
 
-        //public static Authenticator()
-        //{
-        //    client = new RestClient();
-        //    browser = new WebView();
-        //    browser.Source = $"{AUTHORITY}/oauth2/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={HttpUtility.UrlEncode(REDIRECT_URI)}&response_mode=query&resource={HttpUtility.UrlEncode(RESOURCE_URI)}&state=12345";
-        //}
 
         public async Task<string> AcquireTokenAsync(string resourceUri)
         {

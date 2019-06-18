@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="iotc_xamarin_ble.Graphics.FloatingButton" BackgroundColor="Accent" CornerRadius="25"
+       AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.85,0.85,50,50" Padding="1" IsVisible="{Binding AddingAvailable}">
+    <Label Text="+" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center"/>
+    <Frame.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding Add}"/>
+    </Frame.GestureRecognizers>
+</Frame>

@@ -8,20 +8,26 @@ namespace iotc_csharp_service.Templates
     {
 
 
-        public override string id()
+        public override string Id
         {
-            return "iotc-devkit-sample@1.0.0";
+            get
+            {
+                return "iotc-devkit-sample@1.0.0";
+            }
         }
 
 
-        public override Dictionary<string, string> models()
+        public override Dictionary<string, string> Models
         {
-            return new Dictionary<string, string>  {
+            get
+            {
+                return new Dictionary<string, string>  {
             {
                 "130772c7-97dd-4a76-bbdb-9209888293f6", "mxchip" },
                 { "4982cf0d-dfe2-461f-864e-948bc3e82124", "raspberrypi" },
                 { "8067a3f6-ca7e-4d76-99c9-12d06d14a1ce", "winIoTCore" }
         };
+            }
         }
 
 

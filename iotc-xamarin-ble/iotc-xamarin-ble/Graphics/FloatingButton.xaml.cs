@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace iotc_xamarin_ble.Graphics
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoadingDialog : AbsoluteLayout
+    public partial class FloatingButton : Frame
     {
-        public LoadingDialog()
+        public FloatingButton()
         {
             InitializeComponent();
         }

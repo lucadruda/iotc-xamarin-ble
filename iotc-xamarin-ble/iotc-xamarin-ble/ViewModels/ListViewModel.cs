@@ -12,15 +12,25 @@ namespace iotc_xamarin_ble.ViewModels
     public abstract class ListViewModel<T> : BaseViewModel
     {
         private T _lastTappedItem;
+        private bool addingAvailable;
+
         public ListViewModel(INavigationService navigation) : base(navigation)
         {
             ItemTappedCommand = new Command(OnItemTapped);
+            Add = new Command(AddItem);
+            AddingAvailable = false;
             Items = new ObservableCollection<T>();
         }
         public ObservableCollection<T> Items { get; set; }
 
         public abstract Task<IEnumerable<T>> FetchData();
         public ICommand ItemTappedCommand { get; private set; }
+        public ICommand Add { get; private set; }
+        public bool AddingAvailable
+        {
+            get => addingAvailable; protected set { addingAvailable = value; OnPropertyChanged(); }
+        }
+
 
         public override Type ModelType { get => typeof(ListViewModel<T>); }
         public T LastTappedItem
@@ -34,6 +44,10 @@ namespace iotc_xamarin_ble.ViewModels
         }
 
         public abstract void OnItemTapped();
+        public virtual void AddItem()
+        {
+            OnPropertyChanged("Items");
+        }
 
         public async Task LoadData()
         {

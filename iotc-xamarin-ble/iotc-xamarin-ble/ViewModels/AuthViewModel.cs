@@ -19,14 +19,24 @@ namespace iotc_xamarin_ble.ViewModels
     {
         private RestClient client;
         private TaskCompletionSource<AzureToken> interactiveLoginTask;
-        public AuthViewModel(INavigationService navigation) : base(navigation)
+        public AuthViewModel(INavigationService navigation, string resource) : base(navigation)
         {
             Navigated = new Command<WebNavigatedEventArgs>(OnNavigated);
+            Resource = resource;
             Navigating = new Command<WebNavigatingEventArgs>(OnNavigating);
+            Title = "Azure IoTCentral";
             client = new RestClient();
             Authenticating = false;
             interactiveLoginTask = new TaskCompletionSource<AzureToken>();
         }
+
+        public AuthViewModel(INavigationService navigation, string tenant, string resource) : this(navigation, resource)
+        {
+            Tenant = tenant;
+        }
+
+        public string Tenant { get; set; } = Constants.DEFAULT_TENANT;
+        public string Resource { get; set; }
 
         public string Url { get; set; }
         public bool Authenticating { get; set; }
@@ -69,7 +79,7 @@ namespace iotc_xamarin_ble.ViewModels
         {
             Authenticating = false;
             OnPropertyChanged("Authenticating");
-            var resp = await TryGetTokenWithAuthCode(Constants.IOTC_TOKEN_AUDIENCE_v1, authCode);
+            var resp = await TryGetTokenWithAuthCode(Resource, authCode);
             if (resp.Success)
             {
                 var token = new AzureToken(resp.ResponseBody);
@@ -80,9 +90,12 @@ namespace iotc_xamarin_ble.ViewModels
 
         public override async Task OnAppearing()
         {
-            var token = await AcquireTokenAsync(Constants.IOTC_TOKEN_AUDIENCE_v1);
+            IsBusy = true;
+            var token = await AcquireTokenAsync(Resource);
             SecureStorage.Current.Save();
-            Navigation.PresentAsNavigatableMainPage(new MainViewModel(Navigation, token));
+            IsBusy = false;
+            TokenAcquired?.Invoke(this, token);
+            Navigation.NavigateBackModal();
         }
 
         private async Task<string> AcquireTokenAsync(string resourceUri)
@@ -121,8 +134,9 @@ namespace iotc_xamarin_ble.ViewModels
         private async Task<AzureToken> AcquireTokenInteractive(string resourceUri)
         {
 
-            Url = $"https://{Constants.DEFAULT_AUTHORITY}/{Constants.DEFAULT_TENANT}/oauth2/authorize?client_id={Constants.CLIENT_ID}&response_type=code&redirect_uri={HttpUtility.UrlEncode(Constants.REDIRECT_URL)}&response_mode=query&resource={HttpUtility.UrlEncode(resourceUri)}&state=12345";
+            Url = $"https://{Constants.DEFAULT_AUTHORITY}/{Tenant}/oauth2/authorize?client_id={Constants.CLIENT_ID}&response_type=code&redirect_uri={HttpUtility.UrlEncode(Constants.REDIRECT_URL)}&response_mode=query&resource={HttpUtility.UrlEncode(resourceUri)}&state=12345";
             OnPropertyChanged("Url");
+            IsBusy = false;
             Authenticating = true;
             OnPropertyChanged("Authenticating");
             return await interactiveLoginTask.Task;
@@ -131,12 +145,12 @@ namespace iotc_xamarin_ble.ViewModels
 
         private async Task<RestResponse> TryGetTokenWithRefresh(string resourceUri, string refreshToken)
         {
-            return await client.Post($"https://{Constants.DEFAULT_AUTHORITY}/{Constants.DEFAULT_TENANT}/oauth2/token", null, $"client_id={Constants.CLIENT_ID}&refresh_token={refreshToken}&grant_type=refresh_token&resource={HttpUtility.UrlEncode(resourceUri)}", "application/x-www-form-urlencoded");
+            return await client.Post($"https://{Constants.DEFAULT_AUTHORITY}/{Tenant}/oauth2/token", null, $"client_id={Constants.CLIENT_ID}&refresh_token={refreshToken}&grant_type=refresh_token&resource={HttpUtility.UrlEncode(resourceUri)}", "application/x-www-form-urlencoded");
         }
 
         private async Task<RestResponse> TryGetTokenWithAuthCode(string resourceUri, string authcode)
         {
-            return await client.Post($"https://{Constants.DEFAULT_AUTHORITY}/{Constants.DEFAULT_TENANT}/oauth2/token", null, $"client_id={Constants.CLIENT_ID}&code={authcode}&grant_type=authorization_code&redirect_uri={HttpUtility.UrlEncode(Constants.REDIRECT_URL)}&resource={HttpUtility.UrlEncode(resourceUri)}", "application/x-www-form-urlencoded", new Dictionary<string, string> { { "Host", Constants.DEFAULT_AUTHORITY } });
+            return await client.Post($"https://{Constants.DEFAULT_AUTHORITY}/{Tenant}/oauth2/token", null, $"client_id={Constants.CLIENT_ID}&code={authcode}&grant_type=authorization_code&redirect_uri={HttpUtility.UrlEncode(Constants.REDIRECT_URL)}&resource={HttpUtility.UrlEncode(resourceUri)}", "application/x-www-form-urlencoded", new Dictionary<string, string> { { "Host", Constants.DEFAULT_AUTHORITY } });
         }
 
     }

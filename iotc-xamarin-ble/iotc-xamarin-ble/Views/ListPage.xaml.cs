@@ -15,6 +15,7 @@ namespace iotc_xamarin_ble.Views
         public ListPage()
         {
             InitializeComponent();
+            
         }
 
 

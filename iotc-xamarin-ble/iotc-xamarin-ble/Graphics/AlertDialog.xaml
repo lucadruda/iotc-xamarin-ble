@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<AbsoluteLayout xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:ValueConverters="clr-namespace:iotc_xamarin_ble.ValueConverters"
+                x:Class="iotc_xamarin_ble.Graphics.AlertDialog" IsVisible="{Binding Alert}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="1,1,1,1" BackgroundColor="#AA808080">
+    <StackLayout Orientation="Vertical"
+             Padding="20" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.5,.7,.2" BackgroundColor="White">
+        <Label Text="{Binding InputModel.InputLabel}" HorizontalOptions="Fill"/>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="End">
+            <Label x:Name="Dismiss" Text="Dismiss"  HorizontalOptions="End">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding InputModel.DialogOk}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </StackLayout>
+</AbsoluteLayout>

@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using iotc_ble_xamarin;
 using iotc_xamarin_ble.Messages;
-using Microsoft.Identity.Client;
+using Refractored.XamForms.PullToRefresh.iOS;
 using UIKit;
 using Xamarin.Forms;
 
@@ -27,6 +27,8 @@ namespace iotc_xamarin_ble.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            PullToRefreshLayoutRenderer.Init();
+            Rg.Plugins.Popup.Popup.Init();
             MessagingCenter.Subscribe<RequestMessage>(this, Constants.SERVICE_START, async message => {
                // start service
             });
@@ -39,10 +41,5 @@ namespace iotc_xamarin_ble.iOS
             return base.FinishedLaunching(app, options);
         }
 
-        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
-        {
-            AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(url);
-            return true;
-        }
     }
 }
