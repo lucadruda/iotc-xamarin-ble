@@ -8,6 +8,7 @@ using System.Windows.Input;
 using iotc_ble_xamarin;
 using iotc_xamarin_ble.Authentication.v1;
 using iotc_xamarin_ble.Services.Http;
+using iotc_xamarin_ble.ViewModels.Authentication;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,14 +16,16 @@ using Xamarin.Forms;
 
 namespace iotc_xamarin_ble.ViewModels
 {
-    public class AuthViewModel : BaseViewModel
+    public class AuthViewModel : BaseViewModel, IAuthViewModel
     {
         private RestClient client;
         private TaskCompletionSource<AzureToken> interactiveLoginTask;
-        public AuthViewModel(INavigationService navigation, string resource) : base(navigation)
+
+        public event EventHandler<string> TokenAcquired;
+
+        public AuthViewModel(INavigationService navigation) : base(navigation)
         {
             Navigated = new Command<WebNavigatedEventArgs>(OnNavigated);
-            Resource = resource;
             Navigating = new Command<WebNavigatingEventArgs>(OnNavigating);
             Title = "Azure IoTCentral";
             client = new RestClient();
@@ -30,12 +33,8 @@ namespace iotc_xamarin_ble.ViewModels
             interactiveLoginTask = new TaskCompletionSource<AzureToken>();
         }
 
-        public AuthViewModel(INavigationService navigation, string tenant, string resource) : this(navigation, resource)
-        {
-            Tenant = tenant;
-        }
 
-        public string Tenant { get; set; } = Constants.DEFAULT_TENANT;
+        public string Tenant { get; set; }
         public string Resource { get; set; }
 
         public string Url { get; set; }
@@ -43,7 +42,6 @@ namespace iotc_xamarin_ble.ViewModels
         public ICommand Navigated { get; set; }
         public ICommand Navigating { get; set; }
 
-        public event EventHandler<string> TokenAcquired;
 
         private async void OnNavigated(WebNavigatedEventArgs e)
         {
@@ -86,16 +84,6 @@ namespace iotc_xamarin_ble.ViewModels
                 SecureStorage.Current.Add(token.Resource, JsonConvert.SerializeObject(token));
                 interactiveLoginTask.SetResult(token);
             }
-        }
-
-        public override async Task OnAppearing()
-        {
-            IsBusy = true;
-            var token = await AcquireTokenAsync(Resource);
-            SecureStorage.Current.Save();
-            IsBusy = false;
-            TokenAcquired?.Invoke(this, token);
-            Navigation.NavigateBackModal();
         }
 
         private async Task<string> AcquireTokenAsync(string resourceUri)
@@ -153,5 +141,26 @@ namespace iotc_xamarin_ble.ViewModels
             return await client.Post($"https://{Constants.DEFAULT_AUTHORITY}/{Tenant}/oauth2/token", null, $"client_id={Constants.CLIENT_ID}&code={authcode}&grant_type=authorization_code&redirect_uri={HttpUtility.UrlEncode(Constants.REDIRECT_URL)}&resource={HttpUtility.UrlEncode(resourceUri)}", "application/x-www-form-urlencoded", new Dictionary<string, string> { { "Host", Constants.DEFAULT_AUTHORITY } });
         }
 
+        public async Task<string> GetTokenAsync()
+        {
+            return await GetTokenAsync(Constants.IOTC_TOKEN_AUDIENCE_v1, Constants.DEFAULT_TENANT);
+        }
+
+        public async Task<string> GetTokenAsync(string resource)
+        {
+            return await GetTokenAsync(resource, Constants.DEFAULT_TENANT);
+        }
+
+        public async Task<string> GetTokenAsync(string resource, string tenant)
+        {
+            IsBusy = true;
+            Resource = resource;
+            Tenant = tenant;
+            var token = await AcquireTokenAsync(resource);
+            SecureStorage.Current.Save();
+            IsBusy = false;
+            await Navigation.NavigateBackModal();
+            return token;
+        }
     }
 }

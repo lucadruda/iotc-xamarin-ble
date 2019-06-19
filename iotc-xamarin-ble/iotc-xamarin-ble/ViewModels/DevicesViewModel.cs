@@ -18,7 +18,7 @@ namespace iotc_xamarin_ble.ViewModels
         }
         public override async Task<IEnumerable<Device>> FetchData()
         {
-            var res = await IoTCentral.Current.ServiceClient.ListDevices(IoTCentral.Current.Application.Id, IoTCentral.Current.Model.Id);
+            var res = await (await IoTCentral.Current.GetServiceClient()).ListDevices(IoTCentral.Current.Application.Id, IoTCentral.Current.Model.Id);
             AddingAvailable = true;
             return res;
         }
@@ -46,7 +46,7 @@ namespace iotc_xamarin_ble.ViewModels
                 try
                 {
                     IsBusy = true;
-                    var device = await IoTCentral.Current.ServiceClient.CreateDevice(IoTCentral.Current.Application.Id, input.InputText, IoTCentral.Current.Model);
+                    var device = await (await IoTCentral.Current.GetServiceClient()).CreateDevice(IoTCentral.Current.Application.Id, input.InputText, IoTCentral.Current.Model);
                     IsBusy = false;
                     await DialogService.Current.ShowMessage($"Device '{device.Name}' successfully created", "Device Creation", "Dismiss", async () =>
                        {

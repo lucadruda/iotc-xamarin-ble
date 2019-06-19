@@ -1,4 +1,5 @@
-﻿using Plugin.BLE;
+﻿using iotc_xamarin_ble.Services.Container;
+using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.EventArgs;
 using Plugin.BLE.Abstractions.Exceptions;
@@ -18,7 +19,7 @@ namespace iotc_xamarin_ble.Services
         public BLEService()
         {
             ble = CrossBluetoothLE.Current;
-            Adapter = ((bool)App.Current.Properties["mocked"]) ? new Mocks.MockBLEAdapter() : CrossBluetoothLE.Current.Adapter;
+            Adapter = ContainerService.Current.Resolve<IAdapter>();
         }
 
         public BLEService(int timeout) : this()

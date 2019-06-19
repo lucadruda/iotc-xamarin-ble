@@ -53,26 +53,12 @@ namespace iotc_xamarin_ble.ViewModels
         public override async Task OnAppearing()
         {
             IsBusy = true;
-            if (IoTCentral.Current.ServiceClient == null)
-            {
-
-                var authModel = new AuthViewModel(Navigation, Constants.IOTC_TOKEN_AUDIENCE_v1);
-                authModel.TokenAcquired += async (s, t) =>
-                 {
-                     IoTCentral.Current.InitServiceClient(t);
-                     await Fetch();
-                 };
-                await Navigation.NavigateToModal(authModel);
-            }
-            else
-            {
-                await Fetch();
-            }
+            await Fetch();
         }
 
         private async Task Fetch()
         {
-            Applications.AddRange(await IoTCentral.Current.ServiceClient.ListApps());
+            Applications.AddRange(await (await IoTCentral.Current.GetServiceClient()).ListApps());
             IsBusy = false;
             OnPropertyChanged("Applications");
         }

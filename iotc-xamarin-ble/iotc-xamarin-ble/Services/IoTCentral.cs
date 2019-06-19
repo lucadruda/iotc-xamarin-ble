@@ -13,6 +13,7 @@ using iotc_csharp_service;
 using Plugin.BLE.Abstractions.Contracts;
 using iotc_xamarin_ble.Bluetooth;
 using iotc_xamarin_ble.Services.BackgroundWorker;
+using iotc_xamarin_ble.ViewModels.Authentication;
 
 namespace iotc_xamarin_ble.Services
 {
@@ -92,34 +93,50 @@ namespace iotc_xamarin_ble.Services
             set { device = value; }
         }
 
-        public DataClient ServiceClient
+
+        public async Task<DataClient> GetServiceClient()
         {
-            get
+            if (serviceClient == null)
             {
-                // if (serviceClient == null)
-                // throw error;
-                return serviceClient;
+                var client = Container.ContainerService.Current.Resolve<DataClient>();
+                if (client != null)
+                {
+                    serviceClient = client;
+                }
+                else
+                {
+                    var auth = Container.ContainerService.Current.Resolve<IAuthViewModel>();
+                    var token = await auth.GetTokenAsync();
+                    serviceClient = new DataClient(token);
+                }
             }
+            return serviceClient;
         }
 
-        public void InitServiceClient(string accessToken)
+        public async Task<ARMClient> GetArmClient()
         {
-            serviceClient = new DataClient(accessToken);
-        }
-
-        public ARMClient ArmClient
-        {
-            get
+            if (armClient == null)
             {
-                // if (serviceClient == null)
-                // throw error;
-                return armClient;
+                var auth = Container.ContainerService.Current.Resolve<IAuthViewModel>();
+                var token = await auth.GetTokenAsync(Constants.RM_TOKEN_AUDIENCE_v1);
+                armClient = new ARMClient(token);
             }
+            return armClient;
         }
 
-        public void InitArmClient(string accessToken)
+        public async Task<ARMClient> GetArmClient(string tenant)
         {
-            armClient = new ARMClient(accessToken);
+            if (armClient != null)
+            {
+                if (armClient.Tenant == tenant)
+                {
+                    return armClient;
+                }
+            }
+            var auth = Container.ContainerService.Current.Resolve<IAuthViewModel>();
+            var token = await auth.GetTokenAsync(Constants.RM_TOKEN_AUDIENCE_v1, tenant);
+            armClient = new ARMClient(token, tenant);
+            return armClient;
         }
 
         public IIoTCClient DeviceClient
@@ -130,7 +147,7 @@ namespace iotc_xamarin_ble.Services
 
         public async Task StartService(string bleDeviceId, Dictionary<string, string> mapping)
         {
-            var creds = await ServiceClient.GetCredentials(Application.Id);
+            var creds = await (await GetServiceClient()).GetCredentials(Application.Id);
             creds.DeviceId = Device.DeviceId;
             MessagingCenter.Send(new RequestMessage<ServiceParameter>(new ServiceParameter(creds, bleDeviceId, mapping)), Constants.SERVICE_START);
         }

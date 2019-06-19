@@ -40,6 +40,7 @@ namespace iotc_xamarin_ble.Droid.Services
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
 
+
             Notification.Builder builder;
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
