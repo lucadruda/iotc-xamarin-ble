@@ -108,11 +108,15 @@ namespace iotc_xamarin_ble.ViewModels
             {
                 var token = JsonConvert.DeserializeObject<AzureToken>(storedToken.Value);
                 var refreshToken = token.RefreshToken;
-                var resp = await TryGetTokenWithRefresh(resourceUri, refreshToken);
-                if (resp.Success)
-                {
-                    return new AzureToken(resp.ResponseBody);
-                }
+
+                    var resp = await TryGetTokenWithRefresh(resourceUri, refreshToken);
+                    if (resp.Success)
+                    {
+                        var res = new AzureToken(resp.ResponseBody);
+                        SecureStorage.Current.Add(token.Resource, JsonConvert.SerializeObject(res));
+                        return res;
+                    }
+
             }
 
             return await AcquireTokenInteractive(resourceUri);

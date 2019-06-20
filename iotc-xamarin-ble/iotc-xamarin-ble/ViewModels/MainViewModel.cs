@@ -58,7 +58,8 @@ namespace iotc_xamarin_ble.ViewModels
 
         private async Task Fetch()
         {
-            Applications.AddRange(await (await IoTCentral.Current.GetServiceClient()).ListApps());
+            var client = await IoTCentral.Current.GetServiceClient();
+            Applications.AddRange(await client.ListApps());
             IsBusy = false;
             OnPropertyChanged("Applications");
         }
