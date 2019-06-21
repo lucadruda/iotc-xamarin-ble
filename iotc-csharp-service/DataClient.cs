@@ -45,16 +45,9 @@ public class DataClient
     /// <exception cref="iotc_csharp_service.Exceptions.AuthenticationException">Thrown if authentication token is invalid</exception>
     public async Task<Application[]> ListApps()
     {
-        try
-        {
             string appsJson = await req.Get(Constants.IOTC_DATA_URL + "/applications");
             Application[] apps = ((JArray)JObject.Parse(appsJson).GetValue("value")).ToObject<Application[]>();
             return apps;
-        }
-        catch(Exception ex)
-        {
-            return null;
-        }
     }
 
     /// <summary>

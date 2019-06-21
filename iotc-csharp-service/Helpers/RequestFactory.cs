@@ -25,17 +25,17 @@ namespace iotc_csharp_service.Helpers
 
         public async Task<string> Get(string path)
         {
-            HttpResponseMessage responseMsg=null;
+            HttpResponseMessage responseMsg = null;
             try
             {
                 GetHeaders();
                 responseMsg = await client.GetAsync(path);
-                HandleError(responseMsg);
             }
             catch (Exception e)
             {
-                //throw new DataException("I/O exception occured", IOTCENTRAL_DATA_EXCEPTION_CODES.IOEXCEPTION);
+                throw new DataException("I/O exception occured", IOTCENTRAL_DATA_EXCEPTION_CODES.IOEXCEPTION);
             }
+            await HandleError(responseMsg);
             return await HandleSuccess(responseMsg);
         }
 
@@ -51,7 +51,7 @@ namespace iotc_csharp_service.Helpers
             {
                 throw new DataException("I/O exception occured", IOTCENTRAL_DATA_EXCEPTION_CODES.IOEXCEPTION);
             }
-            HandleError(responseMsg);
+            await HandleError(responseMsg);
             return await HandleSuccess(responseMsg);
         }
 
@@ -62,13 +62,13 @@ namespace iotc_csharp_service.Helpers
             {
                 GetHeaders();
                 responseMsg = await client.PutAsync(path, new StringContent(data, Encoding.UTF8, "application/json"));
-                
+
             }
             catch (Exception e)
             {
                 throw new DataException("I/O exception occured", IOTCENTRAL_DATA_EXCEPTION_CODES.IOEXCEPTION);
             }
-            HandleError(responseMsg);
+            await HandleError(responseMsg);
             return await HandleSuccess(responseMsg);
         }
 
@@ -102,7 +102,7 @@ namespace iotc_csharp_service.Helpers
             }
         }
 
-        private async void HandleError(HttpResponseMessage msg)
+        private async Task HandleError(HttpResponseMessage msg)
         {
             HttpStatusCode code = msg.StatusCode;
             if (code != HttpStatusCode.OK && code != HttpStatusCode.Created)
