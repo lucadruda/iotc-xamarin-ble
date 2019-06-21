@@ -1,4 +1,6 @@
 ﻿using iotc_csharp_service.Exceptions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -23,47 +25,51 @@ namespace iotc_csharp_service.Helpers
 
         public async Task<string> Get(string path)
         {
+            HttpResponseMessage responseMsg = null;
             try
             {
                 GetHeaders();
-                HttpResponseMessage responseMsg = await client.GetAsync(path);
-                HandleError(responseMsg);
-                return await HandleSuccess(responseMsg);
+                responseMsg = await client.GetAsync(path);
             }
             catch (Exception e)
             {
                 throw new DataException("I/O exception occured", IOTCENTRAL_DATA_EXCEPTION_CODES.IOEXCEPTION);
             }
+            await HandleError(responseMsg);
+            return await HandleSuccess(responseMsg);
         }
 
         public async Task<string> Post(string path, string data)
         {
+            HttpResponseMessage responseMsg;
             try
             {
                 GetHeaders();
-                HttpResponseMessage responseMsg = await client.PostAsync(path, new StringContent(data, Encoding.UTF8, "application/json"));
-                HandleError(responseMsg);
-                return await HandleSuccess(responseMsg);
+                responseMsg = await client.PostAsync(path, new StringContent(data, Encoding.UTF8, "application/json"));
             }
             catch (Exception e)
             {
                 throw new DataException("I/O exception occured", IOTCENTRAL_DATA_EXCEPTION_CODES.IOEXCEPTION);
             }
+            await HandleError(responseMsg);
+            return await HandleSuccess(responseMsg);
         }
 
         public async Task<string> Put(string path, string data)
         {
+            HttpResponseMessage responseMsg;
             try
             {
                 GetHeaders();
-                HttpResponseMessage responseMsg = await client.PutAsync(path, new StringContent(data, Encoding.UTF8, "application/json"));
-                HandleError(responseMsg);
-                return await HandleSuccess(responseMsg);
+                responseMsg = await client.PutAsync(path, new StringContent(data, Encoding.UTF8, "application/json"));
+
             }
             catch (Exception e)
             {
                 throw new DataException("I/O exception occured", IOTCENTRAL_DATA_EXCEPTION_CODES.IOEXCEPTION);
             }
+            await HandleError(responseMsg);
+            return await HandleSuccess(responseMsg);
         }
 
         private void GetHeaders()
@@ -96,13 +102,27 @@ namespace iotc_csharp_service.Helpers
             }
         }
 
-        private async void HandleError(HttpResponseMessage msg)
+        private async Task HandleError(HttpResponseMessage msg)
         {
             HttpStatusCode code = msg.StatusCode;
             if (code != HttpStatusCode.OK && code != HttpStatusCode.Created)
             {
                 string content = await msg.Content.ReadAsStringAsync();
-                throw new DataException(msg.ReasonPhrase + ":" + content, (int)code);
+                if (code == HttpStatusCode.Unauthorized)
+                {
+                    try
+                    {
+                        var erroObj = JObject.Parse(content);
+
+                        throw new AuthenticationException(erroObj["error"]["code"].Value<string>());
+                    }
+                    catch (JsonReaderException readex)
+                    {
+                        throw new Exception("Unknown error", readex);
+                    }
+                }
+
+                //throw new DataException(msg.ReasonPhrase + ":" + content, (int)code);
 
             }
         }

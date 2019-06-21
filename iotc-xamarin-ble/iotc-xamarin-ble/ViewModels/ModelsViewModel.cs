@@ -21,7 +21,7 @@ namespace iotc_xamarin_ble
         }
         public override async Task<IEnumerable<DeviceTemplate>> FetchData()
         {
-            return await IoTCentral.Current.ServiceClient.ListTemplates(IoTCentral.Current.Application.Id);
+            return await (await IoTCentral.Current.GetServiceClient()).ListTemplates(IoTCentral.Current.Application.Id);
         }
 
         public override void OnItemTapped()

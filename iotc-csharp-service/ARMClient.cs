@@ -22,10 +22,17 @@ namespace iotc_csharp_service
         const string ENDPOINT = "https://management.azure.com";
         //private AzureTokenCredentials credentials;
         private RequestFactory req;
+
+        public string Tenant { get; set; }
         public ARMClient(string token)
         {
             req = new RequestFactory(token);
+            Tenant = Constants.TENANT_ID;
+        }
 
+        public ARMClient(string token, string tenant) : this(token)
+        {
+            Tenant = tenant;
         }
 
         private string GetTemplate(Application app)
@@ -63,61 +70,6 @@ namespace iotc_csharp_service
 
         }
 
-        //        public void createResourceGroup(string resourceGroupName, Region region) throws IOException
-        //        {
-        //            com.microsoft.azure.management.resources.ResourceGroup resourceGroup = this.azure.resourceGroups()
-        //                .define(resourceGroupName).withRegion(region).create();
-        //        System.out.println("Provisioning state: " + resourceGroup.provisioningState());
-        //        if (!resourceGroup.provisioningState().equals(ProvisioningState.SUCCEEDED.tostring())) {
-        //            throw new IllegalStateException("Error creating resource group");
-        //    }
-        //        this.resourceGroupName = resourceGroupName;
-        //    }
-
-
-
-        //    public Application getAppByName(string applicationName)
-        //    {
-        //        if (resourceGroupName == null || resourceGroupName.equals(""))
-        //        {
-        //            throw new IllegalArgumentException("Resource group does not exists");
-        //        }
-        //        Application app = new Application(azure.genericResources().get(this.resourceGroupName, "Microsoft.IoTCentral",
-        //                null, "IoTApps", applicationName, API_VERSION));
-        //        return app;
-        //    }
-
-        //    public Application[] listAllTenantApplications() throws DataException
-        //    {
-        //        ArrayList<Application> apps = new ArrayList<>();
-        //        Subscription[] subs = listSubscriptions();
-        //        for (Subscription sub : subs) {
-        //            ResourceGroup[] rgs = listResourceGroups(sub.getSubscriptionId());
-        //            for (ResourceGroup rg : rgs) {
-        //                string appJson = req.get(string.format(
-        //                        "%ssubscriptions/%s/resourceGroups/%s/providers/Microsoft.IoTCentral/IoTApps?api-version=2018-09-01",
-        //                        Constants.RM_TOKEN_AUDIENCE, sub.getSubscriptionId(), rg.getName()));
-        //    JsonParser parser = new JsonParser();
-        //    JsonArray json = (JsonArray)((Jsonobject)parser.parse(appJson)).get("value");
-        //                for (JsonElement el : json) {
-        //                    Application app = new Gson().fromJson(((Jsonobject)el).get("properties"), Application.class);
-        //                    apps.add(app);
-        //                }
-        //            }
-        //        }
-        //        return (Application[]) apps.toArray();
-        //    }
-
-        //    public void setResourceGroup(string resourceGroupName)
-        //{
-        //    this.resourceGroupName = resourceGroupName;
-        //}
-
-
-        //public void setSubscription(Subscription subscription)
-        //{
-        //    this.setSubscription(subscription.getSubscriptionId());
-        //}
 
         public async Task<Application> CreateApplication(Application app, string subscriptionId, string resourceGroup)
         {

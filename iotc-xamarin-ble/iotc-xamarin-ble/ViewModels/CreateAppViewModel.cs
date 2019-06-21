@@ -53,7 +53,7 @@ namespace iotc_xamarin_ble.ViewModels
                   try
                   {
                       IsBusy = true;
-                      var app = await IoTCentral.Current.ArmClient.CreateApplication(new Application(ApplicationName, ApplicationName, ApplicationDomain, SelectedRegion, Template), SelectedSubscription.SubscriptionId, SelectedResourceGroup.Name);
+                      var app = await (await IoTCentral.Current.GetArmClient()).CreateApplication(new Application(ApplicationName, ApplicationName, ApplicationDomain, SelectedRegion, Template), SelectedSubscription.SubscriptionId, SelectedResourceGroup.Name);
                       await DialogService.Current.ShowMessage($"Application '{app.Name}' successfully created", "Application Creation", "Dismiss", async () =>
                       {
                           IoTCentral.Current.Application = app;
@@ -100,9 +100,7 @@ namespace iotc_xamarin_ble.ViewModels
                     selectedTenant = value;
                     Validate();
                     OnPropertyChanged();
-                    authViewModel = new AuthViewModel(Navigation, selectedTenant.TenantId, Constants.RM_TOKEN_AUDIENCE_v1);
-                    authViewModel.TokenAcquired += OnRMTenantTokenAcquired;
-                    Navigation.NavigateToModal(authViewModel);
+                    LoadSubscriptions(selectedTenant.TenantId);
                 }
             }
         }
@@ -140,44 +138,22 @@ namespace iotc_xamarin_ble.ViewModels
         public async override Task OnAppearing()
         {
             IsBusy = true;
-            if (IoTCentral.Current.ArmClient == null)
-            {
-
-                authViewModel = new AuthViewModel(Navigation, Constants.RM_TOKEN_AUDIENCE_v1);
-                authViewModel.TokenAcquired += OnRMTokenAcquired;
-                await Navigation.NavigateToModal(authViewModel);
-            }
-            else
-            {
-                LoadTenants();
-            }
-        }
-
-        private void OnRMTokenAcquired(object source, string token)
-        {
-            IoTCentral.Current.InitArmClient(token);
             LoadTenants();
         }
 
-        private void OnRMTenantTokenAcquired(object source, string token)
-        {
-            IoTCentral.Current.InitArmClient(token);
-            LoadSubscriptions();
-        }
 
         private async void LoadTenants()
         {
-            authViewModel.TokenAcquired -= OnRMTokenAcquired;
             Tenants.Clear();
-            (await IoTCentral.Current.ArmClient.ListTenants()).ForEach(t => Tenants.Add(t));
+            (await (await IoTCentral.Current.GetArmClient()).ListTenants()).ForEach(t => Tenants.Add(t));
             OnPropertyChanged("Tenants");
             IsBusy = false;
         }
 
-        private async void LoadSubscriptions()
+        private async void LoadSubscriptions(string tenantId)
         {
             Subscriptions.Clear();
-            (await IoTCentral.Current.ArmClient.ListSubscriptions()).ForEach(s => Subscriptions.Add(s));
+            (await (await IoTCentral.Current.GetArmClient(tenantId)).ListSubscriptions()).ForEach(s => Subscriptions.Add(s));
             OnPropertyChanged("Subscriptions");
             IsBusy = false;
         }
@@ -185,7 +161,8 @@ namespace iotc_xamarin_ble.ViewModels
         private async void LoadResourceGroups(string subscriptionId)
         {
             ResourceGroups.Clear();
-            (await IoTCentral.Current.ArmClient.ListResourceGroups(subscriptionId)).ForEach(r => ResourceGroups.Add(r));
+            (await (await IoTCentral.Current.GetArmClient()).ListResourceGroups(subscriptionId)).ForEach(r => ResourceGroups.Add(r));
+
             OnPropertyChanged("ResourceGroups");
             IsBusy = false;
         }

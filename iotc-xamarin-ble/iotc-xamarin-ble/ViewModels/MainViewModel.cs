@@ -1,5 +1,7 @@
 ﻿using DLToolkit.Forms.Controls;
 using iotc_ble_xamarin;
+using iotc_csharp_service.Exceptions;
+using iotc_xamarin_ble.Helpers;
 using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using System;
@@ -53,28 +55,30 @@ namespace iotc_xamarin_ble.ViewModels
         public override async Task OnAppearing()
         {
             IsBusy = true;
-            if (IoTCentral.Current.ServiceClient == null)
-            {
-
-                var authModel = new AuthViewModel(Navigation, Constants.IOTC_TOKEN_AUDIENCE_v1);
-                authModel.TokenAcquired += async (s, t) =>
-                 {
-                     IoTCentral.Current.InitServiceClient(t);
-                     await Fetch();
-                 };
-                await Navigation.NavigateToModal(authModel);
-            }
-            else
-            {
-                await Fetch();
-            }
+            await Fetch();
         }
 
         private async Task Fetch()
         {
-            Applications.AddRange(await IoTCentral.Current.ServiceClient.ListApps());
-            IsBusy = false;
-            OnPropertyChanged("Applications");
+            var client = await IoTCentral.Current.GetServiceClient();
+            try
+            {
+                Applications.AddRange(await client.ListApps());
+                OnPropertyChanged("Applications");
+            }
+            catch(Exception ex)
+            {
+                if(ex is AuthenticationException)
+                {
+                    new IoTCException().Error("Invalid authentication");
+                }
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            
+            
         }
 
         private void CreateNewApplication()

@@ -63,6 +63,11 @@ namespace iotc_xamarin_ble.Authentication.v1
 
         public void Add(string key, string value)
         {
+            if (tokens.ContainsKey(key))
+            {
+                tokens[key] = value;
+                return;
+            }
             tokens.Add(key, value);
         }
 

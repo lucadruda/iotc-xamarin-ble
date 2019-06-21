@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;Mock;ApiMock</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ApiMock|AnyCPU'">
+    <DefineConstants>TRACE;APIMOCK</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

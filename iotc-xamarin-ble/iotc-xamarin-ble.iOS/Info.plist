@@ -30,8 +30,6 @@
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>CFBundleName</key>
-	<string>iotc_xamarin_ble</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UIBackgroundModes</key>
@@ -40,5 +38,7 @@
 	</array>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Allow the app to control bluetooth devices</string>
+	<key>CFBundleName</key>
+	<string>IoTCentral BLE</string>
 </dict>
 </plist>

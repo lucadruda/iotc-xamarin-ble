@@ -37,14 +37,26 @@ public class DataClient
     {
         return null;
     }
-
+    /// <summary>
+    /// Lists all applications for the user
+    /// </summary>
+    /// <returns>Array of applications</returns>
+    /// <exception cref="iotc_csharp_service.Exceptions.DataException">Thrown if request fails</exception>
+    /// <exception cref="iotc_csharp_service.Exceptions.AuthenticationException">Thrown if authentication token is invalid</exception>
     public async Task<Application[]> ListApps()
     {
-        string appsJson = await req.Get(Constants.IOTC_DATA_URL + "/applications");
-        Application[] apps = ((JArray)JObject.Parse(appsJson).GetValue("value")).ToObject<Application[]>();
-        return apps;
+            string appsJson = await req.Get(Constants.IOTC_DATA_URL + "/applications");
+            Application[] apps = ((JArray)JObject.Parse(appsJson).GetValue("value")).ToObject<Application[]>();
+            return apps;
     }
 
+    /// <summary>
+    /// Lists all devices for the application
+    /// </summary>
+    /// <param name="applicationId">The application Id</param>
+    /// <returns>Array of devices</returns>
+    /// <exception cref="iotc_csharp_service.Exceptions.DataException">Thrown if request fails</exception>
+    /// <exception cref="iotc_csharp_service.Exceptions.AuthenticationException">Thrown if authentication token is invalid</exception>
     public async Task<Device[]> ListDevices(string applicationId)
     {
         string devicesJsonstring = await req.Get(Constants.IOTC_DATA_URL + "/applications/" + applicationId + "/devices");
@@ -67,12 +79,29 @@ public class DataClient
         return result;
     }
 
+    /// <summary>
+    /// Lists all devices of the specified model for the application
+    /// </summary>
+    /// <param name="applicationId">The application Id</param>
+    /// <param name="templateId">The model Id</param>
+    /// <returns>Array of devices</returns>
+    /// <exception cref="iotc_csharp_service.Exceptions.DataException">Thrown if request fails</exception>
+    /// <exception cref="iotc_csharp_service.Exceptions.AuthenticationException">Thrown if authentication token is invalid</exception>
     public async Task<Device[]> ListDevices(string applicationId, string templateId)
     {
         Device[] devices = await ListDevices(applicationId);
         return devices.Where(d => d.DeviceTemplate.Id == templateId).ToArray();
     }
 
+
+    /// <summary>
+    /// Get a device by its name
+    /// </summary>
+    /// <param name="applicationId">The application Id</param>
+    /// <param name="deviceName">The device name</param>
+    /// <returns>The requested device or null if not found</returns>
+    /// <exception cref="iotc_csharp_service.Exceptions.DataException">Thrown if request fails</exception>
+    /// <exception cref="iotc_csharp_service.Exceptions.AuthenticationException">Thrown if authentication token is invalid</exception>
     public async Task<Device> GetDeviceByName(string applicationId, string deviceName)
     {
         Device[]
@@ -80,12 +109,28 @@ public class DataClient
         return devices.Where(d => d.Name == deviceName).FirstOrDefault();
     }
 
+    /// <summary>
+    /// Get a device by its id
+    /// </summary>
+    /// <param name="applicationId">The application Id</param>
+    /// <param name="deviceId">The device Id</param>
+    /// <returns>The requested device or null if not found</returns>
+    /// <exception cref="iotc_csharp_service.Exceptions.DataException">Thrown if request fails</exception>
+    /// <exception cref="iotc_csharp_service.Exceptions.AuthenticationException">Thrown if authentication token is invalid</exception>
     public async Task<Device> GetDeviceById(string applicationId, string deviceId)
     {
         Device[] devices = await ListDevices(applicationId);
         return devices.Where(d => d.Id == deviceId).FirstOrDefault();
     }
 
+    /// <summary>
+    /// List available models in the application
+    /// </summary>
+    /// <param name="applicationId">The application Id</param>
+    /// <param name="latest">Optionally specifies if only show latest versions of the models</param>
+    /// <returns>Array of models</returns>
+    /// <exception cref="iotc_csharp_service.Exceptions.DataException">Thrown if request fails</exception>
+    /// <exception cref="iotc_csharp_service.Exceptions.AuthenticationException">Thrown if authentication token is invalid</exception>
     public async Task<DeviceTemplate[]> ListTemplates(string applicationId, bool latest = false)
     {
         Dictionary<string, DeviceTemplate> models = new Dictionary<string, DeviceTemplate>();
