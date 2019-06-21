@@ -14,6 +14,7 @@ using Plugin.BLE.Abstractions.Contracts;
 using iotc_xamarin_ble.ViewModels.Authentication;
 using iotc_csharp_service;
 using Plugin.BLE;
+using iotc_xamarin_ble.Services.Dialog;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace iotc_xamarin_ble
@@ -41,7 +42,7 @@ namespace iotc_xamarin_ble
             ContainerService.Current.RegisterInstance<DataClient>(new Mocks.Clients.MockServiceClient(null));
             ContainerService.Current.RegisterInstance<ARMClient>(new Mocks.Clients.MockArmClient(null));
 #endif
-
+            ContainerService.Current.RegisterInstance<IDialogService>(new DialogService());
             navigator.PresentAsNavigatableMainPage(new MainViewModel(navigator));
         }
         public static object ParentWindow { get; set; }

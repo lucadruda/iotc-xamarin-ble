@@ -1,5 +1,7 @@
 ﻿using DLToolkit.Forms.Controls;
 using iotc_ble_xamarin;
+using iotc_csharp_service.Exceptions;
+using iotc_xamarin_ble.Helpers;
 using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using System;
@@ -59,9 +61,24 @@ namespace iotc_xamarin_ble.ViewModels
         private async Task Fetch()
         {
             var client = await IoTCentral.Current.GetServiceClient();
-            Applications.AddRange(await client.ListApps());
-            IsBusy = false;
-            OnPropertyChanged("Applications");
+            try
+            {
+                Applications.AddRange(await client.ListApps());
+                OnPropertyChanged("Applications");
+            }
+            catch(Exception ex)
+            {
+                if(ex is AuthenticationException)
+                {
+                    new IoTCException().Error("Invalid authentication");
+                }
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            
+            
         }
 
         private void CreateNewApplication()

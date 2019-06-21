@@ -107,7 +107,6 @@ namespace iotc_xamarin_ble.Services
                 else
                 {
                     var auth = Container.ContainerService.Current.Resolve<IAuthViewModel>();
-                    await (auth as BaseViewModel).Navigation.NavigateToModal(auth as BaseViewModel);
                     var token = await auth.GetTokenAsync();
                     serviceClient = new DataClient(token);
                 }
@@ -136,7 +135,6 @@ namespace iotc_xamarin_ble.Services
                 }
             }
             var auth = Container.ContainerService.Current.Resolve<IAuthViewModel>();
-            await (auth as BaseViewModel).Navigation.NavigateToModal(auth as BaseViewModel);
             var token = await auth.GetTokenAsync(Constants.RM_TOKEN_AUDIENCE_v1, tenant);
             armClient = new ARMClient(token, tenant);
             return armClient;

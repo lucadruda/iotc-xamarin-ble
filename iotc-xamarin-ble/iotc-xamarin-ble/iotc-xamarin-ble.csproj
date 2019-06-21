@@ -32,7 +32,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AuthMock|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;MOCKAUTH</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;MOCKAUTH;MOCKBLE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>latest</LangVersion>
     <IntermediateOutputPath>obj\Debug\netstandard2.0</IntermediateOutputPath>

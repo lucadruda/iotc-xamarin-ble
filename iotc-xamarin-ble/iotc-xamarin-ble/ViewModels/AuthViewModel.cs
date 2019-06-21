@@ -157,6 +157,7 @@ namespace iotc_xamarin_ble.ViewModels
 
         public async Task<string> GetTokenAsync(string resource, string tenant)
         {
+            await Navigation.NavigateToModal(this);
             IsBusy = true;
             Resource = resource;
             Tenant = tenant;
