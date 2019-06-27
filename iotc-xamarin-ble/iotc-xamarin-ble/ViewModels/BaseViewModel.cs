@@ -14,6 +14,7 @@ namespace iotc_xamarin_ble.ViewModels
     {
         private bool isBusy = false;
         private string title;
+        private string icon;
         private string loadingText = "Loading";
         private InputDialogViewModel inputModel;
 
@@ -93,6 +94,16 @@ namespace iotc_xamarin_ble.ViewModels
             set
             {
                 title = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Icon
+        {
+            get { return icon; }
+            set
+            {
+                icon = value;
                 OnPropertyChanged();
             }
         }

@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace iotc_xamarin_ble.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : TabbedPage
+    public partial class AboutPage : ContentPage
     {
-        public MainPage()
+        public AboutPage()
         {
             InitializeComponent();
         }

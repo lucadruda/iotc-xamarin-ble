@@ -16,6 +16,12 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
         {
             this.viewLocator = viewLocator;
         }
+
+        public Page CreatePage(BaseViewModel viewModel)
+        {
+            viewModel.BeforeFirstShown();
+            return viewLocator.CreateAndBindPageFor(viewModel);
+        }
         public async Task NavigateBack()
         {
             var dismissing = Navigator.NavigationStack.Last().BindingContext as BaseViewModel;

@@ -1,89 +1,55 @@
-﻿using DLToolkit.Forms.Controls;
-using iotc_ble_xamarin;
-using iotc_csharp_service.Exceptions;
-using iotc_xamarin_ble.Helpers;
-using iotc_xamarin_ble.Services;
-using iotc_xamarin_ble.ViewModels.Navigation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using iotc_xamarin_ble.ViewModels.Navigation;
 using Xamarin.Forms;
 
 namespace iotc_xamarin_ble.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        private Page selectedTabPage;
 
-
-        public MainViewModel(INavigationService navigationService) : base(navigationService)
+        public MainViewModel(INavigationService navigation) : base(navigation)
         {
-            Title = "Azure IoT Central";
-            IsBusy = true;
-            Add = new Command(CreateNewApplication);
-            ReloadApplications = new Command(async () =>
-            {
-                IsBusy = true;
-                await Fetch();
-            });
-            //LoginCommand = new Command(Fetch);
-            OnApplicationTapped = new Command(() =>
-              {
-                  Application tappedApp = LastTappedItem as Application;
-                  if (tappedApp != null)
-                  {
-                      IoTCentral.Current.Application = tappedApp;
-                      Navigation.NavigateTo(new ModelsViewModel(Navigation));
-                  }
-              });
-            Applications.Clear();
-
+            Pages = new ObservableCollection<Page>();
         }
 
-        public FlowObservableCollection<Application> Applications { get; set; } = new FlowObservableCollection<Application>();
+        public ObservableCollection<Page> Pages { get; set; }
 
-        public ICommand LoginCommand { get; private set; }
-
-        public ICommand OnApplicationTapped { get; private set; }
-        public ICommand Add { get; private set; }
-        public ICommand ReloadApplications { get; private set; }
-
-        public object LastTappedItem { get; set; }
-
-        public override async Task OnAppearing()
+        public override Task OnAppearing()
         {
-            IsBusy = true;
-            await Fetch();
+            //Pages.Add(new NavigationPage(Navigation.CreatePage(new AppsViewModel(Navigation))));
+            Pages.Add(Navigation.CreatePage(new AboutViewModel(Navigation)));
+            OnPropertyChanged("Pages");
+            return Task.CompletedTask;
         }
 
-        private async Task Fetch()
+        public Page SelectedTabPage
         {
-            var client = await IoTCentral.Current.GetServiceClient();
-            try
+            get
             {
-                Applications.AddRange(await client.ListApps());
-                OnPropertyChanged("Applications");
+                return selectedTabPage;
             }
-            catch(Exception ex)
+
+            set
             {
-                if(ex is AuthenticationException)
+                selectedTabPage = value;
+                if (selectedTabPage != null)
                 {
-                    new IoTCException().Error("Invalid authentication");
+                    if (selectedTabPage is NavigationPage)
+                    {
+                        ((selectedTabPage as NavigationPage).CurrentPage.BindingContext as BaseViewModel).OnAppearing();
+                    }
+                    else
+                    {
+                        (selectedTabPage.BindingContext as BaseViewModel).OnAppearing();
+                    }
                 }
+                OnPropertyChanged();
             }
-            finally
-            {
-                IsBusy = false;
-            }
-            
-            
-        }
-
-        private void CreateNewApplication()
-        {
-            Navigation.NavigateTo(new CreateAppViewModel(Navigation));
         }
     }
 }

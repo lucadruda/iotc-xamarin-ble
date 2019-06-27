@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -73,6 +73,9 @@
     </Compile>
     <Compile Update="Views\ListPage.xaml.cs">
       <DependentUpon>ListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AppsPage.xaml.cs">
+      <DependentUpon>AppsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
