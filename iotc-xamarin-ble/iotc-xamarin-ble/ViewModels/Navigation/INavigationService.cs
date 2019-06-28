@@ -49,5 +49,7 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
         /// </summary>
         /// <returns></returns>
         Page CreatePage(BaseViewModel viewModel);
+
+        void SetNavigator(INavigation navigator);
     }
 }

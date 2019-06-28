@@ -10,7 +10,7 @@
         <AbsoluteLayout>
             <!--<pulltorefresh:PullToRefreshLayout AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" 
                                                IsPullToRefreshEnabled="{Binding Authenticated}" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding ReloadApplications}">-->
-            <flv:FlowListView IsVisible="{Binding Authenticated}" SeparatorVisibility="None" HasUnevenRows="false"
+            <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="false"
 	FlowItemTappedCommand="{Binding OnApplicationTapped}" FlowItemsSource="{Binding Applications}" FlowLastTappedItem="{Binding LastTappedItem}" 
                           VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="120" RowHeight="120"  AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" >
                 <flv:FlowListView.FlowColumnTemplate>
@@ -23,7 +23,7 @@
 
             </flv:FlowListView>
             <!--</pulltorefresh:PullToRefreshLayout>-->
-            <!--<controls:FloatingButton/> TODO: Temporary disabled because of the known provisioning issue that app is not available if not entering from web ui  -->
+            <!--<controls:FloatingButton/> TODO: Temporary disabled because of the known iotc provisioning issue that app is not available if not entering from web ui  -->
             <controls:LoadingDialog/>
         </AbsoluteLayout>
 

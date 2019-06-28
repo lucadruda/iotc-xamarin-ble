@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iotc_xamarin_ble.Helpers;
 using iotc_xamarin_ble.ViewModels.Navigation;
 using Xamarin.Forms;
 
@@ -10,43 +12,46 @@ namespace iotc_xamarin_ble.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private Page selectedTabPage;
+        private BaseViewModel selectedVM;
+
 
         public MainViewModel(INavigationService navigation) : base(navigation)
         {
-            Pages = new ObservableCollection<Page>();
+
+            Models = new ObservableCollection<BaseViewModel>
+        {
+            new AppsViewModel(navigation),
+            new AboutViewModel(navigation)
+        };
+            TemplateSelector = new ViewModelPageSelector();
         }
 
-        public ObservableCollection<Page> Pages { get; set; }
+        public ObservableCollection<BaseViewModel> Models { get; set; }
+        public ObservableCollection<DataTemplate> Templates { get; set; }
+
+        public DataTemplateSelector TemplateSelector { get; set; }
 
         public override Task OnAppearing()
         {
-            //Pages.Add(new NavigationPage(Navigation.CreatePage(new AppsViewModel(Navigation))));
-            Pages.Add(Navigation.CreatePage(new AboutViewModel(Navigation)));
-            OnPropertyChanged("Pages");
+            foreach (var model in Models)
+            {
+                model.OnAppearing();
+            }
             return Task.CompletedTask;
         }
-
-        public Page SelectedTabPage
+        public BaseViewModel SelectedVM
         {
             get
             {
-                return selectedTabPage;
+                return selectedVM;
             }
 
             set
             {
-                selectedTabPage = value;
-                if (selectedTabPage != null)
+                selectedVM = value;
+                if (selectedVM != null)
                 {
-                    if (selectedTabPage is NavigationPage)
-                    {
-                        ((selectedTabPage as NavigationPage).CurrentPage.BindingContext as BaseViewModel).OnAppearing();
-                    }
-                    else
-                    {
-                        (selectedTabPage.BindingContext as BaseViewModel).OnAppearing();
-                    }
+                        selectedVM.OnAppearing();
                 }
                 OnPropertyChanged();
             }

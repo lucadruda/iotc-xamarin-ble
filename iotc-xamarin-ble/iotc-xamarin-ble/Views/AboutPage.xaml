@@ -4,9 +4,9 @@
              x:Class="iotc_xamarin_ble.Views.AboutPage" Title="{Binding Title}" IconImageSource="{Binding Icon}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="{Binding About}" TextColor="Accent" FontSize="Small"/>
+            <Label Text="{Binding LicenseTerms}"/>
+            <Label Text="{Binding Version}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -25,7 +25,7 @@ namespace iotc_xamarin_ble.Authentication.v1
             JObject resObj = JObject.Parse(jsonToken);
             AccessToken = resObj["access_token"].Value<string>();
             RefreshToken = resObj["refresh_token"].Value<string>();
-            Expiration = resObj["not_before"].Value<int>();
+            Expiration = resObj["expires_on"].Value<int>();
             Resource = resObj["resource"].Value<string>();
         }
 

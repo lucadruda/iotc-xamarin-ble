@@ -5,6 +5,7 @@ using iotc_xamarin_ble.ViewModels.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,13 +15,11 @@ namespace iotc_xamarin_ble.ViewModels
 {
     public class AppsViewModel : BaseViewModel
     {
-
-
         public AppsViewModel(INavigationService navigationService) : base(navigationService)
         {
             Title = "Azure IoT Central";
             Icon = "home";
-            IsBusy = true;
+            //IsBusy = true;
             Add = new Command(CreateNewApplication);
             ReloadApplications = new Command(async () =>
             {
@@ -36,9 +35,9 @@ namespace iotc_xamarin_ble.ViewModels
                       Navigation.NavigateTo(new ModelsViewModel(Navigation));
                   }
               });
-            Applications.Clear();
 
         }
+        public string Prova { get; set; }
 
         public FlowObservableCollection<Application> Applications { get; set; } = new FlowObservableCollection<Application>();
 
@@ -59,8 +58,10 @@ namespace iotc_xamarin_ble.ViewModels
 
         private async Task Fetch()
         {
+            Applications.Clear();
             var client = await IoTCentral.Current.GetServiceClient();
-            Applications.AddRange(await client.ListApps());
+            var apps = await client.ListApps();
+            Applications.AddRange(apps);
             IsBusy = false;
             OnPropertyChanged("Applications");
         }

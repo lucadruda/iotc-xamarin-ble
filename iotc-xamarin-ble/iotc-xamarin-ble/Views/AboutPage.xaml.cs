@@ -12,6 +12,7 @@ namespace iotc_xamarin_ble.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutPage : ContentPage
     {
+        public string Prova { get; set; }
         public AboutPage()
         {
             InitializeComponent();

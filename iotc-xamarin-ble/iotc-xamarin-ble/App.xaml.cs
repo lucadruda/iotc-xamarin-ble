@@ -42,7 +42,9 @@ namespace iotc_xamarin_ble
             ContainerService.Current.RegisterInstance<ARMClient>(new Mocks.Clients.MockArmClient(null));
 #endif
 
-            navigator.PresentAsMainPage(new MainViewModel(navigator));
+            //navigator.PresentAsMainPage(new MainViewModel(navigator));
+            navigator.PresentAsNavigatableMainPage(new AppsViewModel(navigator));
+
         }
         public static object ParentWindow { get; set; }
         protected override void OnStart()

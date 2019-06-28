@@ -7,15 +7,5 @@
             android:TabbedPage.ToolbarPlacement="Bottom"
             BarBackgroundColor="Accent"
             BarTextColor="White" 
-            ItemsSource="{Binding Pages}"
-            SelectedItem="{Binding SelectedTabPage, Mode=TwoWay}">
-    <TabbedPage.ItemTemplate>
-        <DataTemplate>
-            <NavigationPage Title="{Binding Title}" IconImageSource="{Binding Icon}">
-                <x:Arguments>
-                    <ContentPage Content="{Binding Content}"/>
-                </x:Arguments>
-            </NavigationPage>
-        </DataTemplate>
-    </TabbedPage.ItemTemplate>
+ ItemsSource="{Binding Models}" ItemTemplate="{Binding TemplateSelector}" SelectedItem="{Binding SelectedVM,Mode=TwoWay}">
 </TabbedPage>

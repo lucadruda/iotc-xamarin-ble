@@ -4,8 +4,12 @@
              xmlns:graphics="clr-namespace:iotc_xamarin_ble.Graphics"
              x:Class="iotc_xamarin_ble.Views.AuthPage">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Orientation="Vertical">
-            <graphics:MvvmWebView  HeightRequest="1000" WidthRequest="1000" Source="{Binding Url}" NavigatedCommand="{Binding Navigated}" NavigatingCommand="{Binding Navigating}" IsVisible="{Binding Authenticating}" />
-        </StackLayout>
+        <AbsoluteLayout VerticalOptions="Fill">
+            <StackLayout VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Orientation="Vertical" AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,0.9,0.9">
+                <graphics:MvvmWebView  HeightRequest="1000" WidthRequest="1000" Source="{Binding Url}" NavigatedCommand="{Binding Navigated}" NavigatingCommand="{Binding Navigating}" IsVisible="{Binding Authenticating}" />
+            </StackLayout>
+            <graphics:LoadingDialog/>
+        </AbsoluteLayout>
     </ContentPage.Content>
+
 </ContentPage>

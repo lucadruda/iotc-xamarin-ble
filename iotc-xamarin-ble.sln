@@ -291,8 +291,8 @@ Global
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|AndroidDevice.Build.0 = Mock|Any CPU
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|AndroidEmulator.ActiveCfg = AuthMock|Any CPU
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|AndroidEmulator.Build.0 = AuthMock|Any CPU
-		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|Any CPU.ActiveCfg = Mock|Any CPU
-		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|Any CPU.Build.0 = Mock|Any CPU
+		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|Any CPU.ActiveCfg = AuthMock|Any CPU
+		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|Any CPU.Build.0 = AuthMock|Any CPU
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|iPhone.ActiveCfg = Mock|Any CPU
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|iPhone.Build.0 = Mock|Any CPU
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.AuthMock|iPhoneSimulator.ActiveCfg = AuthMock|Any CPU

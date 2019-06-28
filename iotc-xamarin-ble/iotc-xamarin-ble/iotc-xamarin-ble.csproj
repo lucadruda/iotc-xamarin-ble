@@ -47,6 +47,14 @@
     <Compile Remove="DevicesPage.cs" />
     <Compile Remove="ModelsPage.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="accessToken.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="accessToken.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
