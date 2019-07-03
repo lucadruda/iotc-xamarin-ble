@@ -349,6 +349,27 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024-2.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\home.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\user.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\user.imageset\icons8-contacts-5.pdf" />
+    <ImageAsset Include="Assets.xcassets\home.imageset\icons8-home %281%29.pdf" />
+    <ImageAsset Include="Assets.xcassets\home.imageset\icons8-home %281%29-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\home.imageset\icons8-home %281%29-4.pdf" />
+    <ImageAsset Include="Assets.xcassets\home.imageset\icons8-home %281%29-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\home.imageset\icons8-home %281%29-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\home.imageset\icons8-home %281%29-5.pdf" />
+    <ImageAsset Include="Assets.xcassets\user.imageset\icons8-contacts %281%29.pdf" />
+    <ImageAsset Include="Assets.xcassets\user.imageset\icons8-contacts %281%29-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\user.imageset\icons8-contacts %281%29-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\user.imageset\icons8-contacts %281%29-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\user.imageset\icons8-contacts %281%29-4.pdf" />
+    <ImageAsset Include="Assets.xcassets\about.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\about.imageset\icons8-info.pdf" />
+    <ImageAsset Include="Assets.xcassets\about.imageset\icons8-info-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\about.imageset\icons8-info-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\about.imageset\icons8-info-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\about.imageset\icons8-info-4.pdf" />
+    <ImageAsset Include="Assets.xcassets\about.imageset\icons8-info-5.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -376,6 +397,11 @@
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork%402x" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\home.imageset\" />
+    <Folder Include="Assets.xcassets\user.imageset\" />
+    <Folder Include="Assets.xcassets\about.imageset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
