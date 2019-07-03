@@ -18,7 +18,7 @@
             CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding NativeDevice.Name}" Detail="{Binding NativeDevice.Address}" TextColor="Black" DetailColor="Gray"/>
+                        <TextCell Text="{Binding NativeDevice.Name}" Detail="{Binding NativeDevice.Address}" DetailColor="Gray"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
 

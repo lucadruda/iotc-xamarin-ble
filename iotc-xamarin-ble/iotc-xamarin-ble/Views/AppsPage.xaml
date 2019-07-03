@@ -15,7 +15,7 @@
                           VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="120" RowHeight="120"  AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" >
                 <flv:FlowListView.FlowColumnTemplate>
                     <DataTemplate>
-                        <Frame OutlineColor="Black" CornerRadius="4" Margin="20">
+                        <Frame OutlineColor="{DynamicResource textColor}" BackgroundColor="Transparent" CornerRadius="4" Margin="20">
                             <Label Text="{Binding Name}" VerticalOptions="FillAndExpand" />
                         </Frame>
                     </DataTemplate>

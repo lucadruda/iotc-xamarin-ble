@@ -63,7 +63,11 @@ namespace iotc_ble_xamarin
         public const string BLE_SERVICES_FETCHED = "BLE_SERVICES_FETCHED";
 
 
-
+        public enum THEMES
+        {
+            DARK,
+            LIGHT
+        }
 
 
 

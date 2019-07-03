@@ -13,7 +13,7 @@
     <ContentPage.Content>
         <AbsoluteLayout VerticalOptions="Fill" BackgroundColor="#ededed">
             <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.6,0.9,0.9">
-                <StackLayout Orientation="Horizontal" HeightRequest="250">
+                <StackLayout x:Name="appTypeGroup" Orientation="Horizontal" HeightRequest="250">
                     <Frame HorizontalOptions="StartAndExpand" OutlineColor="{Binding Template.Name, Converter={StaticResource selected}, ConverterParameter='Contoso' }">
                         <Label Text="Contoso"/>
                         <Frame.GestureRecognizers>

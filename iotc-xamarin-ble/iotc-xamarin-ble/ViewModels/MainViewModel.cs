@@ -21,7 +21,9 @@ namespace iotc_xamarin_ble.ViewModels
             Models = new ObservableCollection<BaseViewModel>
         {
             new AppsViewModel(navigation),
-            new AboutViewModel(navigation)
+            new AboutViewModel(navigation),
+            new UserDetailsViewModel(navigation)
+
         };
             TemplateSelector = new ViewModelPageSelector();
         }
@@ -51,7 +53,7 @@ namespace iotc_xamarin_ble.ViewModels
                 selectedVM = value;
                 if (selectedVM != null)
                 {
-                        selectedVM.OnAppearing();
+                    selectedVM.OnAppearing();
                 }
                 OnPropertyChanged();
             }
