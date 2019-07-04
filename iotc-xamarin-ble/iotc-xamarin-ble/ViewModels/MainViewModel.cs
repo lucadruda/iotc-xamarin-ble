@@ -20,7 +20,7 @@ namespace iotc_xamarin_ble.ViewModels
 
             Models = new ObservableCollection<BaseViewModel>
         {
-            //new AppsViewModel(navigation),
+            new AppsViewModel(navigation),
             new AboutViewModel(navigation),
             new UserDetailsViewModel(navigation)
 

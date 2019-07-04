@@ -18,13 +18,12 @@ namespace iotc_xamarin_ble.Helpers
                 return new DataTemplate(() =>
                 {
                     var page = vm.Navigation.CreatePage(vm);
-                    if (((ObservableCollection<BaseViewModel>)((TabbedPage)container).ItemsSource).IndexOf(vm) == 0)
-                    {
+                   //
                         page = new NavigationPage(page);
                         page.Title = vm.Title;
                         page.IconImageSource = vm.Icon;
                         vm.Navigation.SetNavigator(page.Navigation);
-                    }
+                    //}
                     vm.BeforeFirstShown();
                     return page;
                 });
