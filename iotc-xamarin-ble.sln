@@ -225,7 +225,7 @@ Global
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Debug|iPhoneSimulator.Deploy.0 = Debug|iPhoneSimulator
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Mock|AndroidDevice.ActiveCfg = Mock|iPhoneSimulator
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Mock|AndroidDevice.Build.0 = Mock|iPhoneSimulator
-		{39F6B0C9-D303-49EC-8633-126F4E127851}.Mock|AndroidEmulator.ActiveCfg = Mock|iPhone
+		{39F6B0C9-D303-49EC-8633-126F4E127851}.Mock|AndroidEmulator.ActiveCfg = Mock|Any CPU
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Mock|Any CPU.ActiveCfg = Mock|iPhone
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Mock|Any CPU.Build.0 = Mock|iPhone
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Mock|iPhone.ActiveCfg = Mock|iPhone
@@ -239,7 +239,6 @@ Global
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|AndroidEmulator.Build.0 = Release|iPhone
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|AndroidEmulator.Deploy.0 = Release|iPhone
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|Any CPU.ActiveCfg = Release|iPhone
-		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|Any CPU.Build.0 = Release|iPhone
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|Any CPU.Deploy.0 = Release|iPhone
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|iPhone.ActiveCfg = Release|iPhone
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|iPhone.Build.0 = Release|iPhone

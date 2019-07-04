@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.iotc_xamarin_ble" android:installLocation="internalOnly">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.github.lucadruda.iotc_xamarin_ble" android:installLocation="internalOnly">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.BLUETOOTH" />
 	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-	<application android:label="IoTCentral BLE Gateway" android:icon="@mipmap/icon">
+	<application android:label="IoTCentral BLE Gateway" android:icon="@mipmap/ic_launcher_round">
 		<!--<activity android:name="microsoft.identity.client.BrowserTabActivity">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />

@@ -5,5 +5,8 @@
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             x:Class="iotc_xamarin_ble.Views.MainPage"
             android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.BarItemColor="{DynamicResource textColor}"
+            android:TabbedPage.BarSelectedItemColor="Accent"
+            BarBackgroundColor="{DynamicResource backgroundColor}"
  ItemsSource="{Binding Models}" ItemTemplate="{Binding TemplateSelector}" SelectedItem="{Binding SelectedVM,Mode=TwoWay}">
 </TabbedPage>
