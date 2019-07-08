@@ -59,6 +59,8 @@
   <ItemGroup>
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
     <PackageReference Include="IoTCentral.Devices.Client" Version="1.1.0-alpha" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.1.1" />
     <PackageReference Include="Plugin.BLE" Version="2.0.0-pre1" />
     <PackageReference Include="Plugin.Permissions" Version="3.0.0.12" />
     <PackageReference Include="Refractored.XamForms.PullToRefresh" Version="2.4.1" />

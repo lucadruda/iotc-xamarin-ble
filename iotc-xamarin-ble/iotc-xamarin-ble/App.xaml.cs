@@ -14,6 +14,9 @@ using Plugin.BLE.Abstractions.Contracts;
 using iotc_xamarin_ble.ViewModels.Authentication;
 using iotc_csharp_service;
 using Plugin.BLE;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace iotc_xamarin_ble
@@ -50,7 +53,8 @@ namespace iotc_xamarin_ble
         public static object ParentWindow { get; set; }
         protected override void OnStart()
         {
-            // Handle when your app starts
+            AppCenter.Start("ios=1d9f0a76-0c88-43ed-bcf4-68dee009c25a;",
+                  typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnSleep()
