@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace iotc_xamarin_ble.ViewModels.Navigation
 {
@@ -42,5 +43,13 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
         /// Navigate back to the element at the root of the navigation stack
         /// </summary>
         Task NavigateBackToRoot();
+
+        /// <summary>
+        /// Creates a page for the current viewmodel without navigating to it
+        /// </summary>
+        /// <returns></returns>
+        Page CreatePage(BaseViewModel viewModel);
+
+        void SetNavigator(INavigation navigator);
     }
 }

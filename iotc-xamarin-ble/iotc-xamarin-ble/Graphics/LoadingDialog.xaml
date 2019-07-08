@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <AbsoluteLayout xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="iotc_xamarin_ble.Graphics.LoadingDialog" IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="1,1,1,1" BackgroundColor="#AA808080">
+             x:Class="iotc_xamarin_ble.Graphics.LoadingDialog" IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="1,1,1,1" BackgroundColor="{DynamicResource OVERLAY}">
     <StackLayout 
              AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds=".5,.5,.7,.2" Orientation="Horizontal"
-             Padding="20" BackgroundColor="White" Opacity="1">
+             Padding="20" Opacity="1" BackgroundColor="{DynamicResource backgroundColor}">
         <ActivityIndicator IsRunning="{Binding IsBusy}" Color="Accent" VerticalOptions="Center" Margin="0,0,10,0"/>
-        <Label Text="{Binding LoadingText}" VerticalOptions="Center" TextColor="Black"/>
+        <Label Text="{Binding LoadingText}" VerticalOptions="Center"/>
     </StackLayout>
 </AbsoluteLayout>

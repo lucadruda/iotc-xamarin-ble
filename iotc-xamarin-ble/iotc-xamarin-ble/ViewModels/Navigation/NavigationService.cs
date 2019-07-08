@@ -11,10 +11,29 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
     class NavigationService : INavigationService
     {
         private readonly IViewLocator viewLocator;
-        private INavigation Navigator => App.Current.MainPage.Navigation;
+        private INavigation navigator;
+
+        private INavigation Navigator
+        {
+            get
+            {
+                if (navigator == null)
+                {
+                    return navigator = App.Current.MainPage.Navigation;
+                }
+                return navigator;
+            }
+            set => navigator = value;
+        }
         public NavigationService(IViewLocator viewLocator)
         {
             this.viewLocator = viewLocator;
+        }
+
+        public Page CreatePage(BaseViewModel viewModel)
+        {
+            viewModel.BeforeFirstShown();
+            return viewLocator.CreateAndBindPageFor(viewModel);
         }
         public async Task NavigateBack()
         {
@@ -153,6 +172,11 @@ namespace iotc_xamarin_ble.ViewModels.Navigation
             {
                 poppingPage.AfterDismissed();
             }
+        }
+
+        public void SetNavigator(INavigation navigator)
+        {
+            Navigator = navigator;
         }
     }
 }

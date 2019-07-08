@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:graphics="clr-namespace:iotc_xamarin_ble.Graphics"
+             x:Class="iotc_xamarin_ble.Views.UserDetailsPage" Title="{Binding Title}" IconImageSource="{Binding Icon}">
+    <ContentPage.Content>
+        <StackLayout Margin="10,0,10,0">
+            <Label Text="Account" TextColor="Accent" FontSize="Small" Margin="0,10,0,10"/>
+            <Label Text="{Binding FullName, Converter={StaticResource TitleCaseConverter}}" Margin="5,10,0,10"/>
+            <Label Text="{Binding Email}" Margin="10,10,0,10" TextColor="LightGray" FontSize="Small"/>
+            <BoxView HorizontalOptions="Fill" HeightRequest="2" WidthRequest="-1" Color="LightGray"/>
+            <Label Text="Theme" TextColor="Accent" FontSize="Small" Margin="0,10,0,10"/>
+            <ListView x:Name="themeSelection"  HorizontalOptions="Fill" ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" BackgroundColor="{DynamicResource backgroundColor}">
+                                <Label Text="{Binding Name, Converter={StaticResource TitleCaseConverter}}" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <graphics:CheckBox HorizontalOptions="End" Margin="0,0,10,0" VerticalOptions="Center"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,36 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                          xmlns:controls="clr-namespace:iotc_xamarin_ble.Graphics"
-             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
-             xmlns:pulltorefresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
-             x:Class="iotc_xamarin_ble.Views.MainPage" Title="{Binding Title}">
-
-    <ContentPage.Content>
-        <AbsoluteLayout>
-            <!--<pulltorefresh:PullToRefreshLayout AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" 
-                                               IsPullToRefreshEnabled="{Binding Authenticated}" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding ReloadApplications}">-->
-            <flv:FlowListView IsVisible="{Binding Authenticated}" SeparatorVisibility="None" HasUnevenRows="false"
-	FlowItemTappedCommand="{Binding OnApplicationTapped}" FlowItemsSource="{Binding Applications}" FlowLastTappedItem="{Binding LastTappedItem}" 
-                          VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="120" RowHeight="120"  AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" >
-                <flv:FlowListView.FlowColumnTemplate>
-                    <DataTemplate>
-                        <Frame OutlineColor="Black" CornerRadius="4" Margin="20">
-                            <Label Text="{Binding Name}" VerticalOptions="FillAndExpand" />
-                        </Frame>
-                    </DataTemplate>
-                </flv:FlowListView.FlowColumnTemplate>
-
-            </flv:FlowListView>
-            <!--</pulltorefresh:PullToRefreshLayout>-->
-            <!--<controls:FloatingButton/> TODO: Temporary disabled because of the known provisioning issue that app is not available if not entering from web ui  -->
-            <controls:LoadingDialog/>
-        </AbsoluteLayout>
-
-    </ContentPage.Content>
-    <!--</StackLayout>
-        </ScrollView>
-
-    </StackLayout> -->
-
-</ContentPage>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms" 
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+            xmlns:local="clr-namespace:iotc_xamarin_ble.Views"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            x:Class="iotc_xamarin_ble.Views.MainPage"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.BarItemColor="{DynamicResource textColor}"
+            android:TabbedPage.BarSelectedItemColor="Accent"
+            BarBackgroundColor="{DynamicResource backgroundColor}"
+ ItemsSource="{Binding Models}" ItemTemplate="{Binding TemplateSelector}" SelectedItem="{Binding SelectedVM,Mode=TwoWay}">
+</TabbedPage>

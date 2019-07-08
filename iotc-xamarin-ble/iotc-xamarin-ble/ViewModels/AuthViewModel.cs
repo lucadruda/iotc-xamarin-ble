@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Web;
 using System.Windows.Input;
 using iotc_ble_xamarin;
 using iotc_xamarin_ble.Authentication.v1;
+using iotc_xamarin_ble.Messages;
 using iotc_xamarin_ble.Services.Http;
 using iotc_xamarin_ble.ViewModels.Authentication;
 using iotc_xamarin_ble.ViewModels.Navigation;
@@ -81,6 +83,7 @@ namespace iotc_xamarin_ble.ViewModels
             if (resp.Success)
             {
                 var token = new AzureToken(resp.ResponseBody);
+                MessagingCenter.Send(new ResultMessage<AzureToken>(token), Constants.IOTC_ACCESS_TOKEN);
                 SecureStorage.Current.Add(token.Resource, JsonConvert.SerializeObject(token));
                 interactiveLoginTask.SetResult(token);
             }
@@ -94,6 +97,7 @@ namespace iotc_xamarin_ble.ViewModels
                 var token = JsonConvert.DeserializeObject<AzureToken>(storedToken);
                 if (!token.Expired())
                 {
+                    MessagingCenter.Send(new ResultMessage<AzureToken>(token), Constants.IOTC_ACCESS_TOKEN);
                     return token.AccessToken;
                 }
             }
@@ -109,13 +113,14 @@ namespace iotc_xamarin_ble.ViewModels
                 var token = JsonConvert.DeserializeObject<AzureToken>(storedToken.Value);
                 var refreshToken = token.RefreshToken;
 
-                    var resp = await TryGetTokenWithRefresh(resourceUri, refreshToken);
-                    if (resp.Success)
-                    {
-                        var res = new AzureToken(resp.ResponseBody);
-                        SecureStorage.Current.Add(token.Resource, JsonConvert.SerializeObject(res));
-                        return res;
-                    }
+                var resp = await TryGetTokenWithRefresh(resourceUri, refreshToken);
+                if (resp.Success)
+                {
+                    var res = new AzureToken(resp.ResponseBody);
+                    MessagingCenter.Send(new ResultMessage<AzureToken>(res), Constants.IOTC_ACCESS_TOKEN);
+                    SecureStorage.Current.Add(token.Resource, JsonConvert.SerializeObject(res));
+                    return res;
+                }
 
             }
 

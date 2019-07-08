@@ -26,6 +26,8 @@ namespace iotc_xamarin_ble.ViewModels
         private bool isScanning;
         public BleScanViewModel(INavigationService navigation) : base(navigation)
         {
+            Title = "Scan devices";
+            Icon = "home";
             Devices = new ObservableCollection<IDevice>();
             BleService = new BLEService();
             ScanBtn = "Stop";

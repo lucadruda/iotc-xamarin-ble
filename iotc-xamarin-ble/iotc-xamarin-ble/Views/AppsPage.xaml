@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:controls="clr-namespace:iotc_xamarin_ble.Graphics"
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:pulltorefresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
+             x:Class="iotc_xamarin_ble.Views.AppsPage" Title="{Binding Title}" IconImageSource="{Binding Icon}">
+
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <!--<pulltorefresh:PullToRefreshLayout AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" 
+                                               IsPullToRefreshEnabled="{Binding Authenticated}" IsRefreshing="{Binding IsBusy}" RefreshCommand="{Binding ReloadApplications}">-->
+            <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="false"
+	FlowItemTappedCommand="{Binding OnApplicationTapped}" FlowItemsSource="{Binding Applications}" FlowLastTappedItem="{Binding LastTappedItem}" 
+                          VerticalOptions="FillAndExpand" HorizontalOptions="Center" FlowColumnMinWidth="120" RowHeight="120"  AbsoluteLayout.LayoutFlags="SizeProportional" AbsoluteLayout.LayoutBounds="20,20,.9,.9" >
+                <flv:FlowListView.FlowColumnTemplate>
+                    <DataTemplate>
+                        <Frame OutlineColor="{DynamicResource textColor}" BackgroundColor="Transparent" CornerRadius="4" Margin="20">
+                            <Label Text="{Binding Name}" VerticalOptions="FillAndExpand" />
+                        </Frame>
+                    </DataTemplate>
+                </flv:FlowListView.FlowColumnTemplate>
+
+            </flv:FlowListView>
+            <!--</pulltorefresh:PullToRefreshLayout>-->
+            <!--<controls:FloatingButton/> TODO: Temporary disabled because of the known iotc provisioning issue that app is not available if not entering from web ui  -->
+            <controls:LoadingDialog/>
+        </AbsoluteLayout>
+
+    </ContentPage.Content>
+    <!--</StackLayout>
+        </ScrollView>
+
+    </StackLayout> -->
+
+</ContentPage>

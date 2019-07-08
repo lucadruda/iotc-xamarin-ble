@@ -1,89 +1,62 @@
-﻿using DLToolkit.Forms.Controls;
-using iotc_ble_xamarin;
-using iotc_csharp_service.Exceptions;
-using iotc_xamarin_ble.Helpers;
-using iotc_xamarin_ble.Services;
-using iotc_xamarin_ble.ViewModels.Navigation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using iotc_xamarin_ble.Helpers;
+using iotc_xamarin_ble.ViewModels.Navigation;
 using Xamarin.Forms;
 
 namespace iotc_xamarin_ble.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        private BaseViewModel selectedVM;
 
 
-        public MainViewModel(INavigationService navigationService) : base(navigationService)
+        public MainViewModel(INavigationService navigation) : base(navigation)
         {
-            Title = "Azure IoT Central";
-            IsBusy = true;
-            Add = new Command(CreateNewApplication);
-            ReloadApplications = new Command(async () =>
-            {
-                IsBusy = true;
-                await Fetch();
-            });
-            //LoginCommand = new Command(Fetch);
-            OnApplicationTapped = new Command(() =>
-              {
-                  Application tappedApp = LastTappedItem as Application;
-                  if (tappedApp != null)
-                  {
-                      IoTCentral.Current.Application = tappedApp;
-                      Navigation.NavigateTo(new ModelsViewModel(Navigation));
-                  }
-              });
-            Applications.Clear();
 
+            Models = new ObservableCollection<BaseViewModel>
+        {
+            new AppsViewModel(navigation),
+            new AboutViewModel(navigation),
+            new UserDetailsViewModel(navigation)
+
+        };
+            TemplateSelector = new ViewModelPageSelector();
         }
 
-        public FlowObservableCollection<Application> Applications { get; set; } = new FlowObservableCollection<Application>();
+        public ObservableCollection<BaseViewModel> Models { get; set; }
+        public ObservableCollection<DataTemplate> Templates { get; set; }
 
-        public ICommand LoginCommand { get; private set; }
+        public DataTemplateSelector TemplateSelector { get; set; }
 
-        public ICommand OnApplicationTapped { get; private set; }
-        public ICommand Add { get; private set; }
-        public ICommand ReloadApplications { get; private set; }
-
-        public object LastTappedItem { get; set; }
-
-        public override async Task OnAppearing()
+        public override Task OnAppearing()
         {
-            IsBusy = true;
-            await Fetch();
-        }
-
-        private async Task Fetch()
-        {
-            var client = await IoTCentral.Current.GetServiceClient();
-            try
+            foreach (var model in Models)
             {
-                Applications.AddRange(await client.ListApps());
-                OnPropertyChanged("Applications");
+                model.OnAppearing();
             }
-            catch(Exception ex)
+            return Task.CompletedTask;
+        }
+        public BaseViewModel SelectedVM
+        {
+            get
             {
-                if(ex is AuthenticationException)
+                return selectedVM;
+            }
+
+            set
+            {
+                selectedVM = value;
+                if (selectedVM != null)
                 {
-                    new IoTCException().Error("Invalid authentication");
+                    selectedVM.OnAppearing();
                 }
+                OnPropertyChanged();
             }
-            finally
-            {
-                IsBusy = false;
-            }
-            
-            
-        }
-
-        private void CreateNewApplication()
-        {
-            Navigation.NavigateTo(new CreateAppViewModel(Navigation));
         }
     }
 }

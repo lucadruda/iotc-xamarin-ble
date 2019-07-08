@@ -1,0 +1,100 @@
+{
+  "images": [
+    {
+      "filename": "icons8-home (1).pdf",
+      "idiom": "universal"
+    },
+    {
+      "scale": "1x",
+      "idiom": "universal"
+    },
+    {
+      "scale": "2x",
+      "idiom": "universal"
+    },
+    {
+      "scale": "3x",
+      "idiom": "universal"
+    },
+    {
+      "filename": "icons8-home (1)-4.pdf",
+      "idiom": "iphone"
+    },
+    {
+      "scale": "1x",
+      "idiom": "iphone"
+    },
+    {
+      "scale": "2x",
+      "idiom": "iphone"
+    },
+    {
+      "subtype": "retina4",
+      "scale": "2x",
+      "idiom": "iphone"
+    },
+    {
+      "scale": "3x",
+      "idiom": "iphone"
+    },
+    {
+      "filename": "icons8-home (1)-2.pdf",
+      "idiom": "ipad"
+    },
+    {
+      "scale": "1x",
+      "idiom": "ipad"
+    },
+    {
+      "scale": "2x",
+      "idiom": "ipad"
+    },
+    {
+      "filename": "icons8-home (1)-1.pdf",
+      "idiom": "watch"
+    },
+    {
+      "scale": "2x",
+      "idiom": "watch"
+    },
+    {
+      "screenWidth": "{130,145}",
+      "scale": "2x",
+      "idiom": "watch"
+    },
+    {
+      "screenWidth": "{146,165}",
+      "scale": "2x",
+      "idiom": "watch"
+    },
+    {
+      "filename": "icons8-home (1)-3.pdf",
+      "idiom": "mac"
+    },
+    {
+      "scale": "1x",
+      "idiom": "mac"
+    },
+    {
+      "scale": "2x",
+      "idiom": "mac"
+    },
+    {
+      "filename": "icons8-home (1)-5.pdf",
+      "idiom": "car"
+    },
+    {
+      "scale": "2x",
+      "idiom": "car"
+    },
+    {
+      "scale": "3x",
+      "idiom": "car"
+    }
+  ],
+  "info": {
+    "version": 1,
+    "author": "xcode",
+    "template-rendering-intent": "template"
+  }
+}

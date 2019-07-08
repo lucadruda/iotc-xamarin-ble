@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:iotc_xamarin_ble.ValueConverters"
+             x:Class="iotc_xamarin_ble.Views.AboutPage" Title="{Binding Title}" IconImageSource="{Binding Icon}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:HyperlinkConverter x:Key="HyperlinkConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Margin="10,0,10,0">
+            <Label Text="{Binding BluetoothInfo}" TextColor="Accent" FontSize="Small" Margin="0,10,0,10"/>
+            <Label Text="{Binding DeviceName, StringFormat='Device: {0}'}" Margin="0,10,0,10"/>
+            <BoxView HorizontalOptions="Fill" HeightRequest="2" WidthRequest="-1" Color="LightGray"/>
+            <Label Text="{Binding Help}" TextColor="Accent" FontSize="Small" Margin="0,10,0,10"/>
+            <Label Text="{Binding Support}" Margin="0,10,0,10">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ContactSupport}"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="{Binding Faq}" Margin="0,10,0,10"/>
+            <BoxView HorizontalOptions="Fill" HeightRequest="2" WidthRequest="-1" Color="LightGray"/>
+            <Label Text="{Binding About}" TextColor="Accent" FontSize="Small" Margin="0,10,0,10"/>
+            <Label Text="{Binding LicenseTerms}" Margin="0,10,0,10">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenLicense}"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="{Binding ProjectPage,StringFormat='Project page: {0}', Converter={StaticResource HyperlinkConverter}}" FontSize="Small" Margin="0,10,0,10"/>
+            <Label Text="{Binding Version, StringFormat='Version: {0}'}" TextColor="LightGray" Margin="0,10,0,10"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
