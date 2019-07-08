@@ -53,7 +53,7 @@ namespace iotc_xamarin_ble
         public static object ParentWindow { get; set; }
         protected override void OnStart()
         {
-            AppCenter.Start("ios=1d9f0a76-0c88-43ed-bcf4-68dee009c25a;",
+            AppCenter.Start("ios=1d9f0a76-0c88-43ed-bcf4-68dee009c25a;android=e0920845-52e8-47e4-8de7-15cc0d9651b2",
                   typeof(Analytics), typeof(Crashes));
         }
 
