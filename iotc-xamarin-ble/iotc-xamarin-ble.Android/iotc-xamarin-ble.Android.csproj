@@ -43,6 +43,7 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
+    <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Mock|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
