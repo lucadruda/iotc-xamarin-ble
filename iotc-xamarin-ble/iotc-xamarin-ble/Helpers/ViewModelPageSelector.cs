@@ -25,6 +25,10 @@ namespace iotc_xamarin_ble.Helpers
                         page.IconImageSource = vm.Icon;
                         vm.Navigation.SetNavigator(page.Navigation);
                     }
+                    else
+                    {
+                        page.Padding = new Thickness(0, Device.RuntimePlatform == Device.iOS ? 40 : 0, 0, 0);
+                    }
                     vm.BeforeFirstShown();
                     return page;
                 });
