@@ -50,11 +50,11 @@ namespace iotc_xamarin_ble.ViewModels
         public object LastTappedItem { get; set; }
 
 
-      /*  public override async Task OnAppearing()
+        public override async Task OnAppearing()
         {
             IsBusy = true;
             await Fetch();
-        }*/
+        }
 
         private async Task Fetch()
         {
