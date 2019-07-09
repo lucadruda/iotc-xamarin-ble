@@ -18,12 +18,17 @@ namespace iotc_xamarin_ble.Helpers
                 return new DataTemplate(() =>
                 {
                     var page = vm.Navigation.CreatePage(vm);
-                   //
+                    if (((ObservableCollection<BaseViewModel>)((TabbedPage)container).ItemsSource).IndexOf(vm) == 0)
+                    {
                         page = new NavigationPage(page);
                         page.Title = vm.Title;
                         page.IconImageSource = vm.Icon;
                         vm.Navigation.SetNavigator(page.Navigation);
-                    //}
+                    }
+                    else
+                    {
+                        page.Padding = new Thickness(0, Device.RuntimePlatform == Device.iOS ? 40 : 0, 0, 0);
+                    }
                     vm.BeforeFirstShown();
                     return page;
                 });

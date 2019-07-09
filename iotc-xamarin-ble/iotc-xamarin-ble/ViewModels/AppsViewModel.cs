@@ -17,8 +17,8 @@ namespace iotc_xamarin_ble.ViewModels
     {
         public AppsViewModel(INavigationService navigationService) : base(navigationService)
         {
-            Title = "Azure IoT Central";
-            Icon = "home";
+            Title = "IoT";
+            Icon = "iot";
             //IsBusy = true;
             Add = new Command(CreateNewApplication);
             ReloadApplications = new Command(async () =>
