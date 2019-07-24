@@ -85,6 +85,9 @@
     <Compile Update="Views\AuthPage.xaml.cs">
       <DependentUpon>AuthPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\WiFiScanPage.xaml.cs">
+      <DependentUpon>WiFiScanPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ListPage.xaml.cs">
       <DependentUpon>ListPage.xaml</DependentUpon>
     </Compile>
