@@ -26,6 +26,10 @@ namespace iotc_xamarin_ble.Extensions
             {
                 return BitConverter.ToSingle(characteristic.Value, 0);
             }
+            //if (value.Length == 5)
+            //{
+            //    return BitConverter.ToInt16(characteristic.Value, 3);
+            //}
             return 0;
         }
     }

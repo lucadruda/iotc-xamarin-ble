@@ -89,5 +89,12 @@ namespace iotc_xamarin_ble.Authentication.v1
                 await XamarinSecureStorage.SetAsync(Constants.USER_ID, JsonConvert.SerializeObject(tokens));
             });
         }
+
+        public void Clear()
+        {
+            tokens.Clear();
+            XamarinSecureStorage.Remove(Constants.USER_ID);
+
+        }
     }
 }

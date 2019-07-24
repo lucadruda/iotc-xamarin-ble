@@ -6,7 +6,9 @@ namespace iotc_xamarin_ble.Services.Container
 {
     public class ContainerService : IContainer
     {
-        private Dictionary<Type, object> deps;
+        private Dictionary<Type, object> instances;
+        private Dictionary<Type, Type> types;
+
         private static ContainerService _instance;
 
         public static ContainerService Current
@@ -23,37 +25,47 @@ namespace iotc_xamarin_ble.Services.Container
 
         private ContainerService()
         {
-            deps = new Dictionary<Type, object>();
+            instances = new Dictionary<Type, object>();
+            types = new Dictionary<Type, Type>();
+
         }
         public void RegisterInstance<T>(T instance)
         {
-            if (deps.ContainsKey(typeof(T)))
+            if (instances.ContainsKey(typeof(T)))
             {
-                deps[typeof(T)] = instance;
+                instances[typeof(T)] = instance;
             }
             else
             {
-                deps.Add(typeof(T), instance);
+                instances.Add(typeof(T), instance);
             }
         }
 
-        public void RegisterType<T>()
+        public void RegisterType<T>(Type t) 
         {
-            if (deps.ContainsKey(typeof(T)))
+            if (types.ContainsKey(typeof(T)))
             {
-                deps[typeof(T)] = default(T);
+                types[typeof(T)] = t;
             }
             else
             {
-                deps.Add(typeof(T), default(T));
+                types.Add(typeof(T), t);
             }
         }
 
         public T Resolve<T>()
         {
-            if (deps.ContainsKey(typeof(T)))
+            if (instances.ContainsKey(typeof(T)))
             {
-                return (T)deps[typeof(T)];
+                return (T)instances[typeof(T)];
+            }
+            return default;
+        }
+        public Type ResolveType<T>()
+        {
+            if (types.ContainsKey(typeof(T)))
+            {
+                return types[typeof(T)];
             }
             return default;
         }

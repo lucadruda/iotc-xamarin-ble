@@ -165,6 +165,7 @@
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Cookies.cs" />
     <Compile Include="Helpers\DeviceOrientationImplementation.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\IoTCentralService.cs" />

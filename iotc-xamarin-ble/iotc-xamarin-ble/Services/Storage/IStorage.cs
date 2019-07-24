@@ -16,5 +16,7 @@ namespace iotc_xamarin_ble.Services.Storage
 
         Dictionary<string, string> GetAll();
 
+        void Clear();
+
     }
 }

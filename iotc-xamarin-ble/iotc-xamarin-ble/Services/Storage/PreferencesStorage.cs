@@ -74,5 +74,11 @@ namespace iotc_xamarin_ble.Services.Storage
             }
             else prefStorage.Remove(key);
         }
+
+        public void Clear()
+        {
+            prefStorage.Clear();
+            CrossSettings.Current.Remove(USER_PREFERENCES);
+        }
     }
 }

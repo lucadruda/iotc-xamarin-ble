@@ -82,5 +82,11 @@ namespace iotc_xamarin_ble.Bluetooth
             }
             else deviceStorage.Remove(key);
         }
+
+        public void Clear()
+        {
+            deviceStorage.Clear();
+            CrossSettings.Current.Remove(IoTCentral.Current.Device.DeviceId);
+        }
     }
 }

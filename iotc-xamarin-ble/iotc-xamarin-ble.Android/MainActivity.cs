@@ -27,6 +27,7 @@ namespace iotc_xamarin_ble.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             PullToRefreshLayoutRenderer.Init();
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             base.OnCreate(savedInstanceState);
             MessagingCenter.Subscribe<RequestMessage<ServiceParameter>>(this, Constants.SERVICE_START, message =>

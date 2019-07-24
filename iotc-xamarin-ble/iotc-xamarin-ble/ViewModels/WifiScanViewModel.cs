@@ -14,22 +14,19 @@ using Xamarin.Forms;
 
 namespace iotc_xamarin_ble.ViewModels
 {
-    public class BleScanViewModel : BaseViewModel, IScanViewModel
+    public class WifiScanViewModel : BaseViewModel, IScanViewModel
     {
-        private IDevice _lastTappedItem;
+        private string _lastTappedItem;
         public bool close = false;
 
         public ICommand ScanStop { get; set; }
 
-        public BLEService BleService { get; set; }
 
         private bool isScanning;
-        public BleScanViewModel(INavigationService navigation) : base(navigation)
+        public WifiScanViewModel(INavigationService navigation) : base(navigation)
         {
-            Title = "Scan devices";
-            Icon = "home";
-            Devices = new ObservableCollection<IDevice>();
-            BleService = new BLEService();
+            Devices = new ObservableCollection<string>();
+
             ScanBtn = "Stop";
             ScanStop = new Command(async () =>
             {
@@ -57,10 +54,10 @@ namespace iotc_xamarin_ble.ViewModels
         public string ScanBtn { get; set; }
 
 
-        public ObservableCollection<IDevice> Devices { get; set; }
+        public ObservableCollection<string> Devices { get; set; }
 
 
-        public IDevice LastTappedItem
+        public string LastTappedItem
         {
             get { return _lastTappedItem; }
             set
@@ -76,20 +73,20 @@ namespace iotc_xamarin_ble.ViewModels
         }
         public void OnItemTapped()
         {
-            Navigation.NavigateTo(new BLEDetailsViewModel(Navigation, this));
+            //Navigation.NavigateTo(new BLEDetailsViewModel(Navigation, this));
         }
 
         public async Task Scan()
         {
             Devices.Clear();
             OnPropertyChanged("Devices");
-            await BleService.StartScan(OnDeviceDiscovered);
+            //await BleService.StartScan(OnDeviceDiscovered);
             IsScanning = true;
         }
 
         public async Task Stop()
         {
-            await BleService.StopScan();
+            //await BleService.StopScan();
             IsScanning = false;
         }
 
@@ -105,9 +102,9 @@ namespace iotc_xamarin_ble.ViewModels
             close = true;
         }
 
-        private void OnDeviceDiscovered(IDevice device)
+        private void OnDeviceDiscovered(string device)
         {
-            if (device.Name != null)
+            if (device != null)
                 Devices.Add(device);
         }
 

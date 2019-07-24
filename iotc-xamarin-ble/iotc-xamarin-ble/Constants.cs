@@ -18,6 +18,7 @@ namespace iotc_ble_xamarin
         public const string IOTC_ACCESS_TOKEN = "IOTC_ACCESS_TOKEN";
         public const string RM_ACCESS_TOKEN = "RM_ACCESS_TOKEN";
         public const string REFRESH_TOKEN = "REFRESH_TOKEN";
+        public const string LOGOUT = "LOGOUT";
 
 
         public const string IOTC_TOKEN_AUDIENCE_v1 = "https://apps.azureiotcentral.com/";
@@ -68,6 +69,13 @@ namespace iotc_ble_xamarin
             DARK,
             LIGHT
         }
+
+        public enum CONNECTION_MODE
+        {
+            WIFI,
+            BLE
+        }
+
 
 
 
