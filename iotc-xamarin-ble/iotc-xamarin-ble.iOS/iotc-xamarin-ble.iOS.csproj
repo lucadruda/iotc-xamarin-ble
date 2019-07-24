@@ -422,6 +422,33 @@
     <ImageAsset Include="Assets.xcassets\about.imageset\icons8-info-5.pdf">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Expand Arrow-50-100px\icons8-expand-arrow-100.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Expand Arrow-50-100px\icons8-expand-arrow-50.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\iot.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\iot.imageset\i_iot_central-4.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\iot.imageset\i_iot_central-4-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\iot.imageset\i_iot_central-4-2.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\iot.imageset\i_iot_central-4-3.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\iot.imageset\i_iot_central-4-4.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\iot.imageset\i_iot_central-4-5.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -449,6 +476,8 @@
     <Folder Include="Assets.xcassets\about.imageset\" />
     <Folder Include="Assets.xcassets\home.imageset\" />
     <Folder Include="Assets.xcassets\user.imageset\" />
+    <Folder Include="Assets.xcassets\ic_iotcentral_white.imageset\" />
+    <Folder Include="Assets.xcassets\iot.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork" />

@@ -6381,6 +6381,7 @@ namespace iotc_xamarin_ble.Droid
 			
 			// aapt resource value: 0x7f020115
 			public const int logout = 2130837781;
+			public const int iot = 2130837781;
 			
 			// aapt resource value: 0x7f020116
 			public const int mr_button_connected_dark = 2130837782;
