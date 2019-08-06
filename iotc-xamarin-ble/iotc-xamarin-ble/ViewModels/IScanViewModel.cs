@@ -9,5 +9,7 @@ namespace iotc_xamarin_ble.ViewModels
     {
         Task Scan();
         Task Stop();
+
+        void Reset();
     }
 }

@@ -37,7 +37,7 @@ namespace iotc_xamarin_ble.Services
 
         public async Task StartScan(Action<IDevice> onDeviceDiscovered)
         {
-            if ((await CheckPermissions()) != PermissionStatus.Granted)
+            if ((await ContainerService.Current.Resolve<Services.Permissions.IPermissions>().CheckPermissions()) != PermissionStatus.Granted)
             {
                 //inform the user and return;
             }

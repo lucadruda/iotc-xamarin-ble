@@ -81,7 +81,7 @@ namespace iotc_xamarin_ble.ViewModels
                     }
                     OnPropertyChanged();
                     OnPropertyChanged("Modes");
-                    // trigger mode changes
+                    ChangeMode();
                 }
             }
         }
@@ -123,7 +123,7 @@ namespace iotc_xamarin_ble.ViewModels
             var mode = PreferencesStorage.Current[CONNECTION_MODE];
             if (mode != null)
             {
-                SelectedMode = Modes.FirstOrDefault(t => t.Name == theme);
+                SelectedMode = Modes.FirstOrDefault(t => t.Name == mode);
 
             }
         }

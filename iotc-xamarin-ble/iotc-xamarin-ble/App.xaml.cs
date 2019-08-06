@@ -17,6 +17,7 @@ using Plugin.BLE;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using iotc_xamarin_ble.Services.Permissions;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace iotc_xamarin_ble
@@ -44,6 +45,8 @@ namespace iotc_xamarin_ble
             ContainerService.Current.RegisterInstance<DataClient>(new Mocks.Clients.MockServiceClient(null));
             ContainerService.Current.RegisterInstance<ARMClient>(new Mocks.Clients.MockArmClient(null));
 #endif
+            ContainerService.Current.RegisterInstance<IPermissions>(new Permissions());
+
 
             navigator.PresentAsMainPage(new MainViewModel(navigator));
             //navigator.PresentAsMainPage(new UserDetailsViewModel(navigator));

@@ -1,28 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ValueConverters="clr-namespace:iotc_ble_xamarin.ValueConverters"
              x:Class="iotc_xamarin_ble.Views.WifiScanPage" Title="{Binding Title}">
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem Name="ScanBtn" Order="Primary" Text="{Binding ScanBtn}" Priority="0" Command="{Binding ScanStop}"/>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ValueConverters:BooleanNegationConverter x:Key="not" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Margin="10">
-            <Label Text="Available devices"/>
-            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsScanning}">
-                <Label Text="Scanning..." HorizontalOptions="FillAndExpand"/>
-                <ActivityIndicator HorizontalOptions="End" IsRunning="True" IsEnabled="True" Scale="0.5"/>
+            <StackLayout>
+                <Label Text="{Binding FoundText}"/>
             </StackLayout>
-            <ListView x:Name="DevicesList"
-            ItemsSource="{Binding Devices}"
-            SelectedItem="{Binding LastTappedItem, Mode=TwoWay}"
-            CachingStrategy="RecycleElement">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding NativeDevice.Name}" Detail="{Binding NativeDevice.Address}" DetailColor="Gray"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-
-            </ListView>
+            <StackLayout IsVisible="{Binding IsScanning,Converter={StaticResource not}}">
+                <Label Text="Network Name"/>
+                <Editor Text="{Binding SSID}"/>
+                <Label Text="Password"/>
+                <Editor Text="{Binding Password}"/>
+                <Button Text="Next" Command="{Binding Connect}"/>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsScanning}" VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                <Label Text="{Binding ProgressText}" HorizontalOptions="Center"/>
+                <ActivityIndicator IsRunning="{Binding IsScanning}" Color="Accent" HorizontalOptions="Center"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

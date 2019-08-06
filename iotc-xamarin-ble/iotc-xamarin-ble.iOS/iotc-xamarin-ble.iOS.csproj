@@ -169,6 +169,7 @@
     <Compile Include="Helpers\DeviceOrientationImplementation.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\IoTCentralService.cs" />
+    <Compile Include="Services\WiFiManager.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -475,9 +476,9 @@
   <ItemGroup>
     <Folder Include="Assets.xcassets\about.imageset\" />
     <Folder Include="Assets.xcassets\home.imageset\" />
-    <Folder Include="Assets.xcassets\user.imageset\" />
     <Folder Include="Assets.xcassets\ic_iotcentral_white.imageset\" />
     <Folder Include="Assets.xcassets\iot.imageset\" />
+    <Folder Include="Assets.xcassets\user.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork" />

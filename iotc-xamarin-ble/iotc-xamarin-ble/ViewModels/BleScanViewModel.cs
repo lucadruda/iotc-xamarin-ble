@@ -129,5 +129,9 @@ namespace iotc_xamarin_ble.ViewModels
         {
             return base.BeforeFirstShown();
         }
+
+        public void Reset()
+        { 
+        }
     }
 }
