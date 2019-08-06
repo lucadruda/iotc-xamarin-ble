@@ -1,6 +1,8 @@
-﻿using iotc_xamarin_ble.iOS.Services;
+﻿using Foundation;
+using iotc_xamarin_ble.iOS.Services;
 using iotc_xamarin_ble.Services;
 using System;
+using UIKit;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(WiFiManager))]
@@ -30,6 +32,15 @@ namespace iotc_xamarin_ble.iOS.Services
 
         public void Scan()
         {
+            var WiFiURL = new NSUrl("prefs:root=WIFI");
+            if (UIApplication.SharedApplication.CanOpenUrl(WiFiURL))
+            {   //Pre iOS 10
+                UIApplication.SharedApplication.OpenUrl(WiFiURL);
+            }
+            else
+            {   //iOS 10
+                UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=WIFI"));
+            }
 
         }
     }
