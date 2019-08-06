@@ -38,19 +38,6 @@ namespace iotc_xamarin_ble.Droid.Services
             Wifi.StartScan();
         }
 
-        public void Handshake()
-        {
-            Task.Run(async () =>
-            {
-                using (var client = new UdpClient())
-                {
-                    var endpoint = new IPEndPoint(IPAddress.Parse("192.168.0.1"), 4000);
-                    var message = Encoding.ASCII.GetBytes("Hello World - " + DateTime.Now.ToString());
-                    await client.SendAsync(message, message.Length, endpoint);
-                    client.Close();
-                }
-            });
-        }
 
         public void Connect(string ssid, string passphrase = null)
         {
