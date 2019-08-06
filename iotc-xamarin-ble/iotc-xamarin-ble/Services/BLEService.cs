@@ -107,14 +107,20 @@ namespace iotc_xamarin_ble.Services
 
         public async Task EnableNotification(ICharacteristic characteristic)
         {
-            characteristic.ValueUpdated += OnValueAvailable;
-            await characteristic.StartUpdatesAsync();
+            if (characteristic.CanUpdate)
+            {
+                characteristic.ValueUpdated += OnValueAvailable;
+                await characteristic.StartUpdatesAsync();
+            }
         }
 
         public async Task DisableNotification(ICharacteristic characteristic)
         {
-            characteristic.ValueUpdated -= OnValueAvailable;
-            await characteristic.StopUpdatesAsync();
+            if (characteristic.CanUpdate)
+            {
+                characteristic.ValueUpdated -= OnValueAvailable;
+                await characteristic.StopUpdatesAsync();
+            }
         }
 
 

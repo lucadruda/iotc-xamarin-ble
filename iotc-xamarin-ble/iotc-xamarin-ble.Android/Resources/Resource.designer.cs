@@ -6380,6 +6380,7 @@ namespace iotc_xamarin_ble.Droid
 			public const int ic_vol_type_tv_light = 2130837780;
 			
 			// aapt resource value: 0x7f020115
+			public const int logout = 2130837781;
 			public const int iot = 2130837781;
 			
 			// aapt resource value: 0x7f020116

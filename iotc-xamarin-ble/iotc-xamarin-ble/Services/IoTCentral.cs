@@ -57,6 +57,13 @@ namespace iotc_xamarin_ble.Services
             }
         }
 
+        public async Task Clear()
+        {
+            var auth = Container.ContainerService.Current.Resolve<IAuthViewModel>();
+            await auth.Clear();
+            _service = null;
+        }
+
         public Application Application
         {
             get
@@ -151,6 +158,7 @@ namespace iotc_xamarin_ble.Services
             var creds = await (await GetServiceClient()).GetCredentials(Application.Id);
             creds.DeviceId = Device.DeviceId;
             MessagingCenter.Send(new RequestMessage<ServiceParameter>(new ServiceParameter(creds, bleDeviceId, mapping)), Constants.SERVICE_START);
+            //new DeviceWorker().Start(creds.IdScope, creds.PrimaryKey, creds.DeviceId, bleDeviceId, mapping);
         }
 
     }

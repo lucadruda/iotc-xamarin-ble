@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using iotc_csharp_service.Types;
 using iotc_xamarin_ble.Mocks;
 using iotc_xamarin_ble.Services;
+using iotc_xamarin_ble.Services.Container;
 using iotc_xamarin_ble.Services.Dialog;
 using iotc_xamarin_ble.ViewModels.Navigation;
 
@@ -29,7 +31,8 @@ namespace iotc_xamarin_ble.ViewModels
             if (device != null)
             {
                 IoTCentral.Current.Device = device;
-                Navigation.NavigateTo(new BleScanViewModel(Navigation));
+                var scanModel = (BaseViewModel)Activator.CreateInstance(ContainerService.Current.ResolveType<IScanViewModel>(), Navigation);
+                Navigation.NavigateTo(scanModel);
                 LastTappedItem = null;
                 OnPropertyChanged("LastTappedItem");
 

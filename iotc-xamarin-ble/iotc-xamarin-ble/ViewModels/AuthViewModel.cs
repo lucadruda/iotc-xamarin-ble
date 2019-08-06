@@ -22,6 +22,7 @@ namespace iotc_xamarin_ble.ViewModels
     {
         private RestClient client;
         private TaskCompletionSource<AzureToken> interactiveLoginTask;
+        private TaskCompletionSource<bool> logoutTask;
 
         public event EventHandler<string> TokenAcquired;
 
@@ -32,7 +33,9 @@ namespace iotc_xamarin_ble.ViewModels
             Title = "Azure IoTCentral";
             client = new RestClient();
             Authenticating = false;
+            LoggingOut = false;
             interactiveLoginTask = new TaskCompletionSource<AzureToken>();
+            logoutTask = new TaskCompletionSource<bool>();
         }
 
 
@@ -41,20 +44,28 @@ namespace iotc_xamarin_ble.ViewModels
 
         public string Url { get; set; }
         public bool Authenticating { get; set; }
+        public bool LoggingOut { get; set; }
         public ICommand Navigated { get; set; }
         public ICommand Navigating { get; set; }
 
 
         private async void OnNavigated(WebNavigatedEventArgs e)
         {
-            if (!Authenticating)
+            if (Authenticating)
+            { 
+                var matches = new Regex(@"[\S]+code=([\S]+)&[\S]+").Match(e.Url).Groups;
+                if (matches.Count > 1)
+                {
+                    await ParseAuthorizationCode(matches[1].Value);
+                }
+            }
+            else if (LoggingOut)
+            {
+
+            }
+            else
             {// not authenticating. event came from somewhere else
                 return;
-            }
-            var matches = new Regex(@"[\S]+code=([\S]+)&[\S]+").Match(e.Url).Groups;
-            if (matches.Count > 1)
-            {
-                await ParseAuthorizationCode(matches[1].Value);
             }
         }
 
@@ -64,14 +75,21 @@ namespace iotc_xamarin_ble.ViewModels
              */
         private async void OnNavigating(WebNavigatingEventArgs e)
         {
-            if (!Authenticating)
+            if (Authenticating)
+            {
+                var matches = new Regex(@"[\S]+code=([\S]+)&[\S]+").Match(e.Url).Groups;
+                if (matches.Count > 1)
+                {
+                    await ParseAuthorizationCode(matches[1].Value);
+                }
+            }
+            else if (LoggingOut)
+            {
+
+            }
+            else
             {// not authenticating. event came from somewhere else
                 return;
-            }
-            var matches = new Regex(@"[\S]+code=([\S]+)&[\S]+").Match(e.Url).Groups;
-            if (matches.Count > 1)
-            {
-                await ParseAuthorizationCode(matches[1].Value);
             }
         }
 
@@ -171,6 +189,16 @@ namespace iotc_xamarin_ble.ViewModels
             IsBusy = false;
             await Navigation.NavigateBackModal();
             return token;
+        }
+
+        public async Task Clear()
+        {
+            LoggingOut = true;
+            await Navigation.NavigateToModal(this);
+            SecureStorage.Current.Clear();
+            Url = $"https://{Constants.DEFAULT_AUTHORITY}/{Tenant}/oauth2/logout";
+            OnPropertyChanged("Url");
+            await logoutTask.Task;
         }
     }
 }

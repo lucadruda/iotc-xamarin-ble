@@ -8,11 +8,13 @@ namespace iotc_xamarin_ble.ViewModels.Authentication
 {
     public interface IAuthViewModel
     {
-        
+
         Task<string> GetTokenAsync();
         Task<string> GetTokenAsync(string resource);
 
         Task<string> GetTokenAsync(string resource, string tenant);
+
+        Task Clear();
 
 
     }

@@ -66,9 +66,9 @@ namespace iotc_xamarin_ble.ViewModels
             IsBusy = false;
             string pairingMsg = $"Paired to {device.Name}.\n" +
                 $"Exporting features:\n" +
-                MappingStorage.Current.GetAll().Values.Aggregate((a, b) =>
+                MappingStorage.Current.GetAll().Values.Aggregate("",(a, b) =>
                 {
-                    return b ?? $"{a},{b}";
+                    return b ?? $"{a}, {b}";
                 });
             XamarinDevice.BeginInvokeOnMainThread(() =>
             {
