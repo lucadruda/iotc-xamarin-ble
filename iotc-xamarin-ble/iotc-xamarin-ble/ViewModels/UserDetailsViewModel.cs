@@ -118,13 +118,20 @@ namespace iotc_xamarin_ble.ViewModels
             {
                 SelectedTheme = Themes.FirstOrDefault(t => t.Name == theme);
             }
-
+            else
+            {
+                SelectedTheme = Themes.FirstOrDefault(t => t.Name == Constants.THEMES.LIGHT.ToString());
+            }
             //select mode
             var mode = PreferencesStorage.Current[CONNECTION_MODE];
             if (mode != null)
             {
                 SelectedMode = Modes.FirstOrDefault(t => t.Name == mode);
 
+            }
+            else
+            {
+                SelectedMode= Modes.FirstOrDefault(t => t.Name == Constants.CONNECTION_MODE.BLE.ToString());
             }
         }
 

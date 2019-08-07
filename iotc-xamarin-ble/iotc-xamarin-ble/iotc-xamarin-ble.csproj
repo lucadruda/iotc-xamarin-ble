@@ -36,9 +36,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AuthMock|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>TRACE;DEBUG;MOCKAUTH;MOCKBLE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;MOCKAUTH;MOCKBLE;AUTHMOCK;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>latest</LangVersion>
     <IntermediateOutputPath>obj\Debug\netstandard2.0</IntermediateOutputPath>
@@ -48,27 +48,18 @@
     <Compile Remove="ModelsPage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="accessToken.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="accessToken.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
     <PackageReference Include="IoTCentral.Devices.Client" Version="1.1.0-alpha" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.1.1" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.1.1" />
-    <PackageReference Include="Plugin.BLE" Version="2.0.0-pre1" />
+    <PackageReference Include="Plugin.BLE" Version="2.0.1" />
     <PackageReference Include="Plugin.Permissions" Version="3.0.0.12" />
     <PackageReference Include="rda.SocketsForPCL" Version="2.0.2" />
     <PackageReference Include="Refractored.XamForms.PullToRefresh" Version="2.4.1" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.188" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.555618" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.618606" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
   </ItemGroup>
 

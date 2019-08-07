@@ -17,12 +17,12 @@ namespace iotc_xamarin_ble.iOS.Services
 
         public string GetConnectedAp()
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public string GetCurrentIp()
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public void ReceiveBroadcast()
@@ -32,15 +32,7 @@ namespace iotc_xamarin_ble.iOS.Services
 
         public void Scan()
         {
-            var WiFiURL = new NSUrl("prefs:root=WIFI");
-            if (UIApplication.SharedApplication.CanOpenUrl(WiFiURL))
-            {   //Pre iOS 10
-                UIApplication.SharedApplication.OpenUrl(WiFiURL);
-            }
-            else
-            {   //iOS 10
-                UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=WIFI"));
-            }
+            var url = new NSUrl($"prefs:root=WIFI");            UIApplication.SharedApplication.OpenUrl(url);
 
         }
     }

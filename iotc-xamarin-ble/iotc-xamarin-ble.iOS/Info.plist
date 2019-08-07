@@ -21,7 +21,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>8.0</string>
+	<string>10.3</string>
 	<key>CFBundleDisplayName</key>
 	<string>Azure IoTCentral BLE</string>
 	<key>CFBundleIdentifier</key>
@@ -40,5 +40,18 @@
 	<string>Allow the app to control bluetooth devices</string>
 	<key>CFBundleName</key>
 	<string>IoTCentral BLE</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>prefs:root=WIFI</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>WiFi</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
 </dict>
 </plist>
