@@ -242,6 +242,7 @@ Global
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|iPhoneSimulator.Deploy.0 = Release|iPhoneSimulator
+		{39F6B0C9-D303-49EC-8633-126F4E127851}.Release|Any CPU.Build.0 = Release|iPhone
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.Ad-Hoc|AndroidDevice.ActiveCfg = Debug|Any CPU
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.Ad-Hoc|AndroidDevice.Build.0 = Debug|Any CPU
 		{6E17AABA-68C5-45C0-BDD8-C3B082168A14}.Ad-Hoc|AndroidDevice.Deploy.0 = Debug|Any CPU
