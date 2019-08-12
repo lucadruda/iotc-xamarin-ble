@@ -24,6 +24,7 @@ namespace iotc_xamarin_ble
 {
     public partial class App : XamarinApplication
     {
+        public event Action ApplicationResumed;
         public App()
         {
             InitializeComponent();
@@ -50,7 +51,7 @@ namespace iotc_xamarin_ble
 
             navigator.PresentAsMainPage(new MainViewModel(navigator));
             //navigator.PresentAsMainPage(new UserDetailsViewModel(navigator));
-            //navigator.PresentAsNavigatableMainPage(new AppsViewModel(navigator));
+            //navigator.PresentAsNavigatableMainPage(new WifiScanViewModel(navigator));
 
         }
         public static object ParentWindow { get; set; }
@@ -67,7 +68,7 @@ namespace iotc_xamarin_ble
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            ApplicationResumed?.Invoke();
         }
 
         public DataClient IoTCentralClient { get; private set; }

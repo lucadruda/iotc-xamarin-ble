@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace iotc_ble_xamarin
+namespace iotc_xamarin_ble
 {
     public static class Constants
     {
@@ -62,6 +62,9 @@ namespace iotc_ble_xamarin
         public const string BLE_DEVICE_READY = "BLE_DEVICE_READY";
 
         public const string BLE_SERVICES_FETCHED = "BLE_SERVICES_FETCHED";
+
+        public const string WIFI_SSID_PREFIX = "AZ3166";
+
 
 
         public enum THEMES

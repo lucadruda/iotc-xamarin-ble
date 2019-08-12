@@ -3,30 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ValueConverters="clr-namespace:iotc_ble_xamarin.ValueConverters"
              x:Class="iotc_xamarin_ble.Views.WifiScanPage" Title="{Binding Title}">
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem Name="ScanBtn" Order="Primary" Text="{Binding ScanBtn}" Priority="0" Command="{Binding ScanStop}"/>
-    </ContentPage.ToolbarItems>-->
     <ContentPage.Resources>
         <ResourceDictionary>
             <ValueConverters:BooleanNegationConverter x:Key="not" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Margin="10">
-            <StackLayout>
-                <Label Text="{Binding FoundText}"/>
+        <StackLayout Margin="10" Orientation="Vertical" VerticalOptions="Center">
+            <StackLayout IsVisible="{Binding IsiOS}" >
+                <Image Source="{Binding WiFIInstruction}" Margin="20" HorizontalOptions="Center"/>
             </StackLayout>
-            <StackLayout IsVisible="{Binding IsScanning,Converter={StaticResource not}}">
-                <Label Text="Network Name"/>
-                <Editor Text="{Binding SSID}"/>
-                <Label Text="Password"/>
-                <Editor Text="{Binding Password}"/>
-                <Button Text="Next" Command="{Binding Connect}"/>
+            <StackLayout IsVisible="{Binding IsiOS,Converter={StaticResource not}}" VerticalOptions="Center">
+                <StackLayout IsVisible="{Binding IsPairing,Converter={StaticResource not}}">
+                    <Label Text="Network Name"/>
+                    <Editor Text="{Binding SSID}"/>
+                    <Label Text="Password"/>
+                    <Editor Text="{Binding Password}"/>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsPairing}" VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <Label Text="{Binding ProgressText}" HorizontalOptions="Center"/>
+                    <ActivityIndicator IsVisible="{Binding PairingCompleted, Converter={StaticResource not}}" IsRunning="{Binding IsPairing}" Color="Accent" HorizontalOptions="Center"/>
+                    <Label HorizontalOptions="Center" VerticalOptions="Center" FontSize="Caption" Text="{Binding PairingResult.Text}" TextColor="{Binding PairingResult.Color}" IsVisible="{Binding PairingCompleted}"/>
+                </StackLayout>
             </StackLayout>
-            <StackLayout IsVisible="{Binding IsScanning}" VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
-                <Label Text="{Binding ProgressText}" HorizontalOptions="Center"/>
-                <ActivityIndicator IsRunning="{Binding IsScanning}" Color="Accent" HorizontalOptions="Center"/>
-            </StackLayout>
+            <Button Text="Next" Command="{Binding Connect}" IsVisible="{Binding IsPairing,Converter={StaticResource not}}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

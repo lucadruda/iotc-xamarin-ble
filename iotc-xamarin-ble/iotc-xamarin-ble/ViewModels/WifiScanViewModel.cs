@@ -10,6 +10,7 @@ using System.Web;
 using System.Windows.Input;
 using iotc_ble_xamarin;
 using iotc_csharp_service;
+using iotc_xamarin_ble.Graphics;
 using iotc_xamarin_ble.Messages;
 using iotc_xamarin_ble.Services;
 using iotc_xamarin_ble.Services.Container;
@@ -36,6 +37,11 @@ namespace iotc_xamarin_ble.ViewModels
         public string SSID { get; set; }
         public bool Found { get; set; }
         public string ProgressText { get; set; }
+        public bool IsiOS { get; set; }
+        public bool PairingCompleted { get; set; }
+        public Result PairingResult { get; set; }
+
+        public ImageSource WiFIInstruction { get; set; }
 
         private bool isScanning;
         private string currentSSID;
@@ -44,40 +50,66 @@ namespace iotc_xamarin_ble.ViewModels
         private UdpSocketReceiver udpReceiver;
         private DeviceCredentials credentials;
         private string sasKey;
+        private bool skipScan;
         int port = 4000;
         string address = "192.168.0.1";
+        string deviceName;
+
+        bool pairStarted = false;
+        private object m_lock = new object();
 
         public WifiScanViewModel(INavigationService navigation) : base(navigation)
         {
             Devices = new ObservableCollection<string>();
             wifiManager = DependencyService.Get<IWiFiManager>();
-            IsScanning = false;
+            IsPairing = false;
             Connect = new Command(StartConnect);
+            Title = IoTCentral.Current.Device.Name;
             ProgressText = "Searching for compatible devices...";
+            PairingCompleted = false;
+            PairingResult = new Result();
             MessagingCenter.Subscribe<IWiFiManager, string>(this, "FOUND", async (manager, ssid) =>
             {
-                OnPropertyChanged("IsScanning");
-                credentials = await (await IoTCentral.Current.GetServiceClient()).GetCredentials(IoTCentral.Current.Application.Id);
-                credentials.DeviceId = IoTCentral.Current.Device.DeviceId;
-                using (var hmac = new HMACSHA256(Convert.FromBase64String(credentials.PrimaryKey))) //get device key
-                {
-                    sasKey = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(credentials.DeviceId)));
-                }
-                await Pair(ssid);
+                Associate(ssid);
+                await Pair();
 
             });
-            MessagingCenter.Subscribe<IWiFiManager, string>(this, "REGISTERED", (manager, ip) =>
-           {
-               ProgressText = $"Device registered on the network with ip: {ip}";
-               OnPropertyChanged("ProgressText");
+            MessagingCenter.Subscribe<IWiFiManager, string>(this, "REGISTERED", async (manager, msg) =>
+            {
+                var ssid = msg.Split(':')[0];
+                if (ssid.Equals(deviceName, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    ProgressText = $"Device registered on the network with ip: {msg.Split(':')[1]}";
+                    PairingResult.Text = ((char)0x2713).ToString();
+                    PairingResult.Color = Color.Green;
 
-           });
 
+                }
+                else
+                {
+                    ProgressText = $"Failed to register device";
+                    PairingResult.Text = "X";
+                    PairingResult.Color = Color.Red;
+                }
+                PairingCompleted = true;
+                OnPropertyChanged("ProgressText");
+                OnPropertyChanged("PairingCompleted");
+                OnPropertyChanged("PairingResult");
+
+                //await Navigation.NavigateTo(new DeviceViewModel(Navigation));
+            });
+            WiFIInstruction = ImageSource.FromResource("iotc_xamarin_ble.Resources.wifi_2.jpg");
             udpClient = new UdpSocketClient();
             udpReceiver = new UdpSocketReceiver();
+            skipScan = false;
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                IsiOS = true;
+                ((App)App.Current).ApplicationResumed += ResumeWifi;
+            }
         }
 
-        public bool IsScanning
+        public bool IsPairing
         {
             get { return isScanning; }
             set
@@ -117,20 +149,50 @@ namespace iotc_xamarin_ble.ViewModels
             //Navigation.NavigateTo(new BLEDetailsViewModel(Navigation, this));
         }
 
-        private void StartConnect()
+        private async void StartConnect()
         {
-            IsScanning = true;
-            OnPropertyChanged("IsScanning");
-            currentSSID = wifiManager.GetConnectedAp();
-            Scan();
+            if (skipScan) // running on iOS. Scan is not supported
+            {
+                IsPairing = true;
+                OnPropertyChanged("IsPairing");
+                await Pair();
+                return;
+            }
+            credentials = await (await IoTCentral.Current.GetServiceClient()).GetCredentials(IoTCentral.Current.Application.Id);
+            credentials.DeviceId = IoTCentral.Current.Device.DeviceId;
+            using (var hmac = new HMACSHA256(Convert.FromBase64String(credentials.PrimaryKey))) //get device key
+            {
+                sasKey = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(credentials.DeviceId)));
+            }
+            IsPairing = true;
+            OnPropertyChanged("IsPairing");
+            await Scan();
         }
 
 
         public override async Task OnAppearing()
         {
+
             if ((await ContainerService.Current.Resolve<Services.Permissions.IPermissions>().CheckPermissions()) != PermissionStatus.Granted)
             {
                 //inform the user and return;
+            }
+            currentSSID = wifiManager.GetConnectedAp();
+            SSID = currentSSID;
+            OnPropertyChanged("SSID");
+        }
+
+        private void ResumeWifi()
+        {
+            currentSSID = wifiManager.GetConnectedAp();
+            if (currentSSID.StartsWith(Constants.WIFI_SSID_PREFIX))
+            {
+                IsiOS = false;
+                IsPairing = false;
+                OnPropertyChanged("IsiOS");
+                OnPropertyChanged("IsPairing");
+                // skip the instructions and go on with pairing
+                skipScan = true;
             }
         }
 
@@ -149,15 +211,24 @@ namespace iotc_xamarin_ble.ViewModels
             throw new NotImplementedException();
         }
 
-        private async Task Pair(string ssid)
+        private void Associate(string ssid)
         {
-            ProgressText = $"Found MXCHIP device {ssid.Substring(ssid.IndexOf('_') + 1)}";
+            deviceName = ssid.Substring(ssid.IndexOf('_') + 1);
+            ProgressText = $"Found MXCHIP device {deviceName}";
             OnPropertyChanged("ProgressText");
+            wifiManager.Connect(ssid, "12345678");
+        }
 
-            wifiManager.Connect(ssid);
+        private async Task Pair()
+        {
+            await Task.Delay(4000);
+            ProgressText = $"Start pairing";
+            OnPropertyChanged("ProgressText");
             // give some time to connect
-            await Task.Delay(3000);
+            await Task.Delay(10000);
             var currentIp = wifiManager.GetCurrentIp();
+            ProgressText = $"Current Ip address is {currentIp}";
+            OnPropertyChanged("ProgressText");
 
             var msg = $"IOTC:{currentIp}:5000";
             var msgBytes = Encoding.UTF8.GetBytes(msg);
@@ -171,13 +242,14 @@ namespace iotc_xamarin_ble.ViewModels
                 while (retry < 5)
                 {
                     await udpClient.SendToAsync(msgBytes, address, port);
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
                     retry++;
                 }
             }
             catch (SocketException ex)
             {
-
+                ProgressText = $"Error Sending pairing message {ex.Message}";
+                OnPropertyChanged("ProgressText");
             }
         }
 
@@ -196,36 +268,44 @@ namespace iotc_xamarin_ble.ViewModels
 
         private void StartSendCredentials(object source, UdpSocketMessageReceivedEventArgs e)
         {
-            if (e.RemoteAddress == "192.168.0.1" && e.RemotePort == "4000" && Encoding.UTF8.GetString(e.ByteData) == "PAIRING")
+            lock (m_lock)
             {
-                Task.Run(async () =>
+                if (pairStarted)
                 {
-                    int retry = 0;
-                    ProgressText = $"Sending information to the device";
-                    OnPropertyChanged("ProgressText");
-                    udpReceiver.MessageReceived -= StartSendCredentials;
-                    var msg = $"SSID={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(SSID))};PASS={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(Password))};SASKEY={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(sasKey))};SCOPEID={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(credentials.IdScope))};DEVICEID={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(credentials.DeviceId))};AUTH=S";
-                    var msgBytes = Encoding.UTF8.GetBytes(msg);
-                    await Task.Delay(2000);
-                    try
+                    return;
+                }
+                if (e.RemoteAddress == "192.168.0.1" && e.RemotePort == "4000" && Encoding.UTF8.GetString(e.ByteData) == "PAIRING")
+                {
+                    Task.Run(async () =>
                     {
-                        while (retry < 5)
-                        {
-                            await udpClient.SendToAsync(msgBytes, address, port);
-                            await Task.Delay(2000);
-                            retry++;
-                        }
-                        wifiManager.Connect(currentSSID);
-                        ProgressText = "Waiting for the device to connect to network...";
+                        pairStarted = true;
+                        int retry = 0;
+                        ProgressText = $"Sending information to the device";
                         OnPropertyChanged("ProgressText");
-                        await Task.Delay(6000);
-                        wifiManager.ReceiveBroadcast();
-                    }
-                    catch (SocketException ex)
-                    {
+                        udpReceiver.MessageReceived -= StartSendCredentials;
+                        var msg = $"SSID={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(SSID))};PASS={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(Password))};SASKEY={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(sasKey))};SCOPEID={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(credentials.IdScope))};DEVICEID={HttpUtility.UrlEncode(Encoding.UTF8.GetBytes(credentials.DeviceId))};AUTH=S";
+                        var msgBytes = Encoding.UTF8.GetBytes(msg);
+                        await Task.Delay(2000);
+                        try
+                        {
+                            while (retry < 5)
+                            {
+                                await udpClient.SendToAsync(msgBytes, address, port);
+                                await Task.Delay(2000);
+                                retry++;
+                            }
+                            wifiManager.Connect(currentSSID);
+                            ProgressText = "Waiting for the device to connect to network...";
+                            OnPropertyChanged("ProgressText");
+                            await Task.Delay(2000);
+                            wifiManager.ReceiveBroadcast();
+                        }
+                        catch (SocketException ex)
+                        {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         }
     }
