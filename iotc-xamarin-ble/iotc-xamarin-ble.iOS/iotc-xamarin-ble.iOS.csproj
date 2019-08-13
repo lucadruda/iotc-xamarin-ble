@@ -198,6 +198,8 @@
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Main.cs" />
+    <None Include="accessToken.txt" />
+    <Compile Include="Renderers\CustomViewCellRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -506,16 +508,12 @@
     <Folder Include="Assets.xcassets\ic_iotcentral_white.imageset\" />
     <Folder Include="Assets.xcassets\iot.imageset\" />
     <Folder Include="Assets.xcassets\user.imageset\" />
+    <Folder Include="Renderers\" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork%402x" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="accessToken.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

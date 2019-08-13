@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:TitleCaseConverter x:Key="TitleCaseConverter"/>
-            <Color x:Key="backgroundColor">#White</Color>
+            <Color x:Key="backgroundColor">White</Color>
             <Color x:Key="textColor">Black</Color>
             <Color x:Key="Primary">#FFFFFF</Color>
             <Color x:Key="OVERLAY">#AA808080</Color>

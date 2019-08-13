@@ -162,7 +162,7 @@ namespace iotc_xamarin_ble.ViewModels
             else
             {
                 ContainerService.Current.RegisterType<IScanViewModel>(typeof(WifiScanViewModel));
-
+                    
             }
             PreferencesStorage.Current.Add(CONNECTION_MODE, mode.ToString());
             PreferencesStorage.Current.Save();
