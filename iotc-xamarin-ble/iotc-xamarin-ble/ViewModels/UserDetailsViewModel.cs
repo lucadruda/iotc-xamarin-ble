@@ -131,7 +131,7 @@ namespace iotc_xamarin_ble.ViewModels
             }
             else
             {
-                SelectedMode= Modes.FirstOrDefault(t => t.Name == Constants.CONNECTION_MODE.BLE.ToString());
+                SelectedMode = Modes.FirstOrDefault(t => t.Name == Constants.CONNECTION_MODE.BLE.ToString());
             }
         }
 

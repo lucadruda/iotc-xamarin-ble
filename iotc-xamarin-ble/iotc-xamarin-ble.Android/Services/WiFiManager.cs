@@ -43,11 +43,16 @@ namespace iotc_xamarin_ble.Droid.Services
         {
             var conf = new WifiConfiguration
             {
-                Ssid = ssid
+                Ssid = $"\"{ssid}\""
             };
             // very important for unprotected networks otherwise connection doesn't go on
             if (passphrase == null)
                 conf.AllowedKeyManagement.Set((int)KeyManagementType.None);
+            else
+            {
+                conf.AllowedKeyManagement.Set((int)KeyManagementType.WpaPsk);
+                conf.PreSharedKey = $"\"{passphrase}\"";
+            }
 
             var netId = Wifi.AddNetwork(conf);
             currentNetwork = Wifi.ConnectionInfo.NetworkId;
@@ -61,7 +66,8 @@ namespace iotc_xamarin_ble.Droid.Services
 
         public string GetConnectedAp()
         {
-            return Wifi.ConnectionInfo.SSID;
+            var ssid = Wifi.ConnectionInfo.SSID;
+            return ssid.Substring(1, ssid.Length - 2);
         }
 
         public async void ReceiveBroadcast()
@@ -104,7 +110,7 @@ namespace iotc_xamarin_ble.Droid.Services
                 IList<ScanResult> scanwifinetworks = Wifi.ScanResults;
                 foreach (ScanResult wifinetwork in scanwifinetworks)
                 {
-                    if (wifinetwork.Ssid.StartsWith("AZ3166"))
+                    if (wifinetwork.Ssid.StartsWith(Constants.WIFI_SSID_PREFIX))
                     {
                         MessagingCenter.Send((IWiFiManager)this.manager, "FOUND", wifinetwork.Ssid);
 

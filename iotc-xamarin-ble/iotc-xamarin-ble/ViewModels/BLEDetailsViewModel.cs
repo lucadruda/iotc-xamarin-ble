@@ -24,6 +24,7 @@ namespace iotc_xamarin_ble.ViewModels
         {
             this.scanner = scanner;
             Device = this.scanner.LastTappedItem;
+            Title = IoTCentral.Current.Device.Name;
             Services = new ObservableCollection<BluetoothServiceViewModel>();
             HeaderClickCommand = new Command<BluetoothServiceViewModel>((item) => ExecuteHeaderClickCommand(item));
             Save = new Command(SaveMapping);

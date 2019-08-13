@@ -80,7 +80,9 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
         private void OnTelemetryAssigned(object sender, string charId, string newField, string oldField)
         {
             if (charId == Characteristic.Id)
+            {
                 return;
+            }
             CurrentMeasures.Remove(CurrentMeasures.FirstOrDefault(x => x.FieldName == newField));
             if (!string.IsNullOrEmpty(oldField))
             {
@@ -94,6 +96,12 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
             SelectedMeasure = null;
         }
 
+        public void UpdateMeasure(Measure measure)
+        {
+            selectedMeasure = measure;
+            PropertyChanged?.Invoke(this,
+           new PropertyChangedEventArgs("SelectedMeasure"));
+        }
 
     }
 }
