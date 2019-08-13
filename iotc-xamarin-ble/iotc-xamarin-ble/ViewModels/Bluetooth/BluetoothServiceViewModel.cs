@@ -1,9 +1,11 @@
-﻿using iotc_xamarin_ble.Bluetooth;
+﻿using iotc_csharp_service.Types;
+using iotc_xamarin_ble.Bluetooth;
 using Plugin.BLE.Abstractions.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,13 +15,17 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
     {
         private bool expanded;
         //store all characteristics here so we can play with the outer collection
-        public ObservableCollection<BluetoothCharacteristicViewModel> Characteristics { get; private set; }
+        public List<BluetoothCharacteristicViewModel> Characteristics { get; private set; }
+
+        // keep track of the assigned telemetry otherwise a Clear() on the collection will erase all pairs.
+        private Dictionary<string, Measure> assignments;
 
         public BluetoothServiceViewModel(BluetoothServiceModel service, bool expanded = false)
         {
             Service = service;
             this.expanded = expanded;
-            Characteristics = new ObservableCollection<BluetoothCharacteristicViewModel>();
+            assignments = new Dictionary<string, Measure>();
+            Characteristics = new List<BluetoothCharacteristicViewModel>();
             foreach (var item in Service.Characteristics)
             {
                 var c = new BluetoothCharacteristicViewModel(item);
@@ -57,6 +63,17 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
                     }
                     else
                     {
+                        foreach (var item in this)
+                        {
+                            if (assignments.ContainsKey(item.Id))
+                            {
+                                assignments[item.Id] = item.SelectedMeasure;
+                            }
+                            else
+                            {
+                                assignments.Add(item.Id, item.SelectedMeasure);
+                            }
+                        }
                         Clear();
                     }
                 }
@@ -69,8 +86,13 @@ namespace iotc_xamarin_ble.ViewModels.Bluetooth
         {
             foreach (var item in Characteristics)
             {
+                if (assignments.ContainsKey(item.Id))
+                {
+                    item.SelectedMeasure = assignments[item.Id];
+                }
                 Add(item);
             }
         }
+
     }
 }
