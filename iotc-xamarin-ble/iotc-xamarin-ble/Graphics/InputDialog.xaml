@@ -13,7 +13,7 @@
         <Label Text="{Binding InputModel.InputLabel}" HorizontalOptions="Fill"/>
         <Editor Text="{Binding InputModel.InputText}" HorizontalOptions="Fill"/>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="End">
-            <Label x:Name="OK" Text="OK"  HorizontalOptions="CenterAndExpand" IsEnabled="{Binding InputMode.InputText, Converter={StaticResource isnotnull}}">
+            <Label x:Name="OK" Text="OK"  HorizontalOptions="CenterAndExpand" IsEnabled="{Binding InputModel.InputText, Converter={StaticResource isnotnull}}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding InputModel.DialogOk}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
