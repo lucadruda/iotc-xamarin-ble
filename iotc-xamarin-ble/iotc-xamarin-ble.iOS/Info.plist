@@ -51,9 +51,7 @@
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleVersion</key>
-	<string>9</string>
+	<string>12</string>
 </dict>
 </plist>

@@ -78,7 +78,8 @@ namespace iotc_xamarin_ble.iOS.Services
                 UIApplication.SharedApplication.OpenUrl(WiFiURL);
             }
             else
-            {   //iOS 10    UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=WIFI"));
+            {   //iOS 10
+                UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=WIFI"));
             }
 
         }
